@@ -34,6 +34,7 @@
  * @property string $endpoint_token       The IDP token validation endpoint URL.
  * @property string $endpoint_end_session The IDP logout endpoint URL.
  * @property string $acr_values           The Authentication contract as defined on the IDP.
+ * @property bool   $enable_pkce          The flag to enable/disable PKCE support.
  *
  * Non-standard Settings:
  *
@@ -101,6 +102,7 @@ class OpenID_Connect_Generic_Option_Settings {
 		'redirect_on_logout'        => 'OIDC_REDIRECT_ON_LOGOUT',
 		'redirect_user_back'        => 'OIDC_REDIRECT_USER_BACK',
 		'acr_values'                => 'OIDC_ACR_VALUES',
+		'enable_pkce'               => 'OIDC_ENABLE_PKCE',
 	);
 
 	/**
