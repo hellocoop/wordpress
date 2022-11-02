@@ -446,6 +446,13 @@ class OpenID_Connect_Generic_Settings_Page {
 		<div class="wrap">
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
 
+			<form method="get" action="https://quickstart.hello.dev/">
+				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( get_bloginfo('url') ); ?>/wp-admin/options-general.php?page=openid-connect-generic-settings" />
+				<input type="hidden" name="suffix" id="suffix" value="<?php print esc_attr( get_bloginfo('name') ); ?>" />
+				<input type="hidden" name="redirect_uri" id="redirect_uri" value="<?php print esc_attr( $redirect_uri ); ?>" />
+				<input type="submit" name="hello_quickstart" id="hello_quickstart" class="button button-primary" value="Hellō Quickstart" />
+			</form>
+
 			<form method="post" action="options.php">
 				<?php
 				settings_fields( $this->settings_field_group );
