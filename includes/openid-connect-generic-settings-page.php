@@ -208,6 +208,7 @@ class OpenID_Connect_Generic_Settings_Page {
 		 * - example (optional example will appear beneath description and be wrapped in <code>)
 		 */
 		$fields = array(
+			/*
 			'login_type'        => array(
 				'title'       => __( 'Login Type', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'Select how the client (login form) should provide login options.', 'daggerhart-openid-connect-generic' ),
@@ -219,6 +220,7 @@ class OpenID_Connect_Generic_Settings_Page {
 				'disabled'    => defined( 'OIDC_LOGIN_TYPE' ),
 				'section'     => 'client_settings',
 			),
+			*/
 			'client_id'         => array(
 				'title'       => __( 'Client ID', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'The ID this client will be recognized as when connecting the to Identity provider server.', 'daggerhart-openid-connect-generic' ),
@@ -227,6 +229,7 @@ class OpenID_Connect_Generic_Settings_Page {
 				'disabled'    => defined( 'OIDC_CLIENT_ID' ),
 				'section'     => 'client_settings',
 			),
+			/*
 			'client_secret'     => array(
 				'title'       => __( 'Client Secret Key', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'Arbitrary secret key the server expects from this client. Can be anything, but should be very unique.', 'daggerhart-openid-connect-generic' ),
@@ -234,6 +237,7 @@ class OpenID_Connect_Generic_Settings_Page {
 				'disabled'    => defined( 'OIDC_CLIENT_SECRET' ),
 				'section'     => 'client_settings',
 			),
+			*/
 			'scope'             => array(
 				'title'       => __( 'Scopes', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'Space separated list of scopes this client should access.', 'daggerhart-openid-connect-generic' ),
@@ -242,6 +246,7 @@ class OpenID_Connect_Generic_Settings_Page {
 				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
 				'section'     => 'client_settings',
 			),
+			/*
 			'endpoint_login'    => array(
 				'title'       => __( 'Login Endpoint URL', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'Identify provider authorization endpoint.', 'daggerhart-openid-connect-generic' ),
@@ -309,6 +314,7 @@ class OpenID_Connect_Generic_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
+			*/
 			'enforce_privacy'   => array(
 				'title'       => __( 'Enforce Privacy', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'Require users be logged in to see the site.', 'daggerhart-openid-connect-generic' ),
@@ -316,6 +322,7 @@ class OpenID_Connect_Generic_Settings_Page {
 				'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
 				'section'     => 'authorization_settings',
 			),
+			/*
 			'alternate_redirect_uri'   => array(
 				'title'       => __( 'Alternate Redirect URI', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'Provide an alternative redirect route. Useful if your server is causing issues with the default admin-ajax method. You must flush rewrite rules after changing this setting. This can be done by saving the Permalinks settings page.', 'daggerhart-openid-connect-generic' ),
@@ -361,6 +368,7 @@ class OpenID_Connect_Generic_Settings_Page {
 				'type'        => 'checkbox',
 				'section'     => 'client_settings',
 			),
+			*/
 			'link_existing_users'   => array(
 				'title'       => __( 'Link Existing Users', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated user over OpenID Connect, login as that user instead of generating an error.', 'daggerhart-openid-connect-generic' ),
