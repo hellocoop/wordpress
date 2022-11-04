@@ -139,7 +139,7 @@ class OpenID_Connect_Generic_Login_Form {
 
 		$atts = shortcode_atts(
 			array(
-				'button_text' => __( 'Login with OpenID Connect', 'daggerhart-openid-connect-generic' ),
+				'button_text' => __( 'ō Continue with Hellō', 'daggerhart-openid-connect-generic' ),
 			),
 			$atts,
 			'openid_connect_generic_login_button'
