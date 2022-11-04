@@ -1,31 +1,31 @@
 <?php
 /**
- * OpenID Connect Generic Client
+ * Hellō Login
  *
  * This plugin provides the ability to authenticate users with Identity
  * Providers using the OpenID Connect OAuth2 API with Authorization Code Flow.
  *
  * @package   OpenID_Connect_Generic
  * @category  General
- * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
- * @copyright 2015-2020 daggerhart
+ * @author    Marius Scurtescu <marius.scurtescu@hello.coop>
+ * @copyright 2022 Hellō Coop
  * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
- * @link      https://github.com/daggerhart
+ * @link      https://www.hello.coop/
  *
  * @wordpress-plugin
- * Plugin Name:       OpenID Connect Generic
- * Plugin URI:        https://github.com/daggerhart/openid-connect-generic
+ * Plugin Name:       Hellō Coop
+ * Plugin URI:        https://github.com/hellocoop/wordpress
  * Description:       Connect to an OpenID Connect generic client using Authorization Code Flow.
- * Version:           3.9.1
+ * Version:           1.0.0
  * Requires at least: 4.9
  * Requires PHP:      7.2
- * Author:            daggerhart
- * Author URI:        http://www.daggerhart.com
+ * Author:            mariuss
+ * Author URI:        http://www.hello.dev
  * Text Domain:       daggerhart-openid-connect-generic
  * Domain Path:       /languages
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * GitHub Plugin URI: https://github.com/daggerhart/openid-connect-generic
+ * GitHub Plugin URI: https://github.com/hellocoop/wordpress
  */
 
 /*
