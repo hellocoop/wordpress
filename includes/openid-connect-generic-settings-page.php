@@ -235,9 +235,9 @@ class OpenID_Connect_Generic_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			'scope'             => array(
-				'title'       => __( 'OpenID Scope', 'daggerhart-openid-connect-generic' ),
+				'title'       => __( 'Scopes', 'daggerhart-openid-connect-generic' ),
 				'description' => __( 'Space separated list of scopes this client should access.', 'daggerhart-openid-connect-generic' ),
-				'example'     => 'email profile openid offline_access',
+				'example'     => 'openid name nickname family_name given_name picture email phone profile_update ethereum',
 				'type'        => 'text',
 				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
 				'section'     => 'client_settings',
