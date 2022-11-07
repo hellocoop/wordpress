@@ -223,7 +223,7 @@ class OpenID_Connect_Generic_Settings_Page {
 			*/
 			'client_id'         => array(
 				'title'       => __( 'Client ID', 'daggerhart-openid-connect-generic' ),
-				'description' => __( 'The ID this client will be recognized as when connecting the to Identity provider server.', 'daggerhart-openid-connect-generic' ),
+				'description' => __( 'The client identifier provided by Hellō and set by Quickstart. Only edit if you have created a new client at console.hello.coop.', 'daggerhart-openid-connect-generic' ),
 				'example'     => 'my-wordpress-client-id',
 				'type'        => 'text',
 				'disabled'    => defined( 'OIDC_CLIENT_ID' ),
@@ -240,7 +240,7 @@ class OpenID_Connect_Generic_Settings_Page {
 			*/
 			'scope'             => array(
 				'title'       => __( 'Scopes', 'daggerhart-openid-connect-generic' ),
-				'description' => __( 'Space separated list of scopes this client should access.', 'daggerhart-openid-connect-generic' ),
+				'description' => __( 'Space separated list of scopes you are requesting - "openid" is required. Available claims at https://www.hello.dev/documentation/hello-claims.html.', 'daggerhart-openid-connect-generic' ),
 				'example'     => 'openid name nickname family_name given_name picture email phone profile_update ethereum',
 				'type'        => 'text',
 				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
@@ -371,7 +371,7 @@ class OpenID_Connect_Generic_Settings_Page {
 			*/
 			'link_existing_users'   => array(
 				'title'       => __( 'Link Existing Users', 'daggerhart-openid-connect-generic' ),
-				'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated user over OpenID Connect, login as that user instead of generating an error.', 'daggerhart-openid-connect-generic' ),
+				'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'daggerhart-openid-connect-generic' ),
 				'type'        => 'checkbox',
 				'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
 				'section'     => 'user_settings',
@@ -385,7 +385,7 @@ class OpenID_Connect_Generic_Settings_Page {
 			),
 			'redirect_user_back'   => array(
 				'title'       => __( 'Redirect Back to Origin Page', 'daggerhart-openid-connect-generic' ),
-				'description' => __( 'After a successful OpenID Connect authentication, this will redirect the user back to the page on which they clicked the OpenID Connect login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'daggerhart-openid-connect-generic' ),
+				'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'daggerhart-openid-connect-generic' ),
 				'type'        => 'checkbox',
 				'disabled'    => defined( 'OIDC_REDIRECT_USER_BACK' ),
 				'section'     => 'user_settings',
