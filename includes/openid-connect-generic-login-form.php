@@ -137,23 +137,10 @@ class OpenID_Connect_Generic_Login_Form {
 	 */
 	public function make_login_button( $atts = array() ) {
 
-		$atts = shortcode_atts(
-			array(
-				'button_text' => __( 'ō Continue with Hellō', 'daggerhart-openid-connect-generic' ),
-			),
-			$atts,
-			'openid_connect_generic_login_button'
-		);
-
-		$text = apply_filters( 'openid-connect-generic-login-button-text', $atts['button_text'] );
-		$text = esc_html( $text );
-
-		$href = $this->client_wrapper->get_authentication_url( $atts );
-		$href = esc_url_raw( $href );
-
 		$login_button = <<<HTML
-<div class="openid-connect-login-button" style="margin: 1em 0; text-align: center;">
-	<a class="button button-large" href="{$href}">{$text}</a>
+<div class="hello-container">
+  <button class="hello-btn"></button>
+  <button class="hello-about"></button>
 </div>
 HTML;
 
