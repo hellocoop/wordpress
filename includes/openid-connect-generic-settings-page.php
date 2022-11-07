@@ -583,7 +583,7 @@ class OpenID_Connect_Generic_Settings_Page {
 	 * @return void
 	 */
 	public function client_settings_description() {
-		esc_html_e( 'Enter your OpenID Connect identity provider settings.', 'daggerhart-openid-connect-generic' );
+		esc_html_e( 'Enter your Hellō settings.', 'daggerhart-openid-connect-generic' );
 	}
 
 	/**
@@ -592,7 +592,7 @@ class OpenID_Connect_Generic_Settings_Page {
 	 * @return void
 	 */
 	public function user_settings_description() {
-		esc_html_e( 'Modify the interaction between OpenID Connect and WordPress users.', 'daggerhart-openid-connect-generic' );
+		esc_html_e( 'Modify the interaction between Hellō Login and WordPress users.', 'daggerhart-openid-connect-generic' );
 	}
 
 	/**
@@ -610,6 +610,6 @@ class OpenID_Connect_Generic_Settings_Page {
 	 * @return void
 	 */
 	public function log_settings_description() {
-		esc_html_e( 'Log information about login attempts through OpenID Connect Generic.', 'daggerhart-openid-connect-generic' );
+		esc_html_e( 'Log information about login attempts through Hellō Login.', 'daggerhart-openid-connect-generic' );
 	}
 }
