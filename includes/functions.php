@@ -36,3 +36,4 @@ function hellocoop_enqueue_scripts_and_styles() {
 
 add_action( 'wp_enqueue_scripts', 'hellocoop_enqueue_scripts_and_styles' );
 add_action( 'login_enqueue_scripts', 'hellocoop_enqueue_scripts_and_styles' );
+add_action( 'admin_enqueue_scripts', 'hellocoop_enqueue_scripts_and_styles' );
