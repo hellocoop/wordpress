@@ -105,7 +105,7 @@ class OpenID_Connect_Generic_Settings_Page {
 	 */
 	public function admin_menu() {
 		add_options_page(
-			__( 'Hellō OpenID Connect Client', 'daggerhart-openid-connect-generic' ),
+			__( 'Hellō Login', 'daggerhart-openid-connect-generic' ),
 			__( 'Hellō Login', 'daggerhart-openid-connect-generic' ),
 			'manage_options',
 			$this->options_page_name,
