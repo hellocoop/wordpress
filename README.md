@@ -1,53 +1,54 @@
-# OpenID Connect Generic Client #
+# Hellō Login#
 **Contributors:** [mariuss](https://profiles.wordpress.org/mariuss/)  
 **Donate link:** https://www.hello.dev/
-**Tags:** security, login, oauth2, openidconnect, apps, authentication, autologin, sso  
+**Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.0.1  
-**Stable tag:** 3.9.1  
+**Stable tag:** 1.0.0  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-A simple client that provides SSO or opt-in authentication against a generic OAuth2 Server implementation.
+A login and registration plugin for the Hellō service.
 
 ## Description ##
 
-This plugin allows to authenticate users against OpenID Connect OAuth2 API with Authorization Code Flow.
-Once installed, it can be configured to automatically authenticate users (SSO), or provide a "Login with OpenID Connect"
-button on the login form. After consent has been obtained, an existing user is automatically logged into WordPress, while
-new users are created in WordPress database.
+This plugin integrates the Hellō service with your site, simplifying login and registration of users.
+You can request name, nickname, profile picture, as well as a verified email, phone, or ethereum address.
 
-Much of the documentation can be found on the Settings > OpenID Connect Generic dashboard page.
+This plugin uses the Hellō Quickstart service to get your site up and running in minutes.
 
-Please submit issues to the Github repo: https://github.com/hellocoop/wordpress
+Configuration and settings can be found in the Settings > Hellō Login dashboard page
+
+For details on the Hellō service see [hello.dev](https://hello.dev)
+
+Please submit issues and feature requests to the Github repo: [https://github.com/hellocoop/wordpress](https://github.com/hellocoop/wordpress)
 
 ## Installation ##
 
 1. Upload to the `/wp-content/plugins/` directory
 1. Activate the plugin
-1. Visit Settings > OpenID Connect and configure to meet your needs
+1. Visit Settings > Hellō Login
+1. Click Hellō Quickstart button and complete Quickstart flow
+1. Enable user registration and login
+	1. Visit Settings > General
+	1. Scroll to "Membership" and check "Anyone can register"
+	1. Make sure that "New User Default Role" below has the correct value for your case, most likely "Subscriber"
+	1. Add Registration and Login links. Depending on what Theme is being used you can add login related widgets, custom
+	   forms or the simplest is to add a short code. The supported short codes are listed at the bottom of the Hellō
+	   settings page.
 
 ## Frequently Asked Questions ##
 
-### What is the client's Redirect URI? ###
+### How do users login? ###
 
-Most OAuth2 servers will require whitelisting a set of redirect URIs for security purposes. The Redirect URI provided
-by this client is like so:  https://example.com/wp-admin/admin-ajax.php?action=openid-connect-authorize
+Hellō offers users all popular social login methods including Apple, Facebook, Google, Line, Microsoft, Twitch, and Yahoo;
+email or phone; or popular crypto wallets including MetaMask. The current choices can be seen at [https://wallet.hello.coop](https://wallet.hello.coop)
+Hellō lets users change their provider without any effort on your part.
 
-Replace `example.com` with your domain name and path to WordPress.
+### What claims can I ask for about a user? ###
 
-### Can I change the client's Redirect URI? ###
-
-Some OAuth2 servers do not allow for a client redirect URI to contain a query string. The default URI provided by
-this module leverages WordPress's `admin-ajax.php` endpoint as an easy way to provide a route that does not include
-HTML, but this will naturally involve a query string. Fortunately, this plugin provides a setting that will make use of
-an alternate redirect URI that does not include a query string.
-
-On the settings page for this plugin (Dashboard > Settings > OpenID Connect Generic) there is a checkbox for
-**Alternate Redirect URI**. When checked, the plugin will use the Redirect URI
-`https://example.com/openid-connect-authorize`.
-
+Hellō supports all popular OpenID Connect claims and we are continually adding claims to Hellō. You can see the full list at [Hellō Claims](https://www.hello.dev/documentation/hello-claims.html)
 
 ## Changelog ##
 
@@ -55,7 +56,8 @@ On the settings page for this plugin (Dashboard > Settings > OpenID Connect Gene
 
 * Forked https://github.com/oidc-wp/openid-connect-generic
 * Improvement: @mariuss - Merged PR that adds [PKCE support](https://github.com/oidc-wp/openid-connect-generic/pull/421).
-* Feature: @mariuss - Simplified and customized specifically for Hellō Coop Login
+* Feature: @mariuss - Integrated Hellō Quickstart
+* Feature: @mariuss - Removed unnecessary configuration options
 
 
 --------
