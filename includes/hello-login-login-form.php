@@ -10,14 +10,14 @@
  */
 
 /**
- * OpenID_Connect_Generic_Login_Form class.
+ * Hello_Login_Login_Form class.
  *
  * Login form and login button handlong.
  *
  * @package Hello_Login
  * @category  Login
  */
-class OpenID_Connect_Generic_Login_Form {
+class Hello_Login_Login_Form {
 
 	/**
 	 * Plugin settings object.
@@ -45,7 +45,7 @@ class OpenID_Connect_Generic_Login_Form {
 	}
 
 	/**
-	 * Create an instance of the OpenID_Connect_Generic_Login_Form class.
+	 * Create an instance of the Hello_Login_Login_Form class.
 	 *
 	 * @param OpenID_Connect_Generic_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
