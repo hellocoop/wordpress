@@ -92,7 +92,7 @@ class Hello_Login {
 	/**
 	 * Plugin settings.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Settings
+	 * @var Hello_Login_Option_Settings
 	 */
 	private $settings;
 
@@ -120,12 +120,12 @@ class Hello_Login {
 	/**
 	 * Setup the plugin
 	 *
-	 * @param OpenID_Connect_Generic_Option_Settings $settings The settings object.
+	 * @param Hello_Login_Option_Settings $settings The settings object.
 	 * @param Hello_Login_Option_Logger   $logger   The loggin object.
 	 *
 	 * @return void
 	 */
-	public function __construct( OpenID_Connect_Generic_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
+	public function __construct( Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
 		$this->settings = $settings;
 		$this->logger = $logger;
 		self::$_instance = $this;
@@ -330,7 +330,7 @@ class Hello_Login {
 		 */
 		spl_autoload_register( array( 'Hello_Login', 'autoload' ) );
 
-		$settings = new OpenID_Connect_Generic_Option_Settings(
+		$settings = new Hello_Login_Option_Settings(
 			'hello_login_settings',
 			// Default settings values.
 			array(

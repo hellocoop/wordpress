@@ -22,7 +22,7 @@ class Hello_Login_Login_Form {
 	/**
 	 * Plugin settings object.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Settings
+	 * @var Hello_Login_Option_Settings
 	 */
 	private $settings;
 
@@ -36,7 +36,7 @@ class Hello_Login_Login_Form {
 	/**
 	 * The class constructor.
 	 *
-	 * @param OpenID_Connect_Generic_Option_Settings $settings       A plugin settings object instance.
+	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 */
 	public function __construct( $settings, $client_wrapper ) {
@@ -47,7 +47,7 @@ class Hello_Login_Login_Form {
 	/**
 	 * Create an instance of the Hello_Login_Login_Form class.
 	 *
-	 * @param OpenID_Connect_Generic_Option_Settings $settings       A plugin settings object instance.
+	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 *
 	 * @return void

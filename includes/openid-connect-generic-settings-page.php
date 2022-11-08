@@ -22,7 +22,7 @@ class OpenID_Connect_Generic_Settings_Page {
 	/**
 	 * Local copy of the settings provided by the base plugin.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Settings
+	 * @var Hello_Login_Option_Settings
 	 */
 	private $settings;
 
@@ -58,10 +58,10 @@ class OpenID_Connect_Generic_Settings_Page {
 	/**
 	 * Settings page class constructor.
 	 *
-	 * @param OpenID_Connect_Generic_Option_Settings $settings The plugin settings object.
+	 * @param Hello_Login_Option_Settings $settings The plugin settings object.
 	 * @param Hello_Login_Option_Logger   $logger   The plugin logging class object.
 	 */
-	public function __construct( OpenID_Connect_Generic_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
+	public function __construct( Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
 
 		$this->settings             = $settings;
 		$this->logger               = $logger;
@@ -82,12 +82,12 @@ class OpenID_Connect_Generic_Settings_Page {
 	/**
 	 * Hook the settings page into WordPress.
 	 *
-	 * @param OpenID_Connect_Generic_Option_Settings $settings A plugin settings object instance.
+	 * @param Hello_Login_Option_Settings $settings A plugin settings object instance.
 	 * @param Hello_Login_Option_Logger   $logger   A plugin logger object instance.
 	 *
 	 * @return void
 	 */
-	public static function register( OpenID_Connect_Generic_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
+	public static function register( Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
 		$settings_page = new self( $settings, $logger );
 
 		// Add our options page the the admin menu.

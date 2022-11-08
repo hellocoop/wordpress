@@ -59,7 +59,7 @@
  * @property bool $enable_logging           The flag to enable/disable logging.
  * @property int  $log_limit                The maximum number of log entries to keep.
  */
-class OpenID_Connect_Generic_Option_Settings {
+class Hello_Login_Option_Settings {
 
 	/**
 	 * WordPress option name/key.

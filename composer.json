@@ -75,7 +75,7 @@
 		  	"includes/hello-login-client-wrapper.php",
 		  "includes/hello-login-login-form.php",
 		  "includes/hello-login-option-logger.php",
-			"includes/openid-connect-generic-option-settings.php",
+		  "includes/hello-login-option-settings.php",
 			"includes/openid-connect-generic-settings-page.php"
 		]
 	},

@@ -22,7 +22,7 @@ class Hello_Login_Client {
 	/**
 	 * The OIDC/oAuth client ID.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::client_id
+	 * @see Hello_Login_Option_Settings::client_id
 	 *
 	 * @var string
 	 */
@@ -31,7 +31,7 @@ class Hello_Login_Client {
 	/**
 	 * The OIDC/oAuth client secret.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::client_secret
+	 * @see Hello_Login_Option_Settings::client_secret
 	 *
 	 * @var string
 	 */
@@ -40,7 +40,7 @@ class Hello_Login_Client {
 	/**
 	 * The OIDC/oAuth scopes.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::scope
+	 * @see Hello_Login_Option_Settings::scope
 	 *
 	 * @var string
 	 */
@@ -49,7 +49,7 @@ class Hello_Login_Client {
 	/**
 	 * The OIDC/oAuth authorization endpoint URL.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::endpoint_login
+	 * @see Hello_Login_Option_Settings::endpoint_login
 	 *
 	 * @var string
 	 */
@@ -58,7 +58,7 @@ class Hello_Login_Client {
 	/**
 	 * The OIDC/oAuth User Information endpoint URL.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::endpoint_userinfo
+	 * @see Hello_Login_Option_Settings::endpoint_userinfo
 	 *
 	 * @var string
 	 */
@@ -67,7 +67,7 @@ class Hello_Login_Client {
 	/**
 	 * The OIDC/oAuth token validation endpoint URL.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::endpoint_token
+	 * @see Hello_Login_Option_Settings::endpoint_token
 	 *
 	 * @var string
 	 */
@@ -76,7 +76,7 @@ class Hello_Login_Client {
 	/**
 	 * The login flow "ajax" endpoint URI.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::redirect_uri
+	 * @see Hello_Login_Option_Settings::redirect_uri
 	 *
 	 * @var string
 	 */
@@ -85,7 +85,7 @@ class Hello_Login_Client {
 	/**
 	 * The specifically requested authentication contract at the IDP
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::acr_values
+	 * @see Hello_Login_Option_Settings::acr_values
 	 *
 	 * @var string
 	 */
@@ -94,7 +94,7 @@ class Hello_Login_Client {
 	/**
 	 * The state time limit. States are only valid for 3 minutes.
 	 *
-	 * @see OpenID_Connect_Generic_Option_Settings::state_time_limit
+	 * @see Hello_Login_Option_Settings::state_time_limit
 	 *
 	 * @var int
 	 */
@@ -110,15 +110,15 @@ class Hello_Login_Client {
 	/**
 	 * Client constructor.
 	 *
-	 * @param string                               $client_id         @see OpenID_Connect_Generic_Option_Settings::client_id for description.
-	 * @param string                               $client_secret     @see OpenID_Connect_Generic_Option_Settings::client_secret for description.
-	 * @param string                               $scope             @see OpenID_Connect_Generic_Option_Settings::scope for description.
-	 * @param string                               $endpoint_login    @see OpenID_Connect_Generic_Option_Settings::endpoint_login for description.
-	 * @param string                               $endpoint_userinfo @see OpenID_Connect_Generic_Option_Settings::endpoint_userinfo for description.
-	 * @param string                               $endpoint_token    @see OpenID_Connect_Generic_Option_Settings::endpoint_token for description.
-	 * @param string                               $redirect_uri      @see OpenID_Connect_Generic_Option_Settings::redirect_uri for description.
-	 * @param string                               $acr_values        @see OpenID_Connect_Generic_Option_Settings::acr_values for description.
-	 * @param int                                  $state_time_limit  @see OpenID_Connect_Generic_Option_Settings::state_time_limit for description.
+	 * @param string                               $client_id         @see Hello_Login_Option_Settings::client_id for description.
+	 * @param string                               $client_secret     @see Hello_Login_Option_Settings::client_secret for description.
+	 * @param string                               $scope             @see Hello_Login_Option_Settings::scope for description.
+	 * @param string                               $endpoint_login    @see Hello_Login_Option_Settings::endpoint_login for description.
+	 * @param string                               $endpoint_userinfo @see Hello_Login_Option_Settings::endpoint_userinfo for description.
+	 * @param string                               $endpoint_token    @see Hello_Login_Option_Settings::endpoint_token for description.
+	 * @param string                               $redirect_uri      @see Hello_Login_Option_Settings::redirect_uri for description.
+	 * @param string                               $acr_values        @see Hello_Login_Option_Settings::acr_values for description.
+	 * @param int                                  $state_time_limit  @see Hello_Login_Option_Settings::state_time_limit for description.
 	 * @param Hello_Login_Option_Logger $logger            The plugin logging object instance.
 	 */
 	public function __construct( $client_id, $client_secret, $scope, $endpoint_login, $endpoint_userinfo, $endpoint_token, $redirect_uri, $acr_values, $state_time_limit, $logger ) {
