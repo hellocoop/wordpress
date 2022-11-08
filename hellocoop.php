@@ -99,7 +99,7 @@ class Hello_Login {
 	/**
 	 * Plugin logs.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Logger
+	 * @var Hello_Login_Option_Logger
 	 */
 	private $logger;
 
@@ -121,11 +121,11 @@ class Hello_Login {
 	 * Setup the plugin
 	 *
 	 * @param OpenID_Connect_Generic_Option_Settings $settings The settings object.
-	 * @param OpenID_Connect_Generic_Option_Logger   $logger   The loggin object.
+	 * @param Hello_Login_Option_Logger   $logger   The loggin object.
 	 *
 	 * @return void
 	 */
-	public function __construct( OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
+	public function __construct( OpenID_Connect_Generic_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
 		$this->settings = $settings;
 		$this->logger = $logger;
 		self::$_instance = $this;
@@ -368,7 +368,7 @@ class Hello_Login {
 			)
 		);
 
-		$logger = new OpenID_Connect_Generic_Option_Logger( 'openid-connect-generic-logs', 'error', $settings->enable_logging, $settings->log_limit );
+		$logger = new Hello_Login_Option_Logger( 'openid-connect-generic-logs', 'error', $settings->enable_logging, $settings->log_limit );
 
 		$plugin = new self( $settings, $logger );
 

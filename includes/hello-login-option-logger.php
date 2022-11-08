@@ -10,14 +10,14 @@
  */
 
 /**
- * OpenID_Connect_Generic_Option_Logger class.
+ * Hello_Login_Option_Logger class.
  *
  * Simple class for logging messages to the options table.
  *
  * @package  Hello_Login
  * @category Logging
  */
-class OpenID_Connect_Generic_Option_Logger {
+class Hello_Login_Option_Logger {
 
 	/**
 	 * Thw WordPress option name/key.

@@ -103,7 +103,7 @@ class Hello_Login_Client {
 	/**
 	 * The logger object instance.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Logger
+	 * @var Hello_Login_Option_Logger
 	 */
 	private $logger;
 
@@ -119,7 +119,7 @@ class Hello_Login_Client {
 	 * @param string                               $redirect_uri      @see OpenID_Connect_Generic_Option_Settings::redirect_uri for description.
 	 * @param string                               $acr_values        @see OpenID_Connect_Generic_Option_Settings::acr_values for description.
 	 * @param int                                  $state_time_limit  @see OpenID_Connect_Generic_Option_Settings::state_time_limit for description.
-	 * @param OpenID_Connect_Generic_Option_Logger $logger            The plugin logging object instance.
+	 * @param Hello_Login_Option_Logger $logger            The plugin logging object instance.
 	 */
 	public function __construct( $client_id, $client_secret, $scope, $endpoint_login, $endpoint_userinfo, $endpoint_token, $redirect_uri, $acr_values, $state_time_limit, $logger ) {
 		$this->client_id = $client_id;

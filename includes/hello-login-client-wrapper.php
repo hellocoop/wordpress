@@ -38,7 +38,7 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * The logger object instance.
 	 *
-	 * @var OpenID_Connect_Generic_Option_Logger
+	 * @var Hello_Login_Option_Logger
 	 */
 	private $logger;
 
@@ -72,9 +72,9 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @param Hello_Login_Client          $client   A plugin client object instance.
 	 * @param OpenID_Connect_Generic_Option_Settings $settings A plugin settings object instance.
-	 * @param OpenID_Connect_Generic_Option_Logger   $logger   A plugin logger object instance.
+	 * @param Hello_Login_Option_Logger   $logger   A plugin logger object instance.
 	 */
-	public function __construct( Hello_Login_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
+	public function __construct( Hello_Login_Client $client, OpenID_Connect_Generic_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
 		$this->client = $client;
 		$this->settings = $settings;
 		$this->logger = $logger;
@@ -85,11 +85,11 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @param \Hello_Login_Client          $client   The plugin client instance.
 	 * @param \OpenID_Connect_Generic_Option_Settings $settings The plugin settings instance.
-	 * @param \OpenID_Connect_Generic_Option_Logger   $logger   The plugin logger instance.
+	 * @param \Hello_Login_Option_Logger   $logger   The plugin logger instance.
 	 *
 	 * @return \Hello_Login_Client_Wrapper
 	 */
-	public static function register( Hello_Login_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
+	public static function register( Hello_Login_Client $client, OpenID_Connect_Generic_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
 		$client_wrapper  = new self( $client, $settings, $logger );
 
 		// Integrated logout.
