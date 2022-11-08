@@ -61,8 +61,7 @@ Notes
   - hello-login-last-token-response - the user's most recent token response
 
   Options
-  - openid_connect_generic_settings     - plugin settings
-  - openid-connect-generic-valid-states - locally stored generated states
+  - hello_login_settings - plugin settings
 */
 
 
@@ -331,7 +330,7 @@ class OpenID_Connect_Generic {
 		spl_autoload_register( array( 'OpenID_Connect_Generic', 'autoload' ) );
 
 		$settings = new OpenID_Connect_Generic_Option_Settings(
-			'openid_connect_generic_settings',
+			'hello_login_settings',
 			// Default settings values.
 			array(
 				// OAuth client settings.

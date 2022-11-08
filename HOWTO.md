@@ -209,7 +209,7 @@ the `\OpenID_Connect_Generic_Option_Settings` object this plugin uses.
 
 **Note:** It can be difficult to get a copy of the settings from within other hooks. The easiest way to make use of 
 settings in your custom hooks is to call 
-`$settings = get_option('openid_connect_generic_settings', array());`.
+`$settings = get_option('hello_login_settings', array());`.
 
 Provides 1 argument: the existing fields array.
 
