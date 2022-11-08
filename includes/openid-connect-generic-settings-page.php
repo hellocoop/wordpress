@@ -489,6 +489,29 @@ class OpenID_Connect_Generic_Settings_Page {
 				<code>[openid_connect_generic_auth_url]</code>
 			</p>
 
+			<h4><?php esc_html_e( 'Config', 'daggerhart-openid-connect-generic' ); ?></h4>
+
+			<p class="description">
+				<strong><?php esc_html_e( 'Client ID', 'daggerhart-openid-connect-generic' ); ?></strong>
+				<code><?php print esc_html_e( $this->settings->client_id ); ?></code>
+			</p>
+			<p class="description">
+				<strong><?php esc_html_e( 'Client Secret Length', 'daggerhart-openid-connect-generic' ); ?></strong>
+				<code><?php print strlen( $this->settings->client_secret ); ?></code>
+			</p>
+			<p class="description">
+				<strong><?php esc_html_e( 'Authorization Endpoint', 'daggerhart-openid-connect-generic' ); ?></strong>
+				<code><?php print esc_url( $this->settings->endpoint_login ); ?></code>
+			</p>
+			<p class="description">
+				<strong><?php esc_html_e( 'Token Endpoint', 'daggerhart-openid-connect-generic' ); ?></strong>
+				<code><?php print esc_url( $this->settings->endpoint_token ); ?></code>
+			</p>
+			<p class="description">
+				<strong><?php esc_html_e( 'User Info Endpoint', 'daggerhart-openid-connect-generic' ); ?></strong>
+				<code><?php print esc_url( $this->settings->endpoint_userinfo ); ?></code>
+			</p>
+
 			<?php if ( $this->settings->enable_logging ) { ?>
 				<h2><?php esc_html_e( 'Logs', 'daggerhart-openid-connect-generic' ); ?></h2>
 				<div id="logger-table-wrapper">
