@@ -29,7 +29,7 @@ class OpenID_Connect_Generic_Login_Form {
 	/**
 	 * Plugin client wrapper instance.
 	 *
-	 * @var OpenID_Connect_Generic_Client_Wrapper
+	 * @var Hello_Login_Client_Wrapper
 	 */
 	private $client_wrapper;
 
@@ -37,7 +37,7 @@ class OpenID_Connect_Generic_Login_Form {
 	 * The class constructor.
 	 *
 	 * @param OpenID_Connect_Generic_Option_Settings $settings       A plugin settings object instance.
-	 * @param OpenID_Connect_Generic_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
+	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 */
 	public function __construct( $settings, $client_wrapper ) {
 		$this->settings = $settings;
@@ -48,7 +48,7 @@ class OpenID_Connect_Generic_Login_Form {
 	 * Create an instance of the OpenID_Connect_Generic_Login_Form class.
 	 *
 	 * @param OpenID_Connect_Generic_Option_Settings $settings       A plugin settings object instance.
-	 * @param OpenID_Connect_Generic_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
+	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 *
 	 * @return void
 	 */

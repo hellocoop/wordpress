@@ -113,7 +113,7 @@ class Hello_Login {
 	/**
 	 * Client wrapper.
 	 *
-	 * @var OpenID_Connect_Generic_Client_Wrapper
+	 * @var Hello_Login_Client_Wrapper
 	 */
 	public $client_wrapper;
 
@@ -162,7 +162,7 @@ class Hello_Login {
 			$this->logger
 		);
 
-		$this->client_wrapper = OpenID_Connect_Generic_Client_Wrapper::register( $this->client, $this->settings, $this->logger );
+		$this->client_wrapper = Hello_Login_Client_Wrapper::register( $this->client, $this->settings, $this->logger );
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			return;
 		}
@@ -294,10 +294,11 @@ class Hello_Login {
 	 * @return void
 	 */
 	public static function autoload( $class ) {
-		$prefix = 'OpenID_Connect_Generic_';
+		$prefix = 'Hello_Login_';
 
 		if ( stripos( $class, $prefix ) !== 0 ) {
-			return;
+			// TODO: re-enable the return below after all includes have been renamed
+			//return;
 		}
 
 		$filename = $class . '.php';

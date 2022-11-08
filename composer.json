@@ -70,9 +70,9 @@
 	},
 	"autoload": {
 		"classmap": [
-			"openid-connect-generic.php",
+			"hellocoop.php.php",
 			"includes/openid-connect-generic-client.php",
-			"includes/openid-connect-generic-client-wrapper.php",
+		  	"includes/hello-login-client-wrapper.php",
 			"includes/openid-connect-generic-login-form.php",
 			"includes/openid-connect-generic-option-logger.php",
 			"includes/openid-connect-generic-option-settings.php",

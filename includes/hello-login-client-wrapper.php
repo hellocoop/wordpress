@@ -12,14 +12,14 @@
 use \WP_Error as WP_Error;
 
 /**
- * OpenID_Connect_Generic_Client_Wrapper class.
+ * Hello_Login_Client_Wrapper class.
  *
  * Plugin OIDC/oAuth client wrapper class.
  *
  * @package  Hello_Login
  * @category Authentication
  */
-class OpenID_Connect_Generic_Client_Wrapper {
+class Hello_Login_Client_Wrapper {
 
 	/**
 	 * The client object instance.
@@ -87,7 +87,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 * @param \OpenID_Connect_Generic_Option_Settings $settings The plugin settings instance.
 	 * @param \OpenID_Connect_Generic_Option_Logger   $logger   The plugin logger instance.
 	 *
-	 * @return \OpenID_Connect_Generic_Client_Wrapper
+	 * @return \Hello_Login_Client_Wrapper
 	 */
 	public static function register( OpenID_Connect_Generic_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
 		$client_wrapper  = new self( $client, $settings, $logger );
