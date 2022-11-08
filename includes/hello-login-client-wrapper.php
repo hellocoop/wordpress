@@ -24,7 +24,7 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * The client object instance.
 	 *
-	 * @var OpenID_Connect_Generic_Client
+	 * @var Hello_Login_Client
 	 */
 	private $client;
 
@@ -70,11 +70,11 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Inject necessary objects and services into the client.
 	 *
-	 * @param OpenID_Connect_Generic_Client          $client   A plugin client object instance.
+	 * @param Hello_Login_Client          $client   A plugin client object instance.
 	 * @param OpenID_Connect_Generic_Option_Settings $settings A plugin settings object instance.
 	 * @param OpenID_Connect_Generic_Option_Logger   $logger   A plugin logger object instance.
 	 */
-	public function __construct( OpenID_Connect_Generic_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
+	public function __construct( Hello_Login_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
 		$this->client = $client;
 		$this->settings = $settings;
 		$this->logger = $logger;
@@ -83,13 +83,13 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Hook the client into WordPress.
 	 *
-	 * @param \OpenID_Connect_Generic_Client          $client   The plugin client instance.
+	 * @param \Hello_Login_Client          $client   The plugin client instance.
 	 * @param \OpenID_Connect_Generic_Option_Settings $settings The plugin settings instance.
 	 * @param \OpenID_Connect_Generic_Option_Logger   $logger   The plugin logger instance.
 	 *
 	 * @return \Hello_Login_Client_Wrapper
 	 */
-	public static function register( OpenID_Connect_Generic_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
+	public static function register( Hello_Login_Client $client, OpenID_Connect_Generic_Option_Settings $settings, OpenID_Connect_Generic_Option_Logger $logger ) {
 		$client_wrapper  = new self( $client, $settings, $logger );
 
 		// Integrated logout.

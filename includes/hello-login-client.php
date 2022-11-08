@@ -10,14 +10,14 @@
  */
 
 /**
- * OpenID_Connect_Generic_Client class.
+ * Hello_Login_Client class.
  *
  * Plugin OIDC/oAuth client class.
  *
  * @package  Hello_Login
  * @category Authentication
  */
-class OpenID_Connect_Generic_Client {
+class Hello_Login_Client {
 
 	/**
 	 * The OIDC/oAuth client ID.

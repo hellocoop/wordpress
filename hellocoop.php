@@ -106,7 +106,7 @@ class Hello_Login {
 	/**
 	 * Openid Connect Generic client
 	 *
-	 * @var OpenID_Connect_Generic_Client
+	 * @var Hello_Login_Client
 	 */
 	private $client;
 
@@ -149,7 +149,7 @@ class Hello_Login {
 			$state_time_limit = intval( $this->settings->state_time_limit );
 		}
 
-		$this->client = new OpenID_Connect_Generic_Client(
+		$this->client = new Hello_Login_Client(
 			$this->settings->client_id,
 			$this->settings->client_secret,
 			$this->settings->scope,
