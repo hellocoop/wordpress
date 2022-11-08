@@ -411,7 +411,7 @@ class OpenID_Connect_Generic_Settings_Page {
 			),
 		);
 
-		return apply_filters( 'openid-connect-generic-settings-fields', $fields );
+		return apply_filters( 'hello-login-settings-fields', $fields );
 
 	}
 

@@ -228,7 +228,7 @@ class OpenID_Connect_Generic_Client {
 		}
 
 		// Allow modifications to the request.
-		$request = apply_filters( 'openid-connect-generic-alter-request', $request, 'get-authentication-token' );
+		$request = apply_filters( 'hello-login-alter-request', $request, 'get-authentication-token' );
 
 		// Call the server and ask for a token.
 		$this->logger->log( $this->endpoint_token, 'request_authentication_token' );
@@ -259,7 +259,7 @@ class OpenID_Connect_Generic_Client {
 		);
 
 		// Allow modifications to the request.
-		$request = apply_filters( 'openid-connect-generic-alter-request', $request, 'refresh-token' );
+		$request = apply_filters( 'hello-login-alter-request', $request, 'refresh-token' );
 
 		// Call the server and ask for new tokens.
 		$this->logger->log( $this->endpoint_token, 'request_new_tokens' );
@@ -313,7 +313,7 @@ class OpenID_Connect_Generic_Client {
 	 */
 	public function request_userinfo( $access_token ) {
 		// Allow modifications to the request.
-		$request = apply_filters( 'openid-connect-generic-alter-request', array(), 'get-userinfo' );
+		$request = apply_filters( 'hello-login-alter-request', array(), 'get-userinfo' );
 
 		/*
 		 * Section 5.3.1 of the spec recommends sending the access token using the authorization header
@@ -542,7 +542,7 @@ class OpenID_Connect_Generic_Client {
 		}
 
 		// Allow for other plugins to alter the login success.
-		$login_user = apply_filters( 'openid-connect-generic-user-login-test', true, $user_claim );
+		$login_user = apply_filters( 'hello-login-user-login-test', true, $user_claim );
 
 		if ( ! $login_user ) {
 			return new WP_Error( 'unauthorized', __( 'Unauthorized access.', 'daggerhart-openid-connect-generic' ), $login_user );

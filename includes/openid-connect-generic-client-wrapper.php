@@ -99,7 +99,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		}
 
 		// Alter the requests according to settings.
-		add_filter( 'openid-connect-generic-alter-request', array( $client_wrapper, 'alter_request' ), 10, 3 );
+		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 3 );
 
 		if ( is_admin() ) {
 			/*
@@ -124,7 +124,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 
 		// Modify authentication-token request to include PKCE code verifier.
 		if ( true === (bool) $settings->enable_pkce ) {
-			add_filter( 'openid-connect-generic-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 3 );
+			add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 3 );
 		}
 
 		return $client_wrapper;
@@ -188,16 +188,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			}
 		}
 
-		// This hook is being deprecated with the move away from cookies.
-		$redirect_url = apply_filters_deprecated(
-			'openid-connect-generic-cookie-redirect-url',
-			array( $redirect_url ),
-			'3.8.2',
-			'openid-connect-generic-client-redirect-to'
-		);
-
-		// This is the new hook to use with the transients version of redirection.
-		return apply_filters( 'openid-connect-generic-client-redirect-to', $redirect_url );
+		return $redirect_url;
 	}
 
 	/**
@@ -257,8 +248,8 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			rawurlencode( $pkce_data['code_challenge_method'] ?? '' )
 		);
 
-		$this->logger->log( apply_filters( 'openid-connect-generic-auth-url', $url ), 'make_authentication_url' );
-		return apply_filters( 'openid-connect-generic-auth-url', $url );
+		$this->logger->log( apply_filters( 'hello-login-auth-url', $url ), 'make_authentication_url' );
+		return apply_filters( 'hello-login-auth-url', $url );
 	}
 
 	/**
@@ -502,7 +493,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$token_response = $client->get_token_response( $token_result );
 
 		// Allow for other plugins to alter data before validation.
-		$token_response = apply_filters( 'openid-connect-modify-token-response-before-validation', $token_response );
+		$token_response = apply_filters( 'hello-login-modify-token-response-before-validation', $token_response );
 
 		if ( is_wp_error( $token_response ) ) {
 			$this->error_redirect( $token_response );
@@ -523,7 +514,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$id_token_claim = $client->get_id_token_claim( $token_response );
 
 		// Allow for other plugins to alter data before validation.
-		$id_token_claim = apply_filters( 'openid-connect-modify-id-token-claim-before-validation', $id_token_claim );
+		$id_token_claim = apply_filters( 'hello-login-modify-id-token-claim-before-validation', $id_token_claim );
 
 		if ( is_wp_error( $id_token_claim ) ) {
 			$this->error_redirect( $id_token_claim );
@@ -650,7 +641,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$id_token_claim = $client->get_id_token_claim( $token_response );
 
 		// Allow for other plugins to alter data before validation.
-		$id_token_claim = apply_filters( 'openid-connect-modify-id-token-claim-before-validation', $id_token_claim );
+		$id_token_claim = apply_filters( 'hello-login-modify-id-token-claim-before-validation', $id_token_claim );
 
 		if ( is_wp_error( $id_token_claim ) ) {
 			return $id_token_claim;
@@ -998,8 +989,6 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 * @return \WP_Error | \WP_User
 	 */
 	public function create_new_user( $subject_identity, $user_claim ) {
-		$user_claim = apply_filters( 'openid-connect-generic-alter-user-claim', $user_claim );
-
 		// Default username & email to the subject identity.
 		$username       = $subject_identity;
 		$email          = $subject_identity;
@@ -1103,7 +1092,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		 * Allow other plugins / themes to determine authorization of new accounts
 		 * based on the returned user claim.
 		 */
-		$create_user = apply_filters( 'openid-connect-generic-user-creation-test', $this->settings->create_if_does_not_exist, $user_claim );
+		$create_user = apply_filters( 'hello-login-user-creation-test', $this->settings->create_if_does_not_exist, $user_claim );
 
 		if ( ! $create_user ) {
 			return new WP_Error( 'cannot-authorize', __( 'Can not authorize.', 'daggerhart-openid-connect-generic' ), $create_user );
@@ -1128,7 +1117,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			'first_name' => isset( $user_claim['given_name'] ) ? $user_claim['given_name'] : '',
 			'last_name' => isset( $user_claim['family_name'] ) ? $user_claim['family_name'] : '',
 		);
-		$user_data = apply_filters( 'openid-connect-generic-alter-user-data', $user_data, $user_claim );
+		$user_data = apply_filters( 'hello-login-alter-user-data', $user_data, $user_claim );
 
 		// Create the new user.
 		$uid = wp_insert_user( $user_data );
