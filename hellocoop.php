@@ -178,7 +178,7 @@ class Hello_Login {
 		$this->upgrade();
 
 		if ( is_admin() ) {
-			OpenID_Connect_Generic_Settings_Page::register( $this->settings, $this->logger );
+			Hello_Login_Settings_Page::register( $this->settings, $this->logger );
 		}
 	}
 
@@ -297,8 +297,7 @@ class Hello_Login {
 		$prefix = 'Hello_Login_';
 
 		if ( stripos( $class, $prefix ) !== 0 ) {
-			// TODO: re-enable the return below after all includes have been renamed
-			//return;
+			return;
 		}
 
 		$filename = $class . '.php';

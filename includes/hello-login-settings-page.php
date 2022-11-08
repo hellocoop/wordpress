@@ -10,14 +10,14 @@
  */
 
 /**
- * OpenID_Connect_Generic_Settings_Page class.
+ * Hello_Login_Settings_Page class.
  *
  * Admin settings page.
  *
  * @package Hello_Login
  * @category  Settings
  */
-class OpenID_Connect_Generic_Settings_Page {
+class Hello_Login_Settings_Page {
 
 	/**
 	 * Local copy of the settings provided by the base plugin.
