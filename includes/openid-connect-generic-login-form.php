@@ -130,22 +130,32 @@ class OpenID_Connect_Generic_Login_Form {
 	/**
 	 * Create a login button (link).
 	 *
-	 * @param array $atts Array of optional attributes to override login buton
+	 * @param array $atts Array of optional attributes to override login button
 	 * functionality when used by shortcode.
 	 *
 	 * @return string
 	 */
 	public function make_login_button( $atts = array() ) {
 
+		$atts = shortcode_atts(
+				array(
+						'button_text' => __( 'Login with OpenID Connect', 'daggerhart-openid-connect-generic' ),
+				),
+				$atts,
+				'openid_connect_generic_login_button'
+		);
+
+		$href = $this->client_wrapper->get_authentication_url( $atts );
+		$href = esc_url_raw( $href );
+
 		$login_button = <<<HTML
-<div class="hello-container">
-  <button class="hello-btn"></button>
+<div class="hello-container" style="display: block; text-align: center;">
+  <button class="hello-btn" onclick="window.location.href = '{$href}'"></button>
   <button class="hello-about"></button>
 </div>
 HTML;
 
 		return $login_button;
-
 	}
 
 	/**
