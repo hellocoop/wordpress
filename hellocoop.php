@@ -19,9 +19,9 @@
  * Version:           1.0.0
  * Requires at least: 4.9
  * Requires PHP:      7.2
- * Author:            mariuss
- * Author URI:        http://www.hello.dev
- * Text Domain:       hellocoop
+ * Author:            hellocoop
+ * Author URI:        http://www.hello.coop
+ * Text Domain:       hello-login
  * Domain Path:       /languages
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
