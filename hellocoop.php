@@ -46,14 +46,14 @@ Notes
   - openid-connect-modify-id-token-claim-before-validation - modify the token claim before validation
 
   Actions
-  - openid-connect-generic-user-create                     - 2 args: fires when a new user is created by this plugin
-  - openid-connect-generic-user-update                     - 1 arg: user ID, fires when user is updated by this plugin
-  - openid-connect-generic-update-user-using-current-claim - 2 args: fires every time an existing user logs in and the claims are updated.
-  - openid-connect-generic-redirect-user-back              - 2 args: $redirect_url, $user. Allows interruption of redirect during login.
-  - openid-connect-generic-user-logged-in                  - 1 arg: $user, fires when user is logged in.
-  - openid-connect-generic-cron-daily                      - daily cron action
-  - openid-connect-generic-state-not-found                 - the given state does not exist in the database, regardless of its expiration.
-  - openid-connect-generic-state-expired                   - the given state exists, but expired before this login attempt.
+  - hello-login-user-create                     - 2 args: fires when a new user is created by this plugin
+  - hello-login-user-update                     - 1 arg: user ID, fires when user is updated by this plugin
+  - hello-login-update-user-using-current-claim - 2 args: fires every time an existing user logs in and the claims are updated.
+  - hello-login-redirect-user-back              - 2 args: $redirect_url, $user. Allows interruption of redirect during login.
+  - hello-login-user-logged-in                  - 1 arg: $user, fires when user is logged in.
+  - hello-login-cron-daily                      - daily cron action
+  - hello-login-state-not-found                 - the given state does not exist in the database, regardless of its expiration.
+  - hello-login-state-expired                   - the given state exists, but expired before this login attempt.
 
   Callable actions
 
@@ -177,7 +177,7 @@ class OpenID_Connect_Generic {
 		add_shortcode( 'hello_login_auth_url', array( $this->client_wrapper, 'get_authentication_url' ) );
 
 		// Add actions to our scheduled cron jobs.
-		add_action( 'openid-connect-generic-cron-daily', array( $this, 'cron_states_garbage_collection' ) );
+		add_action( 'hello-login-cron-daily', array( $this, 'cron_states_garbage_collection' ) );
 
 		$this->upgrade();
 
@@ -267,8 +267,8 @@ class OpenID_Connect_Generic {
 	 * @return void
 	 */
 	public static function setup_cron_jobs() {
-		if ( ! wp_next_scheduled( 'openid-connect-generic-cron-daily' ) ) {
-			wp_schedule_event( time(), 'daily', 'openid-connect-generic-cron-daily' );
+		if ( ! wp_next_scheduled( 'hello-login-cron-daily' ) ) {
+			wp_schedule_event( time(), 'daily', 'hello-login-cron-daily' );
 		}
 	}
 
@@ -287,7 +287,7 @@ class OpenID_Connect_Generic {
 	 * @return void
 	 */
 	public static function deactivation() {
-		wp_clear_scheduled_hook( 'openid-connect-generic-cron-daily' );
+		wp_clear_scheduled_hook( 'hello-login-cron-daily' );
 	}
 
 	/**

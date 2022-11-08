@@ -33,10 +33,10 @@ Much of the documentation can be found on the Settings > OpenID Connect Generic 
         - [openid-connect-generic-alter-user-data](#openid-connect-generic-alter-user-data)
         - [openid-connect-generic-settings-fields](#openid-connect-generic-settings-fields)
     - [Actions](#actions)
-        - [openid-connect-generic-user-create](#openid-connect-generic-user-create)
-        - [openid-connect-generic-user-update](#openid-connect-generic-user-update)
-        - [openid-connect-generic-update-user-using-current-claim](#openid-connect-generic-update-user-using-current-claim)
-        - [openid-connect-generic-redirect-user-back](#openid-connect-generic-redirect-user-back)
+        - [hello-login-user-create](#hello-login-user-create)
+        - [hello-login-user-update](#hello-login-user-update)
+        - [hello-login-update-user-using-current-claim](#hello-login-update-user-using-current-claim)
+        - [hello-login-redirect-user-back](#hello-login-redirect-user-back)
 
 
 ## Installation
@@ -305,14 +305,14 @@ Actions API: [`add_action`](https://developer.wordpress.org/reference/functions/
 
 You'll probably only ever want to use `add_action` when hooking into this plugin.
 
-#### `openid-connect-generic-user-create`
+#### `hello-login-user-create`
 
 React to a new user being created by this plugin.
 
 Provides 2 arguments: the `\WP_User` object that was created, and the `$user_claim` from the IDP server.
 
 ``` 
-add_action('openid-connect-generic-user-create', function( $user, $user_claim ) {
+add_action('hello-login-user-create', function( $user, $user_claim ) {
     // Send the user an email when their account is first created.
     wp_mail( 
         $user->user_email,
@@ -322,7 +322,7 @@ add_action('openid-connect-generic-user-create', function( $user, $user_claim ) 
 }, 10, 2);
 ``` 
 
-#### `openid-connect-generic-user-update`
+#### `hello-login-user-update`
 
 React to the user being updated after login. This is the event that happens when a user logins and they already exist as 
 a user in WordPress, as opposed to a new WordPress user being created.
@@ -330,7 +330,7 @@ a user in WordPress, as opposed to a new WordPress user being created.
 Provides 1 argument: the user's WordPress user ID.
 
 ``` 
-add_action('openid-connect-generic-user-update', function( $uid ) {
+add_action('hello-login-user-update', function( $uid ) {
     // Keep track of the number of times the user has logged into the site.
     $login_count = get_user_meta( $uid, 'my-user-login-count', TRUE);
     $login_count += 1;
@@ -338,14 +338,14 @@ add_action('openid-connect-generic-user-update', function( $uid ) {
 });
 ```
 
-#### `openid-connect-generic-update-user-using-current-claim`
+#### `hello-login-update-user-using-current-claim`
 
 React to an existing user logging in (after authentication and authorization).
 
 Provides 2 arguments: the `WP_User` object, and the `$user_claim` provided by the IDP server.
 
 ```
-add_action('openid-connect-generic-update-user-using-current-claim', function( $user, $user_claim) {
+add_action('hello-login-update-user-using-current-claim', function( $user, $user_claim) {
     // Based on some data in the user_claim, modify the user.
     if ( !empty( $user_claim['wp_user_role'] ) ) {
         if ( $user_claim['wp_user_role'] == 'should-be-editor' ) {
@@ -355,16 +355,16 @@ add_action('openid-connect-generic-update-user-using-current-claim', function( $
 }, 10, 2); 
 ```
 
-#### `openid-connect-generic-redirect-user-back`
+#### `hello-login-redirect-user-back`
 
 React to a user being redirected after a successful login. This hook is the last hook that will fire when a user logs 
-in. It will only fire if the plugin setting "Redirect Back to Origin Page" is enabled at Dashboard > Settings > 
-OpenID Connect Generic. It will fire for both new and existing users.
+in. It will only fire if the plugin setting "Redirect Back to Origin Page" is enabled at Dashboard > Settings >
+Hellō Login. It will fire for both new and existing users.
 
 Provides 2 arguments: the url where the user will be redirected, and the `WP_User` object.
 
 ```
-add_action('openid-connect-generic-redirect-user-back', function( $redirect_url, $user ) {
+add_action('hello-login-redirect-user-back', function( $redirect_url, $user ) {
     // Take over the redirection complete. Send users somewhere special based on their capabilities.
     if ( $user->has_cap( 'edit_users' ) ) {
         wp_redirect( admin_url( 'users.php' ) );

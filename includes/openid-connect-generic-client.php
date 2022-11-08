@@ -380,14 +380,14 @@ class OpenID_Connect_Generic_Client {
 		$state_found = true;
 
 		if ( ! get_option( '_transient_openid-connect-generic-state--' . $state ) ) {
-			do_action( 'openid-connect-generic-state-not-found', $state );
+			do_action( 'hello-login-state-not-found', $state );
 			$state_found = false;
 		}
 
 		$valid = get_transient( 'openid-connect-generic-state--' . $state );
 
 		if ( ! $valid && $state_found ) {
-			do_action( 'openid-connect-generic-state-expired', $state );
+			do_action( 'hello-login-state-expired', $state );
 		}
 
 		return boolval( $valid );

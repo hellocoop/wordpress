@@ -586,7 +586,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$this->login_user( $user, $token_response, $id_token_claim, $user_claim, $subject_identity );
 
 		// Allow plugins / themes to take action once a user is logged in.
-		do_action( 'openid-connect-generic-user-logged-in', $user );
+		do_action( 'hello-login-user-logged-in', $user );
 
 		// Log our success.
 		$this->logger->log( "Successful login for: {$user->user_login} ({$user->ID})", 'login-success' );
@@ -607,7 +607,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 
 		// Only do redirect-user-back action hook when the plugin is configured for it.
 		if ( $this->settings->redirect_user_back ) {
-			do_action( 'openid-connect-generic-redirect-user-back', $redirect_url, $user );
+			do_action( 'hello-login-redirect-user-back', $redirect_url, $user );
 		}
 
 		wp_redirect( $redirect_url );
@@ -707,7 +707,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		update_user_meta( $user->ID, 'openid-connect-generic-last-id-token-claim', $id_token_claim );
 		update_user_meta( $user->ID, 'openid-connect-generic-last-user-claim', $user_claim );
 		// Allow plugins / themes to take action using current claims on existing user (e.g. update role).
-		do_action( 'openid-connect-generic-update-user-using-current-claim', $user, $user_claim );
+		do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
 
 		// Create the WP session, so we know its token.
 		$expiration = time() + apply_filters( 'auth_cookie_expiration', 2 * DAY_IN_SECONDS, $user->ID, false );
@@ -1094,7 +1094,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			}
 			if ( ! empty( $uid ) ) {
 				$user = $this->update_existing_user( $uid, $subject_identity );
-				do_action( 'openid-connect-generic-update-user-using-current-claim', $user, $user_claim );
+				do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
 				return $user;
 			}
 		}
@@ -1148,7 +1148,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$this->logger->log( "New user created: {$user->user_login} ($uid)", 'success' );
 
 		// Allow plugins / themes to take action on new user creation.
-		do_action( 'openid-connect-generic-user-create', $user, $user_claim );
+		do_action( 'hello-login-user-create', $user, $user_claim );
 
 		return $user;
 	}
@@ -1166,7 +1166,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		update_user_meta( $uid, 'openid-connect-generic-subject-identity', strval( $subject_identity ) );
 
 		// Allow plugins / themes to take action on user update.
-		do_action( 'openid-connect-generic-user-update', $uid );
+		do_action( 'hello-login-user-update', $uid );
 
 		// Return our updated user.
 		return get_user_by( 'id', $uid );
