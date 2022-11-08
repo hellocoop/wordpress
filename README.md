@@ -29,7 +29,7 @@ Please submit issues and feature requests to the Github repo: [https://github.co
 1. Upload to the `/wp-content/plugins/` directory
 1. Activate the plugin in `Plugins`
 1. In `Settings` > `Hellō Login` click the `Quickstart` button and complete Quickstart flow
-1. Add the `[hello_login]` shortcode to pages for the Hellō login button
+1. Add the `[hello_login_button]` shortcode to pages for the Hellō login button
 
 ## Frequently Asked Questions ##
 

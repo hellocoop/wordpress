@@ -174,7 +174,7 @@ class OpenID_Connect_Generic {
 		OpenID_Connect_Generic_Login_Form::register( $this->settings, $this->client_wrapper );
 
 		// Add a shortcode to get the auth URL.
-		add_shortcode( 'openid_connect_generic_auth_url', array( $this->client_wrapper, 'get_authentication_url' ) );
+		add_shortcode( 'hello_login_auth_url', array( $this->client_wrapper, 'get_authentication_url' ) );
 
 		// Add actions to our scheduled cron jobs.
 		add_action( 'openid-connect-generic-cron-daily', array( $this, 'cron_states_garbage_collection' ) );

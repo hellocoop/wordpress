@@ -219,7 +219,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 				'acr_values' => $this->settings->acr_values,
 			),
 			$atts,
-			'openid_connect_generic_auth_url'
+			'hello_login_auth_url'
 		);
 
 		// Validate the redirect to value to prevent a redirection attack.

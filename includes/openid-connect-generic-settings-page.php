@@ -486,11 +486,11 @@ class OpenID_Connect_Generic_Settings_Page {
 			</p>
 			<p class="description">
 				<strong><?php esc_html_e( 'Login Button Shortcode', 'daggerhart-openid-connect-generic' ); ?></strong>
-				<code>[openid_connect_generic_login_button]</code>
+				<code>[hello_login_button]</code>
 			</p>
 			<p class="description">
 				<strong><?php esc_html_e( 'Authentication URL Shortcode', 'daggerhart-openid-connect-generic' ); ?></strong>
-				<code>[openid_connect_generic_auth_url]</code>
+				<code>[hello_login_auth_url]</code>
 			</p>
 
 			<h4><?php esc_html_e( 'Config', 'daggerhart-openid-connect-generic' ); ?></h4>

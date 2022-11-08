@@ -59,7 +59,7 @@ class OpenID_Connect_Generic_Login_Form {
 		add_filter( 'login_message', array( $login_form, 'handle_login_page' ), 99 );
 
 		// Add a shortcode for the login button.
-		add_shortcode( 'openid_connect_generic_login_button', array( $login_form, 'make_login_button' ) );
+		add_shortcode( 'hello_login_button', array( $login_form, 'make_login_button' ) );
 
 		$login_form->handle_redirect_login_type_auto();
 	}
@@ -139,10 +139,10 @@ class OpenID_Connect_Generic_Login_Form {
 
 		$atts = shortcode_atts(
 				array(
-						'button_text' => __( 'Login with OpenID Connect', 'daggerhart-openid-connect-generic' ),
+						'button_text' => __( 'ō   Continue with Hellō', 'daggerhart-openid-connect-generic' ),
 				),
 				$atts,
-				'openid_connect_generic_login_button'
+				'hello_login_button'
 		);
 
 		$href = $this->client_wrapper->get_authentication_url( $atts );
