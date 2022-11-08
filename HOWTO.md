@@ -41,7 +41,7 @@ Much of the documentation can be found on the Settings > OpenID Connect Generic 
 
 1. Upload to the `/wp-content/plugins/` directory
 1. Activate the plugin
-1. Visit Settings > OpenID Connect and configure to meet your needs
+1. Visit Settings > Hellō Login and configure to meet your needs
 
 ### Composer
 

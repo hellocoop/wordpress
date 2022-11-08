@@ -2,7 +2,7 @@
 /**
  * WordPress options handling class.
  *
- * @package   OpenID_Connect_Generic
+ * @package   Hello_Login
  * @category  Settings
  * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
  * @copyright 2015-2020 daggerhart
@@ -14,7 +14,7 @@
  *
  * WordPress options handling.
  *
- * @package OpenID_Connect_Generic
+ * @package Hello_Login
  * @category  Settings
  *
  * Legacy Settings:

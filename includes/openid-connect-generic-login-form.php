@@ -2,7 +2,7 @@
 /**
  * Login form and login button handlong class.
  *
- * @package   OpenID_Connect_Generic
+ * @package   Hello_Login
  * @category  Login
  * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
  * @copyright 2015-2020 daggerhart
@@ -14,7 +14,7 @@
  *
  * Login form and login button handlong.
  *
- * @package OpenID_Connect_Generic
+ * @package Hello_Login
  * @category  Login
  */
 class OpenID_Connect_Generic_Login_Form {

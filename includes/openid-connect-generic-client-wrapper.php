@@ -2,7 +2,7 @@
 /**
  * Plugin OIDC/oAuth client warpper class.
  *
- * @package   OpenID_Connect_Generic
+ * @package   Hello_Login
  * @category  Authentication
  * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
  * @copyright 2015-2020 daggerhart
@@ -16,7 +16,7 @@ use \WP_Error as WP_Error;
  *
  * Plugin OIDC/oAuth client wrapper class.
  *
- * @package  OpenID_Connect_Generic
+ * @package  Hello_Login
  * @category Authentication
  */
 class OpenID_Connect_Generic_Client_Wrapper {

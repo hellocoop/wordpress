@@ -66,19 +66,19 @@ Notes
 
 
 /**
- * OpenID_Connect_Generic class.
+ * Hello_Login class.
  *
  * Defines plugin initialization functionality.
  *
- * @package OpenID_Connect_Generic
+ * @package Hello_Login
  * @category  General
  */
-class OpenID_Connect_Generic {
+class Hello_Login {
 
 	/**
 	 * Singleton instance of self
 	 *
-	 * @var OpenID_Connect_Generic
+	 * @var Hello_Login
 	 */
 	protected static $_instance = null;
 
@@ -327,7 +327,7 @@ class OpenID_Connect_Generic {
 		 *
 		 * @link https://www.php.net/manual/en/function.spl-autoload-register.php#71155
 		 */
-		spl_autoload_register( array( 'OpenID_Connect_Generic', 'autoload' ) );
+		spl_autoload_register( array( 'Hello_Login', 'autoload' ) );
 
 		$settings = new OpenID_Connect_Generic_Option_Settings(
 			'hello_login_settings',
@@ -383,7 +383,7 @@ class OpenID_Connect_Generic {
 	/**
 	 * Create (if needed) and return a singleton of self.
 	 *
-	 * @return OpenID_Connect_Generic
+	 * @return Hello_Login
 	 */
 	public static function instance() {
 		if ( null === self::$_instance ) {
@@ -393,10 +393,10 @@ class OpenID_Connect_Generic {
 	}
 }
 
-OpenID_Connect_Generic::instance();
+Hello_Login::instance();
 
-register_activation_hook( __FILE__, array( 'OpenID_Connect_Generic', 'activation' ) );
-register_deactivation_hook( __FILE__, array( 'OpenID_Connect_Generic', 'deactivation' ) );
+register_activation_hook( __FILE__, array( 'Hello_Login', 'activation' ) );
+register_deactivation_hook( __FILE__, array( 'Hello_Login', 'deactivation' ) );
 
 // Provide publicly accessible plugin helper functions.
 require_once( 'includes/functions.php' );

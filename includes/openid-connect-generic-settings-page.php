@@ -2,7 +2,7 @@
 /**
  * Plugin Admin settings page class.
  *
- * @package   OpenID_Connect_Generic
+ * @package   Hello_Login
  * @category  Settings
  * @author    Jonathan Daggerhart <jonathan@daggerhart.com>
  * @copyright 2015-2020 daggerhart
@@ -14,7 +14,7 @@
  *
  * Admin settings page.
  *
- * @package OpenID_Connect_Generic
+ * @package Hello_Login
  * @category  Settings
  */
 class OpenID_Connect_Generic_Settings_Page {
@@ -443,7 +443,7 @@ class OpenID_Connect_Generic_Settings_Page {
 	 * @return void
 	 */
 	public function settings_page() {
-		wp_enqueue_style( 'daggerhart-openid-connect-generic-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), OpenID_Connect_Generic::VERSION, 'all' );
+		wp_enqueue_style( 'daggerhart-openid-connect-generic-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
 		$redirect_uri = admin_url( 'admin-ajax.php?action=hello-login-callback' );
 
