@@ -445,10 +445,10 @@ class OpenID_Connect_Generic_Settings_Page {
 	public function settings_page() {
 		wp_enqueue_style( 'daggerhart-openid-connect-generic-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), OpenID_Connect_Generic::VERSION, 'all' );
 
-		$redirect_uri = admin_url( 'admin-ajax.php?action=openid-connect-authorize' );
+		$redirect_uri = admin_url( 'admin-ajax.php?action=hello-login-callback' );
 
 		if ( $this->settings->alternate_redirect_uri ) {
-			$redirect_uri = site_url( '/openid-connect-authorize' );
+			$redirect_uri = site_url( '/hello-login-callback' );
 		}
 
 		if ( isset( $_GET['client_id'] ) ) {

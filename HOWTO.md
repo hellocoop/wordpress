@@ -59,7 +59,7 @@ Installation:
 ### What is the client's Redirect URI?
 
 Most OAuth2 servers should require a whitelist of redirect URIs for security purposes. The Redirect URI provided
-by this client is like so:  `https://example.com/wp-admin/admin-ajax.php?action=openid-connect-authorize`
+by this client is like so:  `https://example.com/wp-admin/admin-ajax.php?action=hello-login-callback`
 
 Replace `example.com` with your domain name and path to WordPress.
 
@@ -72,7 +72,7 @@ an alternate redirect URI that does not include a query string.
 
 On the settings page for this plugin (Dashboard > Settings > OpenID Connect Generic) there is a checkbox for 
 **Alternate Redirect URI**. When checked, the plugin will use the Redirect URI 
-`https://example.com/openid-connect-authorize`.
+`https://example.com/hello-login-callback`.
 
 ## Configuration Environment Variables/Constants
 
