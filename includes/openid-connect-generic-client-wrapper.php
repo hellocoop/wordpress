@@ -311,7 +311,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			$this->error_redirect( $token_response );
 		}
 
-		update_user_meta( $user_id, 'openid-connect-generic-last-token-response', $token_response );
+		update_user_meta( $user_id, 'hello-login-last-token-response', $token_response );
 		$this->save_refresh_token( $manager, $token, $token_response );
 	}
 
@@ -381,7 +381,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			$redirect_url = home_url();
 		}
 
-		$token_response = $user->get( 'openid-connect-generic-last-token-response' );
+		$token_response = $user->get( 'hello-login-last-token-response' );
 		if ( ! $token_response ) {
 			// Happens if non-openid login was used.
 			return $redirect_url;
@@ -390,7 +390,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 			$redirect_url = site_url( $redirect_url );
 		}
 
-		$claim = $user->get( 'openid-connect-generic-last-id-token-claim' );
+		$claim = $user->get( 'hello-login-last-id-token-claim' );
 
 		if ( isset( $claim['iss'] ) && 'https://accounts.google.com' == $claim['iss'] ) {
 			/*
@@ -674,9 +674,9 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		}
 
 		// Store the tokens for future reference.
-		update_user_meta( $user->ID, 'openid-connect-generic-last-token-response', $token_response );
-		update_user_meta( $user->ID, 'openid-connect-generic-last-id-token-claim', $id_token_claim );
-		update_user_meta( $user->ID, 'openid-connect-generic-last-user-claim', $user_claim );
+		update_user_meta( $user->ID, 'hello-login-last-token-response', $token_response );
+		update_user_meta( $user->ID, 'hello-login-last-id-token-claim', $id_token_claim );
+		update_user_meta( $user->ID, 'hello-login-last-user-claim', $user_claim );
 
 		return $user_claim;
 	}
@@ -694,9 +694,9 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 */
 	public function login_user( $user, $token_response, $id_token_claim, $user_claim, $subject_identity ) {
 		// Store the tokens for future reference.
-		update_user_meta( $user->ID, 'openid-connect-generic-last-token-response', $token_response );
-		update_user_meta( $user->ID, 'openid-connect-generic-last-id-token-claim', $id_token_claim );
-		update_user_meta( $user->ID, 'openid-connect-generic-last-user-claim', $user_claim );
+		update_user_meta( $user->ID, 'hello-login-last-token-response', $token_response );
+		update_user_meta( $user->ID, 'hello-login-last-id-token-claim', $id_token_claim );
+		update_user_meta( $user->ID, 'hello-login-last-user-claim', $user_claim );
 		// Allow plugins / themes to take action using current claims on existing user (e.g. update role).
 		do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
 
@@ -751,12 +751,12 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 * @return false|WP_User
 	 */
 	public function get_user_by_identity( $subject_identity ) {
-		// Look for user by their openid-connect-generic-subject-identity value.
+		// Look for user by their hello-login-subject-identity value.
 		$user_query = new WP_User_Query(
 			array(
 				'meta_query' => array(
 					array(
-						'key'   => 'openid-connect-generic-subject-identity',
+						'key'   => 'hello-login-subject-identity',
 						'value' => $subject_identity,
 					),
 				),
@@ -1131,7 +1131,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 		$user = get_user_by( 'id', $uid );
 
 		// Save some meta data about this new user for the future.
-		add_user_meta( $user->ID, 'openid-connect-generic-subject-identity', (string) $subject_identity, true );
+		add_user_meta( $user->ID, 'hello-login-subject-identity', (string) $subject_identity, true );
 
 		// Log the results.
 		$this->logger->log( "New user created: {$user->user_login} ($uid)", 'success' );
@@ -1152,7 +1152,7 @@ class OpenID_Connect_Generic_Client_Wrapper {
 	 */
 	public function update_existing_user( $uid, $subject_identity ) {
 		// Add the OpenID Connect meta data.
-		update_user_meta( $uid, 'openid-connect-generic-subject-identity', strval( $subject_identity ) );
+		update_user_meta( $uid, 'hello-login-subject-identity', strval( $subject_identity ) );
 
 		// Allow plugins / themes to take action on user update.
 		do_action( 'hello-login-user-update', $uid );
