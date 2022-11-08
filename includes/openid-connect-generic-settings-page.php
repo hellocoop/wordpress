@@ -450,6 +450,10 @@ class OpenID_Connect_Generic_Settings_Page {
 		if ( $this->settings->alternate_redirect_uri ) {
 			$redirect_uri = site_url( '/openid-connect-authorize' );
 		}
+
+		if ( isset( $_GET['client_id'] ) ) {
+			$this->settings->client_id = $_GET['client_id'];
+		}
 		?>
 		<div class="wrap">
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
