@@ -65,7 +65,7 @@
 	},
 	"autoload": {
 		"classmap": [
-		  "hello-login.php.php",
+		  "hello-login.php",
 		  "includes/hello-login-client.php",
 		  "includes/hello-login-client-wrapper.php",
 		  "includes/hello-login-login-form.php",
