@@ -1,22 +1,21 @@
 {
-	"name": "openid-connect-generic",
-	"version": "3.9.1",
-	"description": "OpenID Connect generic WordPress plugin.",
+	"name": "hello-login",
+	"version": "1.0.0",
+	"description": "Hellō WordPress plugin.",
 	"main": "Gruntfile.js",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/daggerhart/openid-connect-generic"
+		"url": "https://github.com/hellocoop/wordpress"
 	},
 	"keywords": [
 		"wordpress",
-		"openid"
+		"Hellō"
 	],
-	"author": "Jonathan Daggerhart",
 	"license": "GPL-2.0-only",
 	"bugs": {
-		"url": "https://github.com/daggerhart/openid-connect-generic/issues"
+		"url": "https://github.com/hellocoop/wordpress/issues"
 	},
-	"homepage": "https://github.com/daggerhart/openid-connect-generic#readme",
+	"homepage": "https://github.com/hellocoop/wordpress#readme",
 	"dependencies": {
 		"dev-require": "^0.1.0"
 	},
