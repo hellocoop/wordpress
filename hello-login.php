@@ -206,7 +206,7 @@ class Hello_Login {
 	 */
 	public function enforce_privacy_feeds( $content ) {
 		if ( $this->settings->enforce_privacy && ! is_user_logged_in() ) {
-			$content = __( 'Private site', 'daggerhart-openid-connect-generic' );
+			$content = __( 'Private site', 'hello-login' );
 		}
 		return $content;
 	}

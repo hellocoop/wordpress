@@ -120,7 +120,7 @@ class Hello_Login_Login_Form {
 		ob_start();
 		?>
 		<div id="login_error"><?php // translators: %1$s is the error code from the IDP. ?>
-			<strong><?php printf( esc_html__( 'ERROR (%1$s)', 'daggerhart-openid-connect-generic' ), esc_html( $error_code ) ); ?>: </strong>
+			<strong><?php printf( esc_html__( 'ERROR (%1$s)', 'hello-login' ), esc_html( $error_code ) ); ?>: </strong>
 			<?php print esc_html( $error_message ); ?>
 		</div>
 		<?php
@@ -139,7 +139,7 @@ class Hello_Login_Login_Form {
 
 		$atts = shortcode_atts(
 				array(
-						'button_text' => __( 'ō   Continue with Hellō', 'daggerhart-openid-connect-generic' ),
+						'button_text' => __( 'ō   Continue with Hellō', 'hello-login' ),
 				),
 				$atts,
 				'hello_login_button'

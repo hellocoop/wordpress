@@ -259,19 +259,19 @@ class Hello_Login_Option_Logger {
 				<tr>
 					<td class="col-details">
 						<div>
-							<label><?php esc_html_e( 'Type', 'daggerhart-openid-connect-generic' ); ?>: </label>
+							<label><?php esc_html_e( 'Type', 'hello-login' ); ?>: </label>
 							<?php print esc_html( $log['type'] ); ?>
 						</div>
 						<div>
-							<label><?php esc_html_e( 'Date', 'daggerhart-openid-connect-generic' ); ?>: </label>
+							<label><?php esc_html_e( 'Date', 'hello-login' ); ?>: </label>
 							<?php print esc_html( gmdate( 'Y-m-d H:i:s', $log['time'] ) ); ?>
 						</div>
 						<div>
-							<label><?php esc_html_e( 'User', 'daggerhart-openid-connect-generic' ); ?>: </label>
+							<label><?php esc_html_e( 'User', 'hello-login' ); ?>: </label>
 							<?php print esc_html( ( get_userdata( $log['user_ID'] ) ) ? get_userdata( $log['user_ID'] )->user_login : '0' ); ?>
 						</div>
 						<div>
-							<label><?php esc_html_e( 'URI ', 'daggerhart-openid-connect-generic' ); ?>: </label>
+							<label><?php esc_html_e( 'URI ', 'hello-login' ); ?>: </label>
 							<?php print esc_url( $log['uri'] ); ?>
 						</div>
 					</td>
