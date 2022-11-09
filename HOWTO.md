@@ -202,7 +202,7 @@ add_filter('hello-login-alter-user-data', function( $user_data, $user_claim ) {
 For extending the plugin with a new setting field (found on Dashboard > Settings > OpenID Connect Generic) that the site 
 administrator can modify. Also useful to alter the existing settings fields.
 
-See `/includes/openid-connect-generic-settings-page.php` for how fields are constructed.
+See `/includes/hello-login-settings-page.php` for how fields are constructed.
 
 New settings fields will be automatically saved into the wp_option for this plugin's settings, and will be available in 
 the `\Hello_Login_Option_Settings` object this plugin uses. 

@@ -5,7 +5,7 @@
  * This plugin provides the ability to authenticate users with Identity
  * Providers using the OpenID Connect OAuth2 API with Authorization Code Flow.
  *
- * @package   HelloCoop
+ * @package   Hello_Login
  * @category  General
  * @author    Marius Scurtescu <marius.scurtescu@hello.coop>
  * @copyright 2022 Hello Identity Co-op
