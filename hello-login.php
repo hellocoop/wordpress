@@ -217,7 +217,7 @@ class Hello_Login {
 	 * @return void
 	 */
 	public function upgrade() {
-		$last_version = get_option( 'openid-connect-generic-plugin-version', 0 );
+		$last_version = get_option( 'hello-login-plugin-version', 0 );
 		$settings = $this->settings;
 
 		if ( version_compare( self::VERSION, $last_version, '>' ) ) {
@@ -235,7 +235,7 @@ class Hello_Login {
 			}
 
 			// Update the stored version number.
-			update_option( 'openid-connect-generic-plugin-version', self::VERSION );
+			update_option( 'hello-login-plugin-version', self::VERSION );
 		}
 	}
 
@@ -247,7 +247,7 @@ class Hello_Login {
 	 */
 	public function cron_states_garbage_collection() {
 		global $wpdb;
-		$states = $wpdb->get_col( "SELECT `option_name` FROM {$wpdb->options} WHERE `option_name` LIKE '_transient_openid-connect-generic-state--%'" );
+		$states = $wpdb->get_col( "SELECT `option_name` FROM {$wpdb->options} WHERE `option_name` LIKE '_transient_hello-login-state--%'" );
 
 		if ( ! empty( $states ) ) {
 			foreach ( $states as $state ) {
@@ -367,7 +367,7 @@ class Hello_Login {
 			)
 		);
 
-		$logger = new Hello_Login_Option_Logger( 'openid-connect-generic-logs', 'error', $settings->enable_logging, $settings->log_limit );
+		$logger = new Hello_Login_Option_Logger( 'hello-login-logs', 'error', $settings->enable_logging, $settings->log_limit );
 
 		$plugin = new self( $settings, $logger );
 

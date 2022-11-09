@@ -47,7 +47,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @var string
 	 */
-	private $cookie_token_refresh_key = 'openid-connect-generic-refresh';
+	private $cookie_token_refresh_key = 'hello-login-refresh';
 
 	/**
 	 * The user redirect cookie key.
@@ -56,7 +56,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @var string
 	 */
-	public $cookie_redirect_key = 'openid-connect-generic-redirect';
+	public $cookie_redirect_key = 'hello-login-redirect';
 
 	/**
 	 * The return error onject.
@@ -286,7 +286,7 @@ class Hello_Login_Client_Wrapper {
 
 		if ( ! $refresh_token || ( $refresh_expires && $current_time > $refresh_expires ) ) {
 			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-				do_action( 'openid-connect-generic-session-expired', wp_get_current_user(), esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
+				do_action( 'hello-login-session-expired', wp_get_current_user(), esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
 				wp_logout();
 
 				if ( $this->settings->redirect_on_logout ) {
@@ -443,7 +443,7 @@ class Hello_Login_Client_Wrapper {
 		$code_verifier = '';
 		$state         = $_GET['state'] ?? ''; //phpcs:ignore WordPress.Security.ValidatedSanitizedInput -- Sanitized later if not empty.
 		if ( ! empty( $state ) ) {
-			$state_object  = get_transient( 'openid-connect-generic-state--' . sanitize_text_field( $state ) );
+			$state_object  = get_transient( 'hello-login-state--' . sanitize_text_field( $state ) );
 			$code_verifier = $state_object[ $state ]['code_verifier'] ?? '';
 		}
 
@@ -585,7 +585,7 @@ class Hello_Login_Client_Wrapper {
 		// Default redirect to the homepage.
 		$redirect_url = home_url();
 		// Redirect user according to redirect set in state.
-		$state_object = get_transient( 'openid-connect-generic-state--' . $state );
+		$state_object = get_transient( 'hello-login-state--' . $state );
 		// Get the redirect URL stored with the corresponding authentication request state.
 		if ( ! empty( $state_object ) && ! empty( $state_object[ $state ] ) && ! empty( $state_object[ $state ]['redirect_to'] ) ) {
 			$redirect_url = $state_object[ $state ]['redirect_to'];

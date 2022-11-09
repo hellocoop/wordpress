@@ -46,7 +46,7 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @var string
 	 */
-	private $options_page_name = 'openid-connect-generic-settings';
+	private $options_page_name = 'hello-login-settings';
 
 	/**
 	 * Options page settings group name.
@@ -459,7 +459,7 @@ class Hello_Login_Settings_Page {
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
 
 			<form method="get" action="https://quickstart.hello.coop/">
-				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( get_bloginfo('url') ); ?>/wp-admin/options-general.php?page=openid-connect-generic-settings" />
+				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( get_bloginfo('url') ); ?>/wp-admin/options-general.php?page=hello-login-settings" />
 				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo('name') ); ?>" />
 				<input type="hidden" name="redirect_uri" id="redirect_uri" value="<?php print esc_attr( $redirect_uri ); ?>" />
 				<input type="submit" name="hello_quickstart" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Continue with Hellō Quickstart" />

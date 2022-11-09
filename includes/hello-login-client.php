@@ -172,7 +172,7 @@ class Hello_Login_Client {
 
 		// Check the client request state.
 		if ( ! isset( $request['state'] ) ) {
-			do_action( 'openid-connect-generic-no-state-provided' );
+			do_action( 'hello-login-no-state-provided' );
 			return new WP_Error( 'missing-state', __( 'Missing state.', 'hello-login' ), $request );
 		}
 
@@ -363,7 +363,7 @@ class Hello_Login_Client {
 				'code_verifier' => $pkce_code_verifier,
 			),
 		);
-		set_transient( 'openid-connect-generic-state--' . $state, $state_value, $this->state_time_limit );
+		set_transient( 'hello-login-state--' . $state, $state_value, $this->state_time_limit );
 
 		return $state;
 	}
@@ -379,12 +379,12 @@ class Hello_Login_Client {
 
 		$state_found = true;
 
-		if ( ! get_option( '_transient_openid-connect-generic-state--' . $state ) ) {
+		if ( ! get_option( '_transient_hello-login-state--' . $state ) ) {
 			do_action( 'hello-login-state-not-found', $state );
 			$state_found = false;
 		}
 
-		$valid = get_transient( 'openid-connect-generic-state--' . $state );
+		$valid = get_transient( 'hello-login-state--' . $state );
 
 		if ( ! $valid && $state_found ) {
 			do_action( 'hello-login-state-expired', $state );

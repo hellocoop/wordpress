@@ -51,7 +51,7 @@
 		"shelljs": "0.8.5"
 	},
 	"wp-env": {
-		"plugin-dir": "daggerhart-openid-connect-generic",
+		"plugin-dir": "hello-login",
 		"plugin-name": "OpenID Connect Generic",
 		"docker-template": "./docker-compose.wp-env.yml",
 		"welcome-build-command": "npm start"
@@ -76,7 +76,7 @@
 		"test": "npm run grunt test",
 		"i18n:check": "npm run grunt checktextdomain",
 		"i18n:make": "npm run grunt i18n",
-		"i18n:make:cli": "wp-env run cli wp i18n make-pot . languages/ --slug=daggerhart-openid-connect-generic --include=openid-connect-generic.php,includes",
+		"i18n:make:cli": "wp-env run cli wp i18n make-pot . languages/ --slug=hello-login --include=hello-login.php,includes",
 		"lint": "npm run lint:php",
 		"lint:php": "docker-compose run composer lint",
 		"lint:php:fix": "docker-compose run composer lint-fix",
