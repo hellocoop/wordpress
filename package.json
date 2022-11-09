@@ -52,7 +52,7 @@
 	},
 	"wp-env": {
 		"plugin-dir": "hello-login",
-		"plugin-name": "OpenID Connect Generic",
+		"plugin-name": "Hellō Login",
 		"docker-template": "./docker-compose.wp-env.yml",
 		"welcome-build-command": "npm start"
 	},

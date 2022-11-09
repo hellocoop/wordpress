@@ -1,9 +1,9 @@
-# OpenID Connect Generic Client
+# Hellō Login
 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-A simple client that provides SSO or opt-in authentication against a generic OAuth2 Server implementation.
+A login and registration plugin for the Hellō service.
 
 ## Description
 
@@ -12,7 +12,7 @@ Once installed, it can be configured to automatically authenticate users (SSO), 
 button on the login form. After consent has been obtained, an existing user is automatically logged into WordPress, while 
 new users are created in WordPress database.
 
-Much of the documentation can be found on the Settings > OpenID Connect Generic dashboard page.
+Much of the documentation can be found on the Settings > Hellō Login dashboard page.
 
 ## Table of Contents
 
@@ -45,7 +45,7 @@ Much of the documentation can be found on the Settings > OpenID Connect Generic 
 
 ### Composer
 
-[OpenID Connect Generic on packagist](https://packagist.org/packages/daggerhart/openid-connect-generic)
+[Hellō Login on packagist](https://packagist.org/packages/hellocoop/wordpress)
 
 Installation:
 
@@ -68,7 +68,7 @@ this module leverages WordPress's `admin-ajax.php` endpoint as an easy way to pr
 HTML, but this will naturally involve a query string. Fortunately, this plugin provides a setting that will make use of 
 an alternate redirect URI that does not include a query string.
 
-On the settings page for this plugin (Dashboard > Settings > OpenID Connect Generic) there is a checkbox for 
+On the settings page for this plugin (Dashboard > Settings > Hellō Login) there is a checkbox for 
 **Alternate Redirect URI**. When checked, the plugin will use the Redirect URI 
 `https://example.com/hello-login-callback`.
 
@@ -199,7 +199,7 @@ add_filter('hello-login-alter-user-data', function( $user_data, $user_claim ) {
 
 #### `hello-login-settings-fields`
 
-For extending the plugin with a new setting field (found on Dashboard > Settings > OpenID Connect Generic) that the site 
+For extending the plugin with a new setting field (found on Dashboard > Settings > Hellō Login) that the site 
 administrator can modify. Also useful to alter the existing settings fields.
 
 See `/includes/hello-login-settings-page.php` for how fields are constructed.

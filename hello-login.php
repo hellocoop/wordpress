@@ -104,7 +104,7 @@ class Hello_Login {
 	private $logger;
 
 	/**
-	 * Openid Connect Generic client
+	 * Hellō Login client
 	 *
 	 * @var Hello_Login_Client
 	 */

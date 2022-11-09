@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0+.
 msgid ""
 msgstr ""
-"Project-Id-Version: OpenID Connect Generic 3.9.1\n"
+"Project-Id-Version: Hellō Login 1.0.0\n"
 "Report-Msgid-Bugs-To: "
 "https://github.com/hellocoop/wordpress/issues\n"
 "POT-Creation-Date: 2022-08-19 04:06:16+00:00\n"
@@ -489,7 +489,7 @@ msgid "Control the authorization mechanics of the site."
 msgstr ""
 
 #: includes/hello-login-settings-page.php:591
-msgid "Log information about login attempts through OpenID Connect Generic."
+msgid "Log information about login attempts through Hellō Login."
 msgstr ""
 
 #: hello-login.php:213
