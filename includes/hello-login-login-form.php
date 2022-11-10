@@ -155,7 +155,7 @@ class Hello_Login_Login_Form {
 			<button class="hello-about"></button>
 		</div>
 		<?php
-		return wp_kses_post( ob_get_clean() );
+		return ob_get_clean();
 	}
 
 	/**
