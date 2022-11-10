@@ -1,6 +1,6 @@
 # Hellō Login #
 **Contributors:** [mariuss](https://profiles.wordpress.org/mariuss/)  
-**Donate link:** https://www.hello.dev/
+**Donate link:** https://www.hello.dev/  
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.0.1  
