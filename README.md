@@ -51,8 +51,9 @@ Hellō supports all popular OpenID Connect claims and we are continually adding 
 * Improvement: @mariuss - Merged PR that adds [PKCE support](https://github.com/oidc-wp/openid-connect-generic/pull/421).
 * Feature: @mariuss - Integrated Hellō Quickstart
 * Feature: @mariuss - Removed unnecessary configuration options
+* Improvement: @mariuss - Renamed all relevant identifiers to be Hellō Login specific
 
 
 --------
 
-[See pre-fork changelogs here](https://github.com/oidc-wp/openid-connect-generic/blob/main/CHANGELOG.md)
+[See pre-fork changelogs up to 3.9.1 here](https://github.com/oidc-wp/openid-connect-generic/blob/main/CHANGELOG.md)
