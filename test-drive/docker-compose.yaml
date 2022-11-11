@@ -5,6 +5,8 @@ services:
   hello_wordpress:
     image: wordpress
     restart: always
+    depends_on:
+      - hello_db
     ports:
       - 8080:80
     environment:
