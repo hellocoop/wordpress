@@ -453,6 +453,8 @@ class Hello_Login_Settings_Page {
 
 		if ( isset( $_GET['client_id'] ) ) {
 			$this->settings->client_id = sanitize_text_field( $_GET['client_id'] );
+			$this->settings->save();
+			$this->logger->log("Client ID set through Quickstart: " . $this->settings->client_id, 'quickstart');
 		}
 		?>
 		<div class="wrap">
