@@ -184,6 +184,31 @@ class Hello_Login_Client {
 	}
 
 	/**
+	 * Validate the quickstart callback request
+	 *
+	 * @param array<string> $request The authentication request results.
+	 *
+	 * @return array<string>|WP_Error
+	 */
+	public function validate_quickstart_callback_request( $request ) {
+		// Look for an existing error of some kind.
+		if ( isset( $request['error'] ) ) {
+			return new WP_Error( 'unknown-error', 'An unknown error occurred.', $request );
+		}
+
+		// Make sure we have a legitimate client id.
+		if ( ! isset( $request['client_id'] ) ) {
+			return new WP_Error( 'missing-client-id', __( 'No client_id present in the request.', 'hello-login' ), $request );
+		}
+
+		if ( ! $this->check_client_id( $request['client_id'] ) ) {
+			return new WP_Error( 'invalid-client-id', __( 'Invalid client_id.', 'hello-login' ), $request );
+		}
+
+		return $request;
+	}
+
+	/**
 	 * Get the authorization code from the request
 	 *
 	 * @param array<string>|WP_Error $request The authentication request results.
@@ -196,6 +221,21 @@ class Hello_Login_Client {
 		}
 
 		return $request['code'];
+	}
+
+	/**
+	 * Get the client id from the request
+	 *
+	 * @param array<string>|WP_Error $request The Quickstart callback request.
+	 *
+	 * @return string|WP_Error
+	 */
+	public function get_client_id( $request ) {
+		if ( ! isset( $request['client_id'] ) ) {
+			return new WP_Error( 'missing-client-id', __( 'No client_id present in the request.', 'hello-login' ), $request );
+		}
+
+		return sanitize_text_field( $request['client_id'] );
 	}
 
 	/**
@@ -391,6 +431,18 @@ class Hello_Login_Client {
 		}
 
 		return boolval( $valid );
+	}
+
+	/**
+	 * Validates a client id.
+	 *
+	 * @param string $client_id The client id to validate.
+	 *
+	 * @return bool
+	 */
+	public function check_client_id( $client_id ) {
+		// the format Hellō client ids is UUID v4
+		return is_string($client_id) && (preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $client_id) === 1);
 	}
 
 	/**

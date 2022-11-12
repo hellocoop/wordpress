@@ -446,6 +446,7 @@ class Hello_Login_Settings_Page {
 
 		$redirect_uri = admin_url( 'admin-ajax.php?action=hello-login-callback' );
 		$plugin_settings_uri = admin_url( '/options-general.php?page=hello-login-settings' );
+		$quickstart_callback_uri = admin_url( 'admin-ajax.php?action=hello_quickstart_callback' );
 
 		if ( $this->settings->alternate_redirect_uri ) {
 			$redirect_uri = site_url( '/hello-login-callback' );
@@ -464,7 +465,7 @@ class Hello_Login_Settings_Page {
 			<p>The Hellō Login plug-in uses the Hellō Quickstart to get you up and running in seconds.</p>
 
 			<form method="get" action="https://quickstart.hello.coop/">
-				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $plugin_settings_uri ); ?>" />
+				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $quickstart_callback_uri ); ?>" />
 				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo('name') ); ?>" />
 				<input type="hidden" name="redirect_uri" id="redirect_uri" value="<?php print esc_attr( $redirect_uri ); ?>" />
 				<input type="submit" name="hello_quickstart" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Continue with Hellō Quickstart" />

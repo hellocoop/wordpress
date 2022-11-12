@@ -110,6 +110,13 @@ class Hello_Login_Client_Wrapper {
 			add_action( 'wp_ajax_nopriv_hello-login-callback', array( $client_wrapper, 'authentication_request_callback' ) );
 		}
 
+		/*
+		 * Use the ajax url to handle processing the Hellō Quickstart response
+		 * this callback will occur when Quickstart returns with a client id
+		 */
+		add_action( 'wp_ajax_hello-quickstart-callback', array( $client_wrapper, 'hello_quickstart_callback' ) );
+		add_action( 'wp_ajax_nopriv_hello-quickstart-callback', array( $client_wrapper, 'hello_quickstart_callback' ) );
+
 		if ( $settings->alternate_redirect_uri ) {
 			// Provide an alternate route for authentication_request_callback.
 			add_rewrite_rule( '^hello-login-callback/?', 'index.php?hello-login-callback=1', 'top' );
@@ -601,6 +608,40 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		wp_redirect( $redirect_url );
+
+		exit;
+	}
+
+	/**
+	 * Control the authentication and subsequent authorization of the user when
+	 * returning from the IDP.
+	 *
+	 * @return void
+	 */
+	public function hello_quickstart_callback() {
+		$client = $this->client;
+
+		// Start the authentication flow.
+		$callback_request = $client->validate_quickstart_callback_request( $_GET );
+
+		if ( is_wp_error( $callback_request ) ) {
+			$this->error_redirect( $callback_request );
+		}
+
+		// Retrieve the authentication code from the authentication request.
+		$client_id = $client->get_client_id( $callback_request );
+
+		if ( is_wp_error( $client_id ) ) {
+			$this->error_redirect( $client_id );
+		}
+
+		$this->settings->client_id = $client_id;
+
+		$this->settings->save();
+
+		$this->logger->log("Client id set with Quickstart: " . $client_id, "quickstart");
+
+		wp_redirect( admin_url( 'options-general.php?page=hello-login-settings' ) );
 
 		exit;
 	}
