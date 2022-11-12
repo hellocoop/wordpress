@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
 # start with an empty plugin subfolder
 rm -rf plugin
