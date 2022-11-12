@@ -225,7 +225,7 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Client ID', 'hello-login' ),
 				'description' => __( 'The client identifier provided by Hellō and set by Quickstart.', 'hello-login' ),
 				'type'        => 'text',
-				'disabled'    => true,
+				'disabled'    => defined( 'OIDC_CLIENT_ID' ),
 				'section'     => 'client_settings',
 			),
 			/*
@@ -526,11 +526,17 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	public function do_text_field( $field ) {
+		$disabled = ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true;
+
+		if ( $field['key'] == 'client_id' ) {
+			$this->logger->log( 'Setting client_id as disabled', 'quickstart');
+			$disabled = true;
+		}
 		?>
 		<input type="<?php print esc_attr( $field['type'] ); ?>"
-				<?php echo ( ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true ) ? ' disabled' : ''; ?>
+				<?php echo ( $disabled ? ' disabled' : '' ); ?>
 			  id="<?php print esc_attr( $field['key'] ); ?>"
-			  class="large-text<?php echo ( ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true ) ? ' disabled' : ''; ?>"
+			  class="large-text<?php echo ( $disabled ? ' disabled' : '' ); ?>"
 			  name="<?php print esc_attr( $field['name'] ); ?>"
 			  value="<?php print esc_attr( $this->settings->{ $field['key'] } ); ?>">
 		<?php
