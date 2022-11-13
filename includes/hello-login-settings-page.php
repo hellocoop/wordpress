@@ -455,6 +455,7 @@ class Hello_Login_Settings_Page {
 			$this->settings->client_id = sanitize_text_field( $_GET['client_id'] );
 			$this->settings->save();
 			$this->logger->log("Client ID set through Quickstart: " . $this->settings->client_id, 'quickstart');
+			show_message( "Quickstart success, Hellō Login is configured." );
 		}
 
 		$custom_logo_url = '';
@@ -473,8 +474,8 @@ class Hello_Login_Settings_Page {
 			<form method="get" action="https://quickstart.hello.coop/">
 				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $plugin_settings_uri ); ?>" />
 				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo('name') ); ?>" />
-				<input type="hidden" name="name" id="pp_uri" value="<?php print esc_attr( get_privacy_policy_url() ); ?>" />
-				<input type="hidden" name="name" id="image_uri" value="<?php print esc_attr( $custom_logo_url ); ?>" />
+				<input type="hidden" name="pp_uri" id="pp_uri" value="<?php print esc_attr( get_privacy_policy_url() ); ?>" />
+				<input type="hidden" name="image_uri" id="image_uri" value="<?php print esc_attr( $custom_logo_url ); ?>" />
 				<input type="hidden" name="redirect_uri" id="redirect_uri" value="<?php print esc_attr( $redirect_uri ); ?>" />
 				<input type="submit" name="hello_quickstart" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Continue with Hellō Quickstart" />
 			</form>
