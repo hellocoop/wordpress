@@ -455,7 +455,6 @@ class Hello_Login_Settings_Page {
 			$this->settings->client_id = sanitize_text_field( $_GET['client_id'] );
 			$this->settings->save();
 			$this->logger->log("Client ID set through Quickstart: " . $this->settings->client_id, 'quickstart');
-			show_message( "Quickstart success, Hellō Login is configured." );
 		}
 
 		$custom_logo_url = '';
@@ -539,7 +538,6 @@ class Hello_Login_Settings_Page {
 		$disabled = ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true;
 
 		if ( $field['key'] == 'client_id' ) {
-			$this->logger->log( 'Setting client_id as disabled', 'quickstart');
 			$disabled = true;
 		}
 		?>
