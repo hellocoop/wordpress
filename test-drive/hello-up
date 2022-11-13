@@ -8,6 +8,9 @@ mkdir -p plugin
 cp -v ../CHANGELOG.md ../hello-login.php ../readme.txt plugin/
 cp -r -v ../css ../includes ../languages plugin/
 
+# allow WordPress to delete the plugin
+chmod a+w -R plugin/
+
 # start the docker containers, plugin subfolder is bound inside WordPress container
 docker-compose up -d
 
