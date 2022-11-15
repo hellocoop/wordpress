@@ -1,5 +1,13 @@
 # Hellō Login Changelog
 
+**1.0.2**
+
+- first release in WordPress plugin repository
+- toggle settings page content based on settings and current user state
+- collapse username / password form on login page
+- send Privacy Policy and Custom Logo URLs to Quickstart
+- add "Link Hellō" button to settings page
+
 **1.0.1**
 
 - WordPress plugin submission feedback

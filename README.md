@@ -4,7 +4,7 @@
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.1.0  
-**Stable tag:** 1.0.1  
+**Stable tag:** 1.0.2  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -44,6 +44,14 @@ Hellō lets users change their provider without any effort on your part.
 Hellō supports all popular OpenID Connect claims and we are continually adding claims to Hellō. You can see the full list at [Hellō Claims](https://www.hello.dev/documentation/hello-claims.html)
 
 ## Changelog ##
+
+### 1.0.2 ###
+
+* first release in WordPress plugin repository
+* toggle settings page content based on settings and current user state
+* collapse username / password form on login page
+* send Privacy Policy and Custom Logo URLs to Quickstart
+* add "Link Hellō" button to settings page
 
 ### 1.0.1 ###
 
