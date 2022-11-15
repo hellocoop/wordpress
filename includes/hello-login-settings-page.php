@@ -451,9 +451,11 @@ class Hello_Login_Settings_Page {
 			$redirect_uri = site_url( '/hello-login-callback' );
 		}
 
+		$show_succeeded = false;
 		if ( isset( $_GET['client_id'] ) && empty( $this->settings->client_id ) ) {
 			$this->settings->client_id = sanitize_text_field( $_GET['client_id'] );
 			$this->settings->save();
+			$show_succeeded = true;
 			$this->logger->log("Client ID set through Quickstart: " . $this->settings->client_id, 'quickstart');
 		}
 
@@ -480,6 +482,8 @@ class Hello_Login_Settings_Page {
 			</form>
 
 			<?php } else { ?>
+
+			<?php if ( $show_succeeded ) { ?><p id="quickstart_success">Quickstart Succeeded!</p><?php } ?>
 
 			<p>Use the <a href="https://console.hello.coop/" target="_blank">Hellō Console</a> to update your Hellō configuration</p>
 
