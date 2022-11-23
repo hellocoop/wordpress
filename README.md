@@ -45,6 +45,13 @@ Hellō supports all popular OpenID Connect claims and we are continually adding 
 
 ## Changelog ##
 
+### 1.0.5 ###
+
+* Feature: added `given_name` and `family_name` scopes as defaults
+* Fix: admin account linking done based on curren session
+* Feature: link user account on sign-in, when account is matched on email
+* Fix: map `nickname` to new username, instead of `sub`
+
 ### 1.0.4 ###
 
 * Feature: added "Settings" link right in plugin list
