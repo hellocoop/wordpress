@@ -512,7 +512,7 @@ class Hello_Login_Settings_Page {
 
 			<?php if ( $show_succeeded ) { ?><p id="quickstart_success">Quickstart Succeeded!</p><?php } ?>
 
-			<?php if ( empty( get_user_meta( wp_get_current_user()->ID, 'hello-login-subject-identity', true ) ) ) { ?>
+			<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ) { ?>
 				<p id="link-hello-wallet">You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</p>
 				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="window.location.href = '<?php print esc_attr( $href ); ?>'"></button>
 			<?php } ?>
