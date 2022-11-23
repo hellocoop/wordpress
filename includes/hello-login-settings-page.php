@@ -531,6 +531,7 @@ class Hello_Login_Settings_Page {
 
 			<?php if ( isset( $_GET['debug'] ) ) { ?>
 				<h4>Debug</h4>
+				<p>Hellō user id: <code><?php print esc_html( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ?></code></p>
 				<pre>
 				<?php print esc_html( var_dump( $this->settings->get_values() ) ); ?>
 				</pre>
