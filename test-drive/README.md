@@ -14,6 +14,15 @@ plugin from the WordPress plugin repo.
 
 You can run the `install.sh` script to copy local plugin files into the docker container.
 
+## WordPress CLI
+
+Use the wp-cli.sh script to run [WordPress CLI](https://wp-cli.org/) commands.
+
+Example:
+```shell
+./wp-cli.sh user list
+```
+
 ## Docker Cheat Sheet
 
 ### Bash Session Inside a Container
