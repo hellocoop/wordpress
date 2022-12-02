@@ -37,10 +37,7 @@ Notes
   - hello-login-settings-fields                         - modify the fields provided on the settings page
   - hello-login-user-login-test                         - (bool) should the user be logged in based on their claim
   - hello-login-user-creation-test                      - (bool) should the user be created based on their claim
-  - hello-login-auth-url                                - modify the authentication url
   - hello-login-alter-user-data                         - modify user data before a new user is created
-  - hello-login-modify-token-response-before-validation - modify the token response before validation
-  - hello-login-modify-id-token-claim-before-validation - modify the token claim before validation
 
   Actions
   - hello-login-user-create                     - 2 args: fires when a new user is created by this plugin
