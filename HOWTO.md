@@ -19,14 +19,9 @@ Much of the documentation can be found on the Settings > Hellō Login dashboard 
 
 - [Installation](#installation)
     - [Composer](#composer)
-- [Frequently Asked Questions](#frequently-asked-questions)
-    - [What is the client's Redirect URI?](#what-is-the-clients-redirect-uri)
-    - [Can I change the client's Redirect URI?](#can-i-change-the-clients-redirect-uri)
-- [Configuration Environment Variables/Constants](#configuration-environment-variables-constants)
 - [Hooks](#hooks)
     - [Filters](#filters)
         - [hello-login-alter-request](#hello-login-alter-request)
-        - [hello-login-auth-url](#hello-login-auth-url)
         - [hello-login-user-login-test](#hello-login-user-login-test)
         - [hello-login-user-creation-test](#hello-login-user-creation-test)
         - [hello-login-alter-user-data](#hello-login-alter-user-data)
@@ -40,21 +35,7 @@ Much of the documentation can be found on the Settings > Hellō Login dashboard 
 
 ## Installation
 
-### Automatic Installation
-
-1. Search for “hello openid” through 'Plugins > Add New' interface.
-1. Find the plugin box of Hellō Login and click on the **Install Now** button.
-1. Activate the Hellō Login plugin, then click **Settings**.
-1. Click the **Quickstart** button and complete the Quickstart flow.
-1. Once back at the Hellō Login Settings page, link your admin account with your Hellō Wallet.
-
-### Manual Installation
-
-1. Download [Hellō Login](https://downloads.wordpress.org/plugin/hello-login.zip).
-1. Upload Hellō Login through 'Plugins > Add New > Upload' interface or upload hello-login folder to the `/wp-content/plugins/` directory.
-1. Activate the Hellō Login plugin, then click **Settings**.
-1. Click the **Quickstart** button and complete the Quickstart flow.
-1. Once back at the Hellō Login Settings page, link your admin account with your Hellō Wallet.
+See "Installation" section in README.md.
 
 ### Composer
 
@@ -62,23 +43,7 @@ Much of the documentation can be found on the Settings > Hellō Login dashboard 
 
 Installation:
 
-`composer require daggerhart/openid-connect-generic`
-
-## Configuration Environment Variables/Constants
-
-- Client ID: `OIDC_CLIENT_ID`
-- Client Secret Key: `OIDC_CLIENT_SECRET`
-- Login Endpoint URL: `OIDC_ENDPOINT_LOGIN_URL`
-- Userinfo Endpoint URL: `OIDC_ENDPOINT_USERINFO_URL`
-- Token Validation Endpoint URL: `OIDC_ENDPOINT_TOKEN_URL`
-- End Session Endpoint URL: `OIDC_ENDPOINT_LOGOUT_URL`
-- OpenID scope: `OIDC_CLIENT_SCOPE` (space separated)
-- OpenID login type: `OIDC_LOGIN_TYPE` ('button' or 'auto')
-- Enforce privacy: `OIDC_ENFORCE_PRIVACY` (boolean)
-- Create user if they do not exist: `OIDC_CREATE_IF_DOES_NOT_EXIST` (boolean)
-- Link existing user: `OIDC_LINK_EXISTING_USERS` (boolean)
-- Redirect user back to origin page: `OIDC_REDIRECT_USER_BACK` (boolean)
-- Redirect on logout: `OIDC_REDIRECT_ON_LOGOUT` (boolean)
+`composer require hellocoop/wordpress`
 
 ## Hooks
 
@@ -97,7 +62,7 @@ Most often you'll only need to use `add_filter()` to hook into this plugin's cod
 
 #### `hello-login-alter-request`
 
-Hooks directly into client before requests are sent to the OpenID Server.
+Hooks directly into client before requests are sent to the Hellō Wallet.
 
 Provides 2 arguments: the request array being sent to the server, and the operation currently being executed by this 
 plugin.
@@ -116,21 +81,6 @@ add_filter('hello-login-alter-request', function( $request, $operation ) {
     
     return $request;
 }, 10, 2);
-```
-
-#### `hello-login-auth-url`
-
-Modify the authentication URL before presented to the user. This is the URL that will send the user to the IDP server 
-for login.
-
-Provides 1 argument: the plugin generated URL.
-
-```
-add_filter('hello-login-auth-url', function( $url ) {
-    // Add some custom data to the url.
-    $url.= '&my_custom_data=123abc';
-    return $url;
-}); 
 ```
 
 #### `hello-login-user-login-test`
