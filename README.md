@@ -4,7 +4,7 @@
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.1  
-**Stable tag:** 1.0.5  
+**Stable tag:** 1.0.6  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -84,6 +84,12 @@ You can update your site configuration at [console.hello.coop](https://console.h
 Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.com/hellocoop/wordpress/issues)
 
 ## Changelog ##
+
+### 1.0.6 ###
+
+* Feature: added screenshots
+* Update: plugin details
+* Fix: plugin settings and login page redirects after connecting with Hellō
 
 ### 1.0.5 ###
 
