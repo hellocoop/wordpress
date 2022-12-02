@@ -167,7 +167,7 @@ class Hello_Login_Client_Wrapper {
 	 * Get the authentication URL for the REST API.
 	 *
 	 * @param WP_REST_Request $request The REST request object.
-	 * @return string|null|WP_Error A Hello service authentication URL.
+	 * @return array|WP_Error A Hello service authentication URL.
 	 */
 	public function rest_auth_url( WP_REST_Request $request ) {
 		$atts = array();
@@ -189,7 +189,9 @@ class Hello_Login_Client_Wrapper {
 			);
 		}
 
-		return $this->get_authentication_url( $atts );
+		return array(
+			'url' =>$this->get_authentication_url( $atts ),
+		);
 	}
 
 	/**
