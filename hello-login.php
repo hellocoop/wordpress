@@ -15,7 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       Hellō Login
  * Plugin URI:        https://github.com/hellocoop/wordpress
- * Description:       A login and registration plugin for the Hellō service.
+ * Description:       Free and simple to setup plugin provides registration and login with the Hellō Wallet. Users choose from popular social login, email, or crypto wallet. Setup in 7 clicks, not 7 hours.
  * Version:           1.0.5
  * Requires at least: 4.9
  * Requires PHP:      7.2
@@ -37,10 +37,7 @@ Notes
   - hello-login-settings-fields                         - modify the fields provided on the settings page
   - hello-login-user-login-test                         - (bool) should the user be logged in based on their claim
   - hello-login-user-creation-test                      - (bool) should the user be created based on their claim
-  - hello-login-auth-url                                - modify the authentication url
   - hello-login-alter-user-data                         - modify user data before a new user is created
-  - hello-login-modify-token-response-before-validation - modify the token response before validation
-  - hello-login-modify-id-token-claim-before-validation - modify the token claim before validation
 
   Actions
   - hello-login-user-create                     - 2 args: fires when a new user is created by this plugin

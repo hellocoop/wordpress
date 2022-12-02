@@ -9,39 +9,79 @@
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-A login and registration plugin for the Hellō service.
+Free and simple to setup plugin provides registration and login with the  Hellō Wallet. Users choose from popular social login,
+email, or crypto wallet. Setup in 7 clicks, not 7 hours.
 
 ## Description ##
 
-This plugin integrates the Hellō service with your site, simplifying login and registration of users.
-You can request name, nickname, profile picture, as well as a verified email, phone, or ethereum address.
+Provide your users a registration and login using their choice of popular social login, email, or even a crypto wallet.
+No need for you to configure your application at each provider or pay for a premium plugin.
 
-This plugin uses the Hellō Quickstart service to get your site up and running in minutes.
+Hellō Login verifies your users' email addresses so you don't have to. No longer do they have to manage another username
+and password to use your site.
 
-Configuration and settings can be found in the Settings > Hellō Login dashboard page
+Hellō is a cloud identity wallet cooperatively operated with a mission to empower users to control their identity. Learn
+more at [hello.coop](https://www.hello.coop/).
 
-For details on the Hellō service see [hello.dev](https://hello.dev)
+* Hellō Login installs with Hellō Quickstart to get you up and running in minutes.
+* Users control their identity with their Hellō Wallet. No need for you to manage how they login.
+* Hellō Login is free for users and early adopting sites. See [hello.coop](https://www.hello.coop/) for details.
 
-Please submit issues and feature requests to the Github repo: [https://github.com/hellocoop/wordpress](https://github.com/hellocoop/wordpress)
+Documentation, configuration, and settings can be found in Settings >  Hellō Login
 
 ## Installation ##
 
-1. Upload to the `/wp-content/plugins/` directory
-1. Activate the plugin in `Plugins`
-1. In `Settings` > `Hellō Login` click the `Quickstart` button and complete Quickstart flow
-1. Add the `[hello_login_button]` shortcode to pages for the Hellō login button
+### Automatic Installation ###
+
+1. Search for “hello openid” through 'Plugins > Add New' interface.
+1. Find the plugin box of Hellō Login and click on the **Install Now** button.
+1. Activate the Hellō Login plugin, then click **Settings**.
+1. Click the **Quickstart** button and complete the Quickstart flow.
+1. Once back at the Hellō Login Settings page, link your admin account with your Hellō Wallet.
+
+### Manual Installation ###
+
+1. Download [Hellō Login](https://downloads.wordpress.org/plugin/hello-login.zip).
+1. Upload Hellō Login through 'Plugins > Add New > Upload' interface or upload hello-login folder to the `/wp-content/plugins/` directory.
+1. Activate the Hellō Login plugin, then click **Settings**.
+1. Click the **Quickstart** button and complete the Quickstart flow.
+1. Once back at the Hellō Login Settings page, link your admin account with your Hellō Wallet.
 
 ## Frequently Asked Questions ##
 
-### How do users login? ###
+### What is Hellō? ###
 
-Hellō offers users all popular social login methods including Apple, Facebook, Google, Line, Microsoft, Twitch, and Yahoo;
-email or phone; or popular crypto wallets including MetaMask. The current choices can be seen at [https://wallet.hello.coop](https://wallet.hello.coop)
-Hellō lets users change their provider without any effort on your part.
+Hellō is a cloud identity wallet that empowers users to prove who they are to any site that accepts Hellō. Learn more at
+[hello.coop](https://www.hello.coop/).
 
-### What claims can I ask for about a user? ###
+### How can users login to their wallet? ###
 
-Hellō supports all popular OpenID Connect claims and we are continually adding claims to Hellō. You can see the full list at [Hellō Claims](https://www.hello.dev/documentation/hello-claims.html)
+Hellō supports all popular ways to login including Apple, Facebook, GitHub, Google, Line, Microsoft, Twitch, Twitter,
+Yahoo, as well as email, phone and crypto wallets. We are adding more methods on a regular basis. See
+[hello.coop](https://www.hello.coop/) for a complete list.
+
+### Does Hellō sell user data? ###
+
+No. Hellō provides sites user data only with informed consent. User data is only accessible while the user has unlocked
+their wallet by logging in with their preferred provider.
+
+### How does Hellō make money? ###
+
+The Hellō business model is to charge sites a few cents for each new verified claim the user provides to a site, such as
+a phone number and in the future claims such as a professional certification.
+
+### Why is Hellō free to sites now? ###
+
+While we are building out the network, we are not charging sites for verified claims and rewarding early adopters of
+Hellō with credits for bringing users to Hellō.
+
+### How can I change the image for my site? ###
+
+You can update your site configuration at [console.hello.coop](https://console.hello.coop/).
+
+### Where do I submit feature requests or bugs? ###
+
+Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.com/hellocoop/wordpress/issues)
 
 ## Changelog ##
 
