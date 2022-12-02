@@ -85,6 +85,12 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 ## Changelog ##
 
+### 1.0.6 ###
+
+* Feature: added screenshots
+* Update: plugin details
+* Fix: plugin settings and login page redirects after connecting with Hellō
+
 ### 1.0.5 ###
 
 * Feature: added `given_name` and `family_name` scopes as defaults
