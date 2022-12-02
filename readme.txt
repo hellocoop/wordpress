@@ -9,21 +9,17 @@ Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Free and simple to setup plugin provides registration and login with the Hellō Wallet. Users choose from popular social login,
-email, or crypto wallet. Setup in 7 clicks, not 7 hours.
+Free and simple to setup plugin provides registration and login with the Hellō Wallet. Users choose from popular social login, email, or crypto wallet. Setup in 7 clicks, not 7 hours.
 
 == Description ==
 
-Provide your users a registration and login using their choice of popular social login, email, or even a crypto wallet.
-No need for you to configure your application at each provider or pay for a premium plugin.
+Provide your users a registration and login using their choice of popular social login, email, or even a crypto wallet. No need for you to configure your application at each provider or pay for a premium plugin.
 
-Hellō Login verifies your users' email addresses so you don't have to. No longer do they have to manage another username
-and password to use your site.
+Hellō Login verifies your users' email addresses so you don't have to. No longer do they have to manage another username and password to use your site.
 
-Hellō is a cloud identity wallet cooperatively operated with a mission to empower users to control their identity. Learn
-more at [hello.coop](https://www.hello.coop/).
+Hellō is a cloud identity wallet cooperatively operated with a mission to empower users to control their identity. Learn more at [hello.coop](https://www.hello.coop/).
 
-* Hellō Login installs with Hellō Quickstart to get you up and running in minutes.
+* Hellō Login installs with Hellō Quickstart to get you up and running in seconds.
 * Users control their identity with their Hellō Wallet. No need for you to manage how they login.
 * Hellō Login is free for users and early adopting sites. See [hello.coop](https://www.hello.coop/) for details.
 
@@ -51,29 +47,23 @@ Documentation, configuration, and settings can be found in Settings >  Hellō Lo
 
 = What is Hellō? =
 
-Hellō is a cloud identity wallet that empowers users to prove who they are to any site that accepts Hellō. Learn more at
-[hello.coop](https://www.hello.coop/).
+Hellō is a cloud identity wallet that empowers users to prove who they are to any site that accepts Hellō. Learn more at [hello.coop](https://www.hello.coop/).
 
 = How can users login to their wallet? =
 
-Hellō supports all popular ways to login including Apple, Facebook, GitHub, Google, Line, Microsoft, Twitch, Twitter,
-Yahoo, as well as email, phone and crypto wallets. We are adding more methods on a regular basis. See
-[hello.coop](https://www.hello.coop/) for a complete list.
+Hellō supports all popular ways to login including Apple, Facebook, GitHub, Google, Line, Microsoft, Twitch, Twitter, Yahoo, as well as email, phone and crypto wallets. We are adding more methods on a regular basis. See [hello.coop](https://www.hello.coop/) for a complete list.
 
 = Does Hellō sell user data? =
 
-No. Hellō provides sites user data only with informed consent. User data is only accessible while the user has unlocked
-their wallet by logging in with their preferred provider.
+No. Hellō provides sites user data only with informed consent. User data is only accessible while the user has unlocked their wallet by logging in with their preferred provider.
 
 = How does Hellō make money? =
 
-The Hellō business model is to charge sites a few cents for each new verified claim the user provides to a site, such as
-a phone number and in the future claims such as a professional certification.
+The Hellō business model is to charge sites a few cents for each new verified claim the user provides to a site, such as a phone number and in the future claims such as a professional certification.
 
 = Why is Hellō free to sites now? =
 
-While we are building out the network, we are not charging sites for verified claims and rewarding early adopters of
-Hellō with credits for bringing users to Hellō.
+While we are building out the network, we are not charging sites for verified claims and rewarding early adopters of Hellō with credits for bringing users to Hellō.
 
 = How can I change the image for my site? =
 
