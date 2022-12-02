@@ -19,7 +19,7 @@ Hellō Login verifies your users' email addresses so you don't have to. No longe
 
 Hellō is a cloud identity wallet cooperatively operated with a mission to empower users to control their identity. Learn more at [hello.coop](https://www.hello.coop/).
 
-* Hellō Login installs with Hellō Quickstart to get you up and running in minutes.
+* Hellō Login installs with Hellō Quickstart to get you up and running in seconds.
 * Users control their identity with their Hellō Wallet. No need for you to manage how they login.
 * Hellō Login is free for users and early adopting sites. See [hello.coop](https://www.hello.coop/) for details.
 
