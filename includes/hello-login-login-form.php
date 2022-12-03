@@ -141,22 +141,13 @@ class Hello_Login_Login_Form {
 	 * @return string
 	 */
 	public function make_login_button( $atts = array() ) {
-
-		$atts = shortcode_atts(
-				array(
-						'button_text' => __( 'ō   Continue with Hellō', 'hello-login' ),
-				),
-				$atts,
-				'hello_login_button'
-		);
-
-		$href = $this->client_wrapper->get_authentication_url( $atts );
-		$href = esc_url_raw( $href );
-
+		// TODO $atts are not passed down to get_authentication_url
 		ob_start();
 		?>
 		<div class="hello-container" style="display: block; text-align: center;">
-			<button class="hello-btn" onclick="window.location.href = '<?php print esc_attr( $href ); ?>'"></button>
+			<button class="hello-btn" onclick="navigateToHelloAuthRequestUrl()">
+				<?php print esc_html__( 'ō   Continue with Hellō', 'hello-login' ); ?>
+			</button>
 			<button class="hello-about"></button>
 		</div>
 		<?php
