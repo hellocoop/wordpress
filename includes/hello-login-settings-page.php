@@ -475,10 +475,6 @@ class Hello_Login_Settings_Page {
 		$redirect_uri = rest_url( 'hello-login/v1/callback' );
 		$plugin_settings_uri = admin_url( '/options-general.php?page=hello-login-settings' );
 
-		if ( $this->settings->alternate_redirect_uri ) {
-			$redirect_uri = site_url( '/hello-login-callback' );
-		}
-
 		$show_succeeded = false;
 		if ( isset( $_GET['client_id'] ) && empty( $this->settings->client_id ) ) {
 			$this->settings->client_id = sanitize_text_field( $_GET['client_id'] );
