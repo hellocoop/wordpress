@@ -149,7 +149,7 @@ class Hello_Login {
 	 */
 	public function init() {
 
-		$redirect_uri = admin_url( 'admin-ajax.php?action=hello-login-callback' );
+		$redirect_uri = rest_url( 'hello-login/v1/callback' );
 
 		if ( $this->settings->alternate_redirect_uri ) {
 			$redirect_uri = site_url( '/hello-login-callback' );
