@@ -1,5 +1,5 @@
 === Hellō Login ===
-Contributors: marius1hello, remotelychris
+Contributors: marius1hello, DickHardt, remotelychris
 Donate link: https://www.hello.dev/
 Tags: security, login, oauth2, openidconnect, apps, authentication, sso
 Requires at least: 4.9

@@ -1,5 +1,5 @@
 # Hellō Login #
-**Contributors:** [marius1hello](https://profiles.wordpress.org/marius1hello/), [remotelychris](https://profiles.wordpress.org/remotelychris/)  
+**Contributors:** [marius1hello](https://profiles.wordpress.org/marius1hello/), [dickhardt](https://profiles.wordpress.org/dickhardt/), [remotelychris](https://profiles.wordpress.org/remotelychris/)  
 **Donate link:** https://www.hello.dev/  
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
