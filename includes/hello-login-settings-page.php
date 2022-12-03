@@ -157,12 +157,14 @@ class Hello_Login_Settings_Page {
 			$this->options_page_name
 		);
 
-		add_settings_section(
-			'user_settings',
-			__( 'WordPress User Settings', 'hello-login' ),
-			array( $this, 'user_settings_description' ),
-			$this->options_page_name
-		);
+		if ( isset( $_GET['debug'] ) ) {
+			add_settings_section(
+					'user_settings',
+					__('WordPress User Settings', 'hello-login'),
+					array($this, 'user_settings_description'),
+					$this->options_page_name
+			);
+		}
 
 		add_settings_section(
 			'authorization_settings',
@@ -390,34 +392,6 @@ class Hello_Login_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			*/
-			'link_existing_users'   => array(
-				'title'       => __( 'Link Existing Users', 'hello-login' ),
-				'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
-				'section'     => 'user_settings',
-			),
-			'create_if_does_not_exist'   => array(
-				'title'       => __( 'Create user if does not exist', 'hello-login' ),
-				'description' => __( 'If the user identity is not linked to an existing WordPress user, it is created. If this setting is not enabled, and if the user authenticates with an account which is not linked to an existing WordPress user, then the authentication will fail.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
-				'section'     => 'user_settings',
-			),
-			'redirect_user_back'   => array(
-				'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
-				'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_REDIRECT_USER_BACK' ),
-				'section'     => 'user_settings',
-			),
-			'redirect_on_logout'   => array(
-				'title'       => __( 'Redirect to the login screen when session is expired', 'hello-login' ),
-				'description' => __( 'When enabled, this will automatically redirect the user back to the WordPress login page if their access token has expired.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_REDIRECT_ON_LOGOUT' ),
-				'section'     => 'user_settings',
-			),
 			'enable_logging'    => array(
 				'title'       => __( 'Enable Logging', 'hello-login' ),
 				'description' => __( 'Very simple log messages for debugging purposes.', 'hello-login' ),
@@ -431,6 +405,38 @@ class Hello_Login_Settings_Page {
 				'section'     => 'log_settings',
 			),
 		);
+
+		if ( isset( $_GET['debug'] ) ) {
+			$fields['link_existing_users'] = array(
+					'title'       => __( 'Link Existing Users', 'hello-login' ),
+					'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'hello-login' ),
+					'type'        => 'checkbox',
+					'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
+					'section'     => 'user_settings',
+			);
+			$fields['create_if_does_not_exist'] = array(
+					'title'       => __( 'Create user if does not exist', 'hello-login' ),
+					'description' => __( 'If the user identity is not linked to an existing WordPress user, it is created. If this setting is not enabled, and if the user authenticates with an account which is not linked to an existing WordPress user, then the authentication will fail.', 'hello-login' ),
+					'type'        => 'checkbox',
+					'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
+					'section'     => 'user_settings',
+			);
+			$fields['redirect_user_back'] = array(
+					'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
+					'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'hello-login' ),
+					'type'        => 'checkbox',
+					'disabled'    => defined( 'OIDC_REDIRECT_USER_BACK' ),
+					'section'     => 'user_settings',
+			);
+
+			$fields['redirect_on_logout'] = array(
+					'title' => __('Redirect to the login screen when session is expired', 'hello-login'),
+					'description' => __('When enabled, this will automatically redirect the user back to the WordPress login page if their access token has expired.', 'hello-login'),
+					'type' => 'checkbox',
+					'disabled' => defined('OIDC_REDIRECT_ON_LOGOUT'),
+					'section' => 'user_settings',
+			);
+		}
 
 		return apply_filters( 'hello-login-settings-fields', $fields );
 
