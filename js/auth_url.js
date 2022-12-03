@@ -1,6 +1,10 @@
-async function navigateToHelloAuthRequestUrl() {
+async function navigateToHelloAuthRequestUrl(redirect_to_path) {
 	try {
-		const res = await fetch('/wp-json/hello-login/v1/auth_url?redirect_to_path=' + encodeURIComponent(location.pathname+location.search))
+		if (!redirect_to_path) {
+			redirect_to_path = location.pathname + location.search;
+		}
+
+		const res = await fetch('/wp-json/hello-login/v1/auth_url?redirect_to_path=' + encodeURIComponent(redirect_to_path))
 		const json = await res.json()
 		window.location.href = json['url']
 	} catch (err) {

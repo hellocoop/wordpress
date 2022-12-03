@@ -284,10 +284,6 @@ class Hello_Login_Client_Wrapper {
 		// Validate the redirect to value to prevent a redirection attack.
 		if ( ! empty( $atts['redirect_to'] ) ) {
 			$atts['redirect_to'] = wp_validate_redirect( $atts['redirect_to'], home_url() );
-
-			if ( str_contains( $atts['redirect_to'], "login" ) ) {
-				$atts['redirect_to'] = home_url();
-			}
 		}
 
 		$separator = '?';

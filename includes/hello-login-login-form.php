@@ -103,7 +103,11 @@ class Hello_Login_Login_Form {
 
 		if ( ! empty( $this->settings->client_id ) ) {
 			// Login button is appended to existing messages in case of error.
-			$message .= $this->make_login_button();
+			$atts = array(
+				'redirect_to' => home_url(),
+			);
+
+			$message .= $this->make_login_button($atts);
 
 			// Login form toggle is appended right after the button
 			$message .= $this->make_login_form_toggle();
@@ -141,11 +145,17 @@ class Hello_Login_Login_Form {
 	 * @return string
 	 */
 	public function make_login_button( $atts = array() ) {
-		// TODO $atts are not passed down to get_authentication_url
+		$redirect_to_path = '';
+
+		if ( isset( $atts['redirect_to'] ) ) {
+			$p = parse_url( $atts['redirect_to'] );
+			$redirect_to_path = $p['path'] . '?' . $p['query'];
+		}
+
 		ob_start();
 		?>
 		<div class="hello-container" style="display: block; text-align: center;">
-			<button class="hello-btn" onclick="navigateToHelloAuthRequestUrl()">
+			<button class="hello-btn" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $redirect_to_path ); ?>')">
 				<?php print esc_html__( 'ō   Continue with Hellō', 'hello-login' ); ?>
 			</button>
 			<button class="hello-about"></button>
