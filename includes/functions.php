@@ -10,6 +10,7 @@
 
 function hello_login_enqueue_scripts_and_styles() {
 	wp_enqueue_script( 'hello-button', 'https://cdn.hello.coop/js/hello-btn.js' );
+	wp_enqueue_script( 'auth-url', plugin_dir_url( __DIR__ ) . 'js/auth_url.js' );
 	wp_enqueue_style( 'hello-button', 'https://cdn.hello.coop/css/hello-btn.css' );
 }
 
