@@ -117,6 +117,8 @@ class Hello_Login_Client_Wrapper {
 
 		if ( is_admin() ) {
 			/*
+			 * WARNING: for backwards compatibility only.
+			 *
 			 * Use the ajax url to handle processing authorization without any html output
 			 * this callback will occur when then IDP returns with an authenticated value
 			 */
