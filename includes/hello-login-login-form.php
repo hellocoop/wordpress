@@ -149,7 +149,12 @@ class Hello_Login_Login_Form {
 
 		if ( isset( $atts['redirect_to'] ) ) {
 			$p = parse_url( $atts['redirect_to'] );
-			$redirect_to_path = $p['path'] . '?' . $p['query'];
+
+			$redirect_to_path = empty( $p['path'] ) ? '/' : $p['path'];
+
+			if ( ! empty( $p['query'] ) ) {
+				$redirect_to_path .= '?' . $p['query'];
+			}
 		}
 
 		ob_start();
