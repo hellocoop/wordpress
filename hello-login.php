@@ -149,11 +149,7 @@ class Hello_Login {
 	 */
 	public function init() {
 
-		$redirect_uri = admin_url( 'admin-ajax.php?action=hello-login-callback' );
-
-		if ( $this->settings->alternate_redirect_uri ) {
-			$redirect_uri = site_url( '/hello-login-callback' );
-		}
+		$redirect_uri = rest_url( 'hello-login/v1/callback' );
 
 		$state_time_limit = 180;
 		if ( $this->settings->state_time_limit ) {
@@ -377,7 +373,6 @@ class Hello_Login {
 
 				// Plugin settings.
 				'enforce_privacy' => defined( 'OIDC_ENFORCE_PRIVACY' ) ? intval( OIDC_ENFORCE_PRIVACY ) : 0,
-				'alternate_redirect_uri' => 0,
 				'token_refresh_enable' => 0,
 				'link_existing_users' => defined( 'OIDC_LINK_EXISTING_USERS' ) ? intval( OIDC_LINK_EXISTING_USERS ) : 1,
 				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? intval( OIDC_CREATE_IF_DOES_NOT_EXIST ) : 1,

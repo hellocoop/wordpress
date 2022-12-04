@@ -117,18 +117,13 @@ class Hello_Login_Client_Wrapper {
 
 		if ( is_admin() ) {
 			/*
+			 * WARNING: for backwards compatibility only.
+			 *
 			 * Use the ajax url to handle processing authorization without any html output
 			 * this callback will occur when then IDP returns with an authenticated value
 			 */
 			add_action( 'wp_ajax_hello-login-callback', array( $client_wrapper, 'authentication_request_callback' ) );
 			add_action( 'wp_ajax_nopriv_hello-login-callback', array( $client_wrapper, 'authentication_request_callback' ) );
-		}
-
-		if ( $settings->alternate_redirect_uri ) {
-			// Provide an alternate route for authentication_request_callback.
-			add_rewrite_rule( '^hello-login-callback/?', 'index.php?hello-login-callback=1', 'top' );
-			add_rewrite_tag( '%hello-login-callback%', '1' );
-			add_action( 'parse_request', array( $client_wrapper, 'alternate_redirect_uri_parse_request' ) );
 		}
 
 		// Verify token for any logged in user.
@@ -159,6 +154,15 @@ class Hello_Login_Client_Wrapper {
 				'methods' => 'GET',
 				'callback' => array( $this, 'rest_auth_url' ),
 				'permission_callback' => function() { return ''; },
+			)
+		);
+		register_rest_route(
+			'hello-login/v1',
+			'/callback/',
+			array(
+				'methods' => 'GET',
+				'callback' => array( $this, '' ),
+				'permission_callback' => function() { return 'authentication_request_callback'; },
 			)
 		);
 	}
@@ -192,23 +196,6 @@ class Hello_Login_Client_Wrapper {
 		return array(
 			'url' =>$this->get_authentication_url( $atts ),
 		);
-	}
-
-	/**
-	 * Implements WordPress parse_request action.
-	 *
-	 * @param WP_Query $query The WordPress query object.
-	 *
-	 * @return mixed
-	 */
-	public function alternate_redirect_uri_parse_request( $query ) {
-		if ( isset( $query->query_vars['hello-login-callback'] ) &&
-			 '1' === $query->query_vars['hello-login-callback'] ) {
-			$this->authentication_request_callback();
-			exit;
-		}
-
-		return $query;
 	}
 
 	/**

@@ -472,12 +472,8 @@ class Hello_Login_Settings_Page {
 	public function settings_page() {
 		wp_enqueue_style( 'hello-login-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
-		$redirect_uri = admin_url( 'admin-ajax.php?action=hello-login-callback' );
+		$redirect_uri = rest_url( 'hello-login/v1/callback' );
 		$plugin_settings_uri = admin_url( '/options-general.php?page=hello-login-settings' );
-
-		if ( $this->settings->alternate_redirect_uri ) {
-			$redirect_uri = site_url( '/hello-login-callback' );
-		}
 
 		$show_succeeded = false;
 		if ( isset( $_GET['client_id'] ) && empty( $this->settings->client_id ) ) {
