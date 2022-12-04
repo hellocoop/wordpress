@@ -161,8 +161,8 @@ class Hello_Login_Client_Wrapper {
 			'/callback/',
 			array(
 				'methods' => 'GET',
-				'callback' => array( $this, '' ),
-				'permission_callback' => function() { return 'authentication_request_callback'; },
+				'callback' => array( $this, 'authentication_request_callback' ),
+				'permission_callback' => function() { return ''; },
 			)
 		);
 		register_rest_route(
