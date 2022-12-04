@@ -157,10 +157,12 @@ class Hello_Login_Login_Form {
 			}
 		}
 
+		$api_url = rest_url( 'hello-login/v1/auth_url' );
+
 		ob_start();
 		?>
 		<div class="hello-container" style="display: block; text-align: center;">
-			<button class="hello-btn" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $redirect_to_path ); ?>')">
+			<button class="hello-btn" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '<?php print esc_js( $redirect_to_path ); ?>')">
 				<?php print esc_html__( 'ō   Continue with Hellō', 'hello-login' ); ?>
 			</button>
 			<button class="hello-about"></button>
