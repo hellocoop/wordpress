@@ -229,6 +229,10 @@ class Hello_Login_Client_Wrapper {
 			return home_url();
 		}
 
+		if ( defined( 'REST_REQUEST' ) ) {
+			return home_url();
+		}
+
 		if ( is_admin() ) {
 			return admin_url(sprintf(basename($_SERVER['REQUEST_URI'])));
 		}
