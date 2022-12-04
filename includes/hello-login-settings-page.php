@@ -166,12 +166,14 @@ class Hello_Login_Settings_Page {
 			);
 		}
 
-		add_settings_section(
-			'authorization_settings',
-			__( 'Authorization Settings', 'hello-login' ),
-			array( $this, 'authorization_settings_description' ),
-			$this->options_page_name
-		);
+		if ( isset( $_GET['debug'] ) ) {
+			add_settings_section(
+					'authorization_settings',
+					__('Authorization Settings', 'hello-login'),
+					array($this, 'authorization_settings_description'),
+					$this->options_page_name
+			);
+		}
 
 		add_settings_section(
 			'log_settings',
@@ -337,15 +339,6 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
-			*/
-			'enforce_privacy'   => array(
-				'title'       => __( 'Enforce Privacy', 'hello-login' ),
-				'description' => __( 'Require users be logged in to see the site.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
-				'section'     => 'authorization_settings',
-			),
-			/*
 			'alternate_redirect_uri'   => array(
 				'title'       => __( 'Alternate Redirect URI', 'hello-login' ),
 				'description' => __( 'Provide an alternative redirect route. Useful if your server is causing issues with the default admin-ajax method. You must flush rewrite rules after changing this setting. This can be done by saving the Permalinks settings page.', 'hello-login' ),
@@ -407,6 +400,13 @@ class Hello_Login_Settings_Page {
 		);
 
 		if ( isset( $_GET['debug'] ) ) {
+			$fields['enforce_privacy'] = array(
+					'title'       => __( 'Enforce Privacy', 'hello-login' ),
+					'description' => __( 'Require users be logged in to see the site.', 'hello-login' ),
+					'type'        => 'checkbox',
+					'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
+					'section'     => 'authorization_settings',
+			);
 			$fields['link_existing_users'] = array(
 					'title'       => __( 'Link Existing Users', 'hello-login' ),
 					'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'hello-login' ),
