@@ -165,6 +165,15 @@ class Hello_Login_Client_Wrapper {
 				'permission_callback' => function() { return 'authentication_request_callback'; },
 			)
 		);
+		register_rest_route(
+			'hello-login/v1',
+			'/quickstart/',
+			array(
+				'methods' => 'GET',
+				'callback' => array( $this, 'quickstart_callback' ),
+				'permission_callback' => function() { return ''; },
+			)
+		);
 	}
 
 	/**
@@ -196,6 +205,24 @@ class Hello_Login_Client_Wrapper {
 		return array(
 			'url' =>$this->get_authentication_url( $atts ),
 		);
+	}
+
+	/**
+	 * Process the Quickstart response.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 * @return WP_Error A Quickstart response processing error.
+	 */
+	public function quickstart_callback( WP_REST_Request $request ) {
+		$atts = array();
+
+		if ( $request->has_param( 'client_id' ) ) {
+			$client_id = $request->get_param( 'client_id' );
+
+			exit();
+		} else {
+			return new WP_Error( 'invalid_client_id', 'Missing or invalid client id', array( 'status' => 400 ) );
+		}
 	}
 
 	/**
