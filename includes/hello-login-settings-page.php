@@ -493,6 +493,8 @@ class Hello_Login_Settings_Page {
 			$custom_logo_data = wp_get_attachment_image_src( $custom_logo_id , 'full' );
 			$custom_logo_url = $custom_logo_data[0];
 		}
+
+		$api_url = rest_url( 'hello-login/v1/auth_url' );
 		?>
 		<div class="wrap">
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
@@ -516,7 +518,7 @@ class Hello_Login_Settings_Page {
 
 			<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ) { ?>
 				<p id="link-hello-wallet">You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</p>
-				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('')"></button>
+				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
 			<?php } ?>
 
 			<p>Use the <a href="https://console.hello.coop/" target="_blank">Hellō Console</a> to update your Hellō configuration</p>
