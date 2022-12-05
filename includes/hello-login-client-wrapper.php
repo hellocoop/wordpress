@@ -220,10 +220,8 @@ class Hello_Login_Client_Wrapper {
 		if ( $request->has_param( 'client_id' ) ) {
 			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
 
-			if ( preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $client_id) !== 1 ) {
-				return new WP_Error( 'invalid_client_id', 'Invalid client id', array( 'status' => 400 ) );
-			}
-
+			// TODO add client id format validation
+\
 			if ( ! empty( $this->settings->client_id ) ) {
 				return new WP_Error( 'existing_client_id', 'Client id already set', array( 'status' => 403 ) );
 			}
