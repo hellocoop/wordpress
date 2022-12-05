@@ -1,5 +1,15 @@
 # Hellō Login Changelog
 
+## 1.0.7
+
+* Fix: authentication request URL generated through REST API on button click
+* Improvement: removed the WordPress User Settings section
+* Improvement: removed the Authorization Settings section
+* Improvement: use /hello-login/callback path for redirect URI
+* Improvement: added endpoint for Quickstart response
+* Fix: client id field being reset on settings save
+* Fix: automatic configuration of rewrite rules
+
 ## 1.0.6
 
 * Feature: added screenshots
