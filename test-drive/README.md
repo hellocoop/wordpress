@@ -55,6 +55,11 @@ Delete only the client id for the Hellō Login plugin settings:
 ./wp-cli.sh option patch delete hello_login_settings client_id
 ```
 
+Drop into a PHP shell:
+```shell
+./wp-cli.sh shell
+```
+
 ## Docker Cheat Sheet
 
 ### Bash Session Inside a Container
