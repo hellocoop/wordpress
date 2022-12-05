@@ -1,10 +1,10 @@
 # Hellō Login #
-**Contributors:** [marius1hello](https://profiles.wordpress.org/marius1hello/)  
+**Contributors:** [marius1hello](https://profiles.wordpress.org/marius1hello/), [dickhardt](https://profiles.wordpress.org/dickhardt/), [remotelychris](https://profiles.wordpress.org/remotelychris/)  
 **Donate link:** https://www.hello.dev/  
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.1  
-**Stable tag:** 1.0.6  
+**Stable tag:** 1.0.7  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,16 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 2. The Hellō Wallet login choices offered.
 
 ## Changelog ##
+
+### 1.0.7 ###
+
+* Fix: authentication request URL generated through REST API on button click
+* Improvement: removed the WordPress User Settings section
+* Improvement: removed the Authorization Settings section
+* Improvement: use /hello-login/callback path for redirect URI
+* Improvement: added endpoint for Quickstart response
+* Fix: client id field being reset on settings save
+* Fix: automatic configuration of rewrite rules
 
 ### 1.0.6 ###
 
