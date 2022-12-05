@@ -1,5 +1,9 @@
 # Hellō Login Changelog
 
+## 1.0.8
+
+* Fix: use query parameter based redirect URI
+
 ## 1.0.7
 
 * Fix: authentication request URL generated through REST API on button click
