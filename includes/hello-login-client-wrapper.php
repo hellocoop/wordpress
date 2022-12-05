@@ -221,7 +221,7 @@ class Hello_Login_Client_Wrapper {
 			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
 
 			// TODO add client id format validation
-\
+
 			if ( ! empty( $this->settings->client_id ) ) {
 				return new WP_Error( 'existing_client_id', 'Client id already set', array( 'status' => 403 ) );
 			}
