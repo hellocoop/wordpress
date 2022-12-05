@@ -564,11 +564,12 @@ class Hello_Login_Settings_Page {
 	public function do_text_field( $field ) {
 		$disabled = ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true;
 
+		$readonly = '';
 		if ( $field['key'] == 'client_id' ) {
-			$disabled = true;
+			$readonly = 'readonly';
 		}
 		?>
-		<input type="<?php print esc_attr( $field['type'] ); ?>"
+		<input type="<?php print esc_attr( $field['type'] ); ?>" <?php print esc_attr( $readonly ); ?>
 				<?php echo ( $disabled ? ' disabled' : '' ); ?>
 			  id="<?php print esc_attr( $field['key'] ); ?>"
 			  class="large-text<?php echo ( $disabled ? ' disabled' : '' ); ?>"
