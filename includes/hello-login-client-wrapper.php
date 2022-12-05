@@ -115,16 +115,6 @@ class Hello_Login_Client_Wrapper {
 		// Alter the requests according to settings.
 		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 3 );
 
-		if ( is_admin() ) {
-			/*
-			 * WARNING: for backwards compatibility only.
-			 *
-			 * Use the ajax url to handle processing authorization without any html output
-			 * this callback will occur when then IDP returns with an authenticated value
-			 */
-			add_action( 'wp_ajax_hello-login-callback', array( $client_wrapper, 'authentication_request_callback' ) );
-			add_action( 'wp_ajax_nopriv_hello-login-callback', array( $client_wrapper, 'authentication_request_callback' ) );
-		}
 
 		add_rewrite_rule( '^hello-login/([a-z]+)/?.*', 'index.php?hello-login=$matches[1]', 'top' );
 		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
