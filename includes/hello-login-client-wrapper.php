@@ -126,7 +126,7 @@ class Hello_Login_Client_Wrapper {
 			add_action( 'wp_ajax_nopriv_hello-login-callback', array( $client_wrapper, 'authentication_request_callback' ) );
 		}
 
-		add_rewrite_rule( '^hello-login/([a-z]+)/?', 'index.php?hello-login=$matches[1]', 'top' );
+		add_rewrite_rule( '^hello-login/([a-z]+)/?.*', 'index.php?hello-login=$matches[1]', 'top' );
 		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
 		add_action( 'parse_request', array( $client_wrapper, 'redirect_uri_parse_request' ) );
 
