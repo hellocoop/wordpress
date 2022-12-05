@@ -214,16 +214,16 @@ class Hello_Login_Client_Wrapper {
 	 * @return WP_Error A Quickstart response processing error.
 	 */
 	public function rest_quickstart_callback( WP_REST_Request $request ) {
-		$atts = array();
-
 		if ( $request->has_param( 'client_id' ) ) {
+			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
+
+			if ( preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $client_id) !== 1 ) {
+				return new WP_Error( 'invalid_client_id', 'Invalid client id', array( 'status' => 400 ) );
+			}
+
 			if ( ! empty( $this->settings->client_id ) ) {
 				return new WP_Error( 'existing_client_id', 'Client id already set', array( 'status' => 403 ) );
 			}
-
-			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
-
-			// TODO validate the client id format, must be UUIDv4.
 
 			$this->settings->client_id = $client_id;
 			$this->settings->save();
