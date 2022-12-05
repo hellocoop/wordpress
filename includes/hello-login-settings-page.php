@@ -473,7 +473,7 @@ class Hello_Login_Settings_Page {
 		wp_enqueue_style( 'hello-login-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
 		$redirect_uri = site_url( '/hello-login/callback' );
-		$quickstart_uri = site_url( '/hello-login/quickstart' );
+		$quickstart_uri = rest_url( 'hello-login/v1/quickstart' );
 
 		$custom_logo_url = '';
 		if ( has_custom_logo() ) {
