@@ -161,8 +161,17 @@ class Hello_Login_Client_Wrapper {
 			'/callback/',
 			array(
 				'methods' => 'GET',
-				'callback' => array( $this, '' ),
-				'permission_callback' => function() { return 'authentication_request_callback'; },
+				'callback' => array( $this, 'authentication_request_callback' ),
+				'permission_callback' => function() { return ''; },
+			)
+		);
+		register_rest_route(
+			'hello-login/v1',
+			'/quickstart/',
+			array(
+				'methods' => 'GET',
+				'callback' => array( $this, 'rest_quickstart_callback'),
+				'permission_callback' => function() { return ''; },
 			)
 		);
 	}
@@ -194,8 +203,37 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		return array(
-			'url' =>$this->get_authentication_url( $atts ),
+			'url' => $this->get_authentication_url( $atts ),
 		);
+	}
+
+	/**
+	 * Process the Quickstart response.
+	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 * @return WP_Error A Quickstart response processing error.
+	 */
+	public function rest_quickstart_callback( WP_REST_Request $request ) {
+		if ( $request->has_param( 'client_id' ) ) {
+			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
+
+			if ( preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $client_id) !== 1 ) {
+				return new WP_Error( 'invalid_client_id', 'Invalid client id', array( 'status' => 400 ) );
+			}
+
+			if ( ! empty( $this->settings->client_id ) ) {
+				return new WP_Error( 'existing_client_id', 'Client id already set', array( 'status' => 403 ) );
+			}
+
+			$this->settings->client_id = $client_id;
+			$this->settings->save();
+			$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
+
+			wp_redirect( admin_url( '/options-general.php?page=hello-login-settings' ) );
+			exit();
+		} else {
+			return new WP_Error( 'missing_client_id', 'Missing client id', array( 'status' => 400 ) );
+		}
 	}
 
 	/**
@@ -211,7 +249,7 @@ class Hello_Login_Client_Wrapper {
 			return '';
 		}
 
-		// If using the login form, default redirect to the home page
+		// If using the login form, default redirect to the home page.
 		if ( isset( $GLOBALS['pagenow'] ) && 'wp-login.php' == $GLOBALS['pagenow'] ) {
 			return home_url();
 		}
@@ -221,7 +259,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		if ( is_admin() ) {
-			return admin_url(sprintf(basename($_SERVER['REQUEST_URI'])));
+			return admin_url( sprintf( basename( $_SERVER['REQUEST_URI'] ) ) );
 		}
 
 		// Default redirect to the homepage.
