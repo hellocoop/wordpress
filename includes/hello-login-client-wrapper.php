@@ -179,15 +179,6 @@ class Hello_Login_Client_Wrapper {
 		);
 		register_rest_route(
 			'hello-login/v1',
-			'/callback/',
-			array(
-				'methods' => 'GET',
-				'callback' => array( $this, 'authentication_request_callback' ),
-				'permission_callback' => function() { return ''; },
-			)
-		);
-		register_rest_route(
-			'hello-login/v1',
 			'/quickstart/',
 			array(
 				'methods' => 'GET',

@@ -149,7 +149,7 @@ class Hello_Login {
 	 */
 	public function init() {
 
-		$redirect_uri = rest_url( 'hello-login/v1/callback' );
+		$redirect_uri = site_url( '/hello-login/callback' );
 
 		$state_time_limit = 180;
 		if ( $this->settings->state_time_limit ) {
