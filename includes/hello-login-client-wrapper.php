@@ -115,16 +115,10 @@ class Hello_Login_Client_Wrapper {
 		// Alter the requests according to settings.
 		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 3 );
 
-		if ( is_admin() ) {
-			/*
-			 * WARNING: for backwards compatibility only.
-			 *
-			 * Use the ajax url to handle processing authorization without any html output
-			 * this callback will occur when then IDP returns with an authenticated value
-			 */
-			add_action( 'wp_ajax_hello-login-callback', array( $client_wrapper, 'authentication_request_callback' ) );
-			add_action( 'wp_ajax_nopriv_hello-login-callback', array( $client_wrapper, 'authentication_request_callback' ) );
-		}
+
+		add_rewrite_rule( '^hello-login/([a-z]+)/?.*', 'index.php?hello-login=$matches[1]', 'top' );
+		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
+		add_action( 'parse_request', array( $client_wrapper, 'redirect_uri_parse_request' ) );
 
 		// Verify token for any logged in user.
 		if ( is_user_logged_in() ) {
@@ -142,6 +136,24 @@ class Hello_Login_Client_Wrapper {
 	}
 
 	/**
+	 * Implements WordPress parse_request action.
+	 *
+	 * @param WP_Query $query The WordPress query object.
+	 *
+	 * @return mixed
+	 */
+	public function redirect_uri_parse_request( $query ) {
+		if ( isset( $query->query_vars['hello-login'] ) ) {
+			if ( 'callback' === $query->query_vars['hello-login'] ) {
+				$this->authentication_request_callback();
+				exit;
+			}
+		}
+
+		return $query;
+	}
+
+	/**
 	 * Register REST API routes.
 	 *
 	 * @return void
@@ -153,15 +165,6 @@ class Hello_Login_Client_Wrapper {
 			array(
 				'methods' => 'GET',
 				'callback' => array( $this, 'rest_auth_url' ),
-				'permission_callback' => function() { return ''; },
-			)
-		);
-		register_rest_route(
-			'hello-login/v1',
-			'/callback/',
-			array(
-				'methods' => 'GET',
-				'callback' => array( $this, 'authentication_request_callback' ),
 				'permission_callback' => function() { return ''; },
 			)
 		);
@@ -217,10 +220,8 @@ class Hello_Login_Client_Wrapper {
 		if ( $request->has_param( 'client_id' ) ) {
 			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
 
-			if ( preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $client_id) !== 1 ) {
-				return new WP_Error( 'invalid_client_id', 'Invalid client id', array( 'status' => 400 ) );
-			}
-
+			// TODO add client id format validation
+\
 			if ( ! empty( $this->settings->client_id ) ) {
 				return new WP_Error( 'existing_client_id', 'Client id already set', array( 'status' => 403 ) );
 			}
