@@ -170,7 +170,7 @@ class Hello_Login_Client_Wrapper {
 			'/quickstart/',
 			array(
 				'methods' => 'GET',
-				'callback' => array( $this, 'quickstart_callback' ),
+				'callback' => array( $this, 'rest_quickstart_callback'),
 				'permission_callback' => function() { return ''; },
 			)
 		);
@@ -203,7 +203,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		return array(
-			'url' =>$this->get_authentication_url( $atts ),
+			'url' => $this->get_authentication_url( $atts ),
 		);
 	}
 
@@ -213,15 +213,26 @@ class Hello_Login_Client_Wrapper {
 	 * @param WP_REST_Request $request The REST request object.
 	 * @return WP_Error A Quickstart response processing error.
 	 */
-	public function quickstart_callback( WP_REST_Request $request ) {
+	public function rest_quickstart_callback( WP_REST_Request $request ) {
 		$atts = array();
 
 		if ( $request->has_param( 'client_id' ) ) {
-			$client_id = $request->get_param( 'client_id' );
+			if ( ! empty( $this->settings->client_id ) ) {
+				return new WP_Error( 'existing_client_id', 'Client id already set', array( 'status' => 403 ) );
+			}
 
+			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
+
+			// TODO validate the client id format, must be UUIDv4.
+
+			$this->settings->client_id = $client_id;
+			$this->settings->save();
+			$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
+
+			wp_redirect( admin_url( '/options-general.php?page=hello-login-settings' ) );
 			exit();
 		} else {
-			return new WP_Error( 'invalid_client_id', 'Missing or invalid client id', array( 'status' => 400 ) );
+			return new WP_Error( 'missing_client_id', 'Missing client id', array( 'status' => 400 ) );
 		}
 	}
 
@@ -238,7 +249,7 @@ class Hello_Login_Client_Wrapper {
 			return '';
 		}
 
-		// If using the login form, default redirect to the home page
+		// If using the login form, default redirect to the home page.
 		if ( isset( $GLOBALS['pagenow'] ) && 'wp-login.php' == $GLOBALS['pagenow'] ) {
 			return home_url();
 		}
@@ -248,7 +259,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		if ( is_admin() ) {
-			return admin_url(sprintf(basename($_SERVER['REQUEST_URI'])));
+			return admin_url( sprintf( basename( $_SERVER['REQUEST_URI'] ) ) );
 		}
 
 		// Default redirect to the homepage.

@@ -473,15 +473,7 @@ class Hello_Login_Settings_Page {
 		wp_enqueue_style( 'hello-login-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
 		$redirect_uri = rest_url( 'hello-login/v1/callback' );
-		$plugin_settings_uri = admin_url( '/options-general.php?page=hello-login-settings' );
-
-		$show_succeeded = false;
-		if ( isset( $_GET['client_id'] ) && empty( $this->settings->client_id ) ) {
-			$this->settings->client_id = sanitize_text_field( $_GET['client_id'] );
-			$this->settings->save();
-			$show_succeeded = true;
-			$this->logger->log("Client ID set through Quickstart: " . $this->settings->client_id, 'quickstart');
-		}
+		$quickstart_uri = rest_url( 'hello-login/v1/quickstart' );
 
 		$custom_logo_url = '';
 		if ( has_custom_logo() ) {
@@ -500,7 +492,7 @@ class Hello_Login_Settings_Page {
 
 			<form method="get" action="https://quickstart.hello.coop/">
 				<input type="hidden" name="integration" id="integration" value="wordpress" />
-				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $plugin_settings_uri ); ?>" />
+				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $quickstart_uri ); ?>" />
 				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo('name') ); ?>" />
 				<input type="hidden" name="pp_uri" id="pp_uri" value="<?php print esc_attr( get_privacy_policy_url() ); ?>" />
 				<input type="hidden" name="image_uri" id="image_uri" value="<?php print esc_attr( $custom_logo_url ); ?>" />
@@ -509,8 +501,6 @@ class Hello_Login_Settings_Page {
 			</form>
 
 			<?php } else { ?>
-
-			<?php if ( $show_succeeded ) { ?><p id="quickstart_success">Quickstart Succeeded!</p><?php } ?>
 
 			<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ) { ?>
 				<p id="link-hello-wallet">You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</p>
