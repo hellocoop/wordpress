@@ -55,6 +55,16 @@ Delete only the client id for the Hellō Login plugin settings:
 ./wp-cli.sh option patch delete hello_login_settings client_id
 ```
 
+Get the plugin logs:
+```shell
+./wp-cli.sh option get hello-login-logs
+```
+
+Delete the plugin logs:
+```shell
+./wp-cli.sh option delete hello-login-logs
+```
+
 Drop into a PHP shell:
 ```shell
 ./wp-cli.sh shell
