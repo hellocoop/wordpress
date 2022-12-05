@@ -282,6 +282,7 @@ class Hello_Login {
 	 */
 	public static function activation() {
 		self::setup_cron_jobs();
+		update_option('hello_login_permalinks_flushed', 0);
 	}
 
 	/**
@@ -301,6 +302,7 @@ class Hello_Login {
 	public static function uninstall() {
 		delete_option(self::OPTION_NAME);
 		delete_option(self::LOGS_OPTION_NAME);
+		delete_option('hello_login_permalinks_flushed');
 	}
 
 	/**
