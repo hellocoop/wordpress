@@ -488,7 +488,7 @@ class Hello_Login_Settings_Page {
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
 
 			<?php if ( empty( $this->settings->client_id ) ) { ?>
-			<p>The Hellō Login plug-in uses the Hellō Quickstart to get you up and running in seconds.</p>
+			<p><h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already</h2></p>
 
 			<form method="get" action="https://quickstart.hello.coop/">
 				<input type="hidden" name="integration" id="integration" value="wordpress" />
@@ -503,7 +503,7 @@ class Hello_Login_Settings_Page {
 			<?php } else { ?>
 
 			<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ) { ?>
-				<p id="link-hello-wallet">You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</p>
+				<p id="link-hello-wallet"><h2>You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</h2></p>
 				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
 			<?php } ?>
 
