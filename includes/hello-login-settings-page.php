@@ -517,17 +517,6 @@ class Hello_Login_Settings_Page {
 				?>
 			</form>
 
-			<?php } ?>
-
-			<?php if ( isset( $_GET['debug'] ) ) { ?>
-				<h4>Debug</h4>
-				<p>Hellō user id: <code><?php print esc_html( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ?></code></p>
-				<pre>
-				<?php print esc_html( var_dump( $this->settings->get_values() ) ); ?>
-				</pre>
-			}
-			<?php } ?>
-
 			<h4><?php esc_html_e( 'Notes', 'hello-login' ); ?></h4>
 
 			<p class="description">
@@ -542,6 +531,17 @@ class Hello_Login_Settings_Page {
 				<strong><?php esc_html_e( 'Authentication URL Shortcode', 'hello-login' ); ?></strong>
 				<code>[hello_login_auth_url]</code>
 			</p>
+
+			<?php } ?>
+
+			<?php if ( isset( $_GET['debug'] ) ) { ?>
+				<h4>Debug</h4>
+				<p>Hellō user id: <code><?php print esc_html( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ?></code></p>
+				<pre>
+				<?php print esc_html( var_dump( $this->settings->get_values() ) ); ?>
+				</pre>
+			}
+			<?php } ?>
 
 			<?php if ( $this->settings->enable_logging ) { ?>
 				<h2><?php esc_html_e( 'Logs', 'hello-login' ); ?></h2>
