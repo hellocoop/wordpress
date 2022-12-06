@@ -16,7 +16,7 @@
  * Plugin Name:       Hellō Login
  * Plugin URI:        https://github.com/hellocoop/wordpress
  * Description:       Free and simple to setup plugin provides registration and login with the Hellō Wallet. Users choose from popular social login, email, or crypto wallet. Setup in 7 clicks, not 7 hours.
- * Version:           1.0.8
+ * Version:           1.0.9
  * Requires at least: 4.9
  * Requires PHP:      7.2
  * Author:            hellocoop
@@ -84,7 +84,7 @@ class Hello_Login {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.0.8';
+	const VERSION = '1.0.9';
 
 	/**
 	 * Plugin option name.
@@ -380,7 +380,7 @@ class Hello_Login {
 				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? intval( OIDC_CREATE_IF_DOES_NOT_EXIST ) : 1,
 				'redirect_user_back' => defined( 'OIDC_REDIRECT_USER_BACK' ) ? intval( OIDC_REDIRECT_USER_BACK ) : 1,
 				'redirect_on_logout' => defined( 'OIDC_REDIRECT_ON_LOGOUT' ) ? intval( OIDC_REDIRECT_ON_LOGOUT ) : 1,
-				'enable_logging'  => 0,
+				'enable_logging'  => 1,
 				'log_limit'       => 1000,
 			)
 		);

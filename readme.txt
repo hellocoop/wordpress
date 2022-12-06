@@ -4,7 +4,7 @@ Donate link: https://www.hello.dev/
 Tags: security, login, oauth2, openidconnect, apps, authentication, sso
 Requires at least: 4.9
 Tested up to: 6.1
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -79,6 +79,12 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 2. The Hellō Wallet login choices offered.
 
 == Changelog ==
+
+= 1.0.9 =
+
+* Fix: disable caching on REST API response
+* Improvement: enable logging by default
+* Improvement: content changes on plugin settings page
 
 = 1.0.8 =
 
