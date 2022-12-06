@@ -488,7 +488,7 @@ class Hello_Login_Settings_Page {
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
 
 			<?php if ( empty( $this->settings->client_id ) ) { ?>
-			<p><h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already</h2></p>
+			<p><h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already.</h2></p>
 
 			<form method="get" action="https://quickstart.hello.coop/">
 				<input type="hidden" name="integration" id="integration" value="wordpress" />
