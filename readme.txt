@@ -80,6 +80,12 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 == Changelog ==
 
+= 1.0.9 =
+
+* Fix: disable caching on REST API response
+* Improvement: enable logging by default
+* Improvement: content changes on plugin settings page
+
 = 1.0.8 =
 
 * Fix: use query parameter based redirect URI
