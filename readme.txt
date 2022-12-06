@@ -80,6 +80,10 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 == Changelog ==
 
+= 1.0.10 =
+
+* Improvement: show settings form in debug mode
+
 = 1.0.9 =
 
 * Fix: disable caching on REST API response
