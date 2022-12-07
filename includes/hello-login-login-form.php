@@ -117,7 +117,7 @@ class Hello_Login_Login_Form {
 		if ( $configured && ! $on_lost_password && ! $on_register) {
 			// Login button is appended to existing messages in case of error.
 			$atts = array(
-				'redirect_to' => home_url(),
+				'redirect_to' => admin_url(),
 			);
 
 			$message .= $this->make_login_button($atts);
