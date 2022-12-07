@@ -65,7 +65,7 @@ class Hello_Login_Login_Form {
 		$login_form = new self( $logger, $settings, $client_wrapper );
 
 		// Alter the login form as dictated by settings.
-		add_filter( 'login_messages', array( $login_form, 'handle_login_page' ), 99 );
+		add_filter( 'login_message', array( $login_form, 'handle_login_page' ), 99 );
 
 		// Add a shortcode for the login button.
 		add_shortcode( 'hello_login_button', array( $login_form, 'make_login_button' ) );
@@ -117,7 +117,7 @@ class Hello_Login_Login_Form {
 		if ( $configured && ! $on_lost_password && ! $on_register) {
 			// Login button is appended to existing messages in case of error.
 			$atts = array(
-				'redirect_to' => home_url(),
+				'redirect_to' => admin_url(),
 			);
 
 			$message .= $this->make_login_button($atts);
