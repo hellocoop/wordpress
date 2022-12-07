@@ -10,7 +10,7 @@ window.addEventListener("DOMContentLoaded", () => {
 	toggleBtnDropdownEle.style.right = 0
 	toggleBtnDropdownEle.style.top = 0
 	toggleBtnDropdownEle.innerHTML =
-	`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px;">
+	`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px; opacity: 0.6;">
 		<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
 	</svg>`
 	toggleBtnEle.append(toggleBtnTextEle, toggleBtnDropdownEle)

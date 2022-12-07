@@ -174,7 +174,13 @@ class Hello_Login_Login_Form {
 		wp_enqueue_style( 'hello-username-password-form', plugin_dir_url( __DIR__ ) . 'css/styles-login.css' );
 
 		ob_start();
-		
+		?>
+		<div style="display: flex; align-items: center; justify-content: center;">
+			<span style="position: absolute; background-color: #f0f0f1; width: 40px; height: 20px; z-index: 40; text-align: center; font-size: 14px;">OR</span>
+			<div style="height: 2px; width: 100%; background-color: black; opacity: 0.1;"></div>
+		</div>
+		<?php
+
 		return ob_get_clean();
 	}
 

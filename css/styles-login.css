@@ -5,6 +5,9 @@
     height: 16px;
     padding: 20px 24px;
 }
+.hello-container {
+    margin-bottom: 25px;
+}
 #toggle-form {
     background: transparent;
     border: none;
