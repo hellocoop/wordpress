@@ -1,29 +1,35 @@
-let loginFormRef;
-let toggleButtonRef;
-let forgotPasswordRef;
-const toggleText = {
-	unhidden: "Show username and password login",
-	hidden: "Hide username and password login"
-}
+window.addEventListener("DOMContentLoaded", () => {
+	const loginFormRef = document.querySelector("#loginform")
+	const loginFormInitialHeight = getComputedStyle(loginFormRef).height
+	const toggleBtnEle = document.createElement("button")
+	toggleBtnEle.id = "toggle-form"
+	const toggleBtnTextEle = document.createElement("span")
+	toggleBtnTextEle.textContent = "Continue with username or email"
+	const toggleBtnDropdownEle = document.createElement("span")
+	toggleBtnDropdownEle.style.position = "absolute"
+	toggleBtnDropdownEle.style.right = 0
+	toggleBtnDropdownEle.style.top = 0
+	toggleBtnDropdownEle.innerHTML =
+	`<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width: 20px;">
+		<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+	</svg>`
+	toggleBtnEle.append(toggleBtnTextEle, toggleBtnDropdownEle)
+	loginFormRef.prepend(toggleBtnEle)
 
-window.onload = () => {
-	loginFormRef = document.querySelector("#loginform") //save reference to the login form
-	forgotPasswordRef = document.querySelector("#nav") //save reference to the "Lost your password" link
-	loginFormRef.style.visibility = "hidden" //hide login form
-	forgotPasswordRef.style.visibility = "hidden" //hide the "Lost your password" link
-	toggleButtonRef = document.querySelector("#login-form-toggle") //save reference to the toggle button
-	toggleButtonRef.textContent = toggleText.unhidden //populate toggle button with text
-}
+	let isCollapsed = true
 
-function toggleLoginForm(){
-	const isHidden = loginFormRef.style.visibility === "hidden"   //gets display state of login form - hidden or visible
-	if(isHidden) {
-		loginFormRef.style.visibility = "visible"
-		forgotPasswordRef.style.visibility = "visible"
-		toggleButtonRef.textContent = toggleText.hidden
-	} else {
-		loginFormRef.style.visibility = "hidden"
-		forgotPasswordRef.style.visibility = "hidden"
-		toggleButtonRef.textContent = toggleText.unhidden
-	}
-}
+	toggleBtnEle.addEventListener("click", (e) => {
+		e.preventDefault()
+	
+		loginFormRef.style.height = isCollapsed ? "230px" : loginFormInitialHeight
+		for(const child of loginFormRef.children) {
+			if(child.id === "toggle-form") continue
+			child.style.visibility = isCollapsed ? "visible" : "hidden"
+		}
+
+		toggleBtnDropdownEle.style.rotate = isCollapsed ? "180deg" : "0deg"
+		toggleBtnDropdownEle.style.top = isCollapsed ? "-4px" : 0 //margin correction
+
+		isCollapsed = !isCollapsed
+	})
+});

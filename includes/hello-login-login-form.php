@@ -174,10 +174,7 @@ class Hello_Login_Login_Form {
 		wp_enqueue_style( 'hello-username-password-form', plugin_dir_url( __DIR__ ) . 'css/styles-login.css' );
 
 		ob_start();
-		?>
-		<button id="login-form-toggle" onclick="toggleLoginForm()"></button>
-		<?php
-
+		
 		return ob_get_clean();
 	}
 

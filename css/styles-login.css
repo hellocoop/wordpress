@@ -1,10 +1,19 @@
-#login-form-toggle {
-	display: block;
-	background: none;
-	border: transparent;
-	margin: 20px auto;
+#loginform > *:not(#toggle-form) {
+    visibility: hidden;
 }
-#login-form-toggle:hover, #login-form-toggle:focus{
-	text-decoration: underline;
-	cursor: pointer;
+.login form {
+    height: 16px;
+    padding: 20px 24px;
+}
+#toggle-form {
+    background: transparent;
+    border: none;
+    margin-bottom: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
 }
