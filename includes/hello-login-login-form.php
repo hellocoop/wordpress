@@ -112,8 +112,9 @@ class Hello_Login_Login_Form {
 
 		$configured = !empty($this->settings->client_id);
 		$on_lost_password = isset( $_GET['action'] ) && 'lostpassword' == $_GET['action'];
+		$on_register = isset( $_GET['action'] ) && 'register' == $_GET['action'];
 
-		if ( $configured && ! $on_lost_password ) {
+		if ( $configured && ! $on_lost_password && ! $on_register) {
 			// Login button is appended to existing messages in case of error.
 			$atts = array(
 				'redirect_to' => home_url(),
