@@ -1,24 +1,26 @@
 version: '3.7'
 
+name: hello-login
+
 services:
 
-  hello_wordpress:
+  wordpress:
     image: wordpress
     restart: always
     depends_on:
-      - hello_db
-      - hello_mailhog
+      - db
+      - mailhog
     ports:
       - 8080:80
     environment:
-      WORDPRESS_DB_HOST: hello_db
+      WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
       WORDPRESS_DB_PASSWORD: examplepass
       WORDPRESS_DB_NAME: exampledb
-      SMTP_HOST: hello_mailhog
+      SMTP_HOST: mailhog
       SMTP_PORT: 1025
 
-  hello_db:
+  db:
     image: mysql:5.7
     restart: always
     environment:
@@ -27,7 +29,7 @@ services:
       MYSQL_PASSWORD: examplepass
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
 
-  hello_mailhog:
+  mailhog:
     image: mailhog/mailhog
     restart: always
     ports:
