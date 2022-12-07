@@ -163,7 +163,7 @@ class Hello_Login_Login_Form {
 		?>
 		<div class="hello-container" style="display: block; text-align: center;">
 			<button class="hello-btn" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '<?php print esc_js( $redirect_to_path ); ?>')">
-				<?php print esc_html__( 'ō   Continue with Hellō', 'hello-login' ); ?>
+				<?php print esc_html__( 'ō&nbsp;&nbsp;&nbsp;Continue with Hellō', 'hello-login' ); ?>
 			</button>
 			<button class="hello-about"></button>
 		</div>
@@ -183,7 +183,10 @@ class Hello_Login_Login_Form {
 
 		ob_start();
 		?>
-		<button id="login-form-toggle" onclick="toggleLoginForm()"></button>
+		<div style="display: flex; align-items: center; justify-content: center; margin: 25px auto;">
+			<span style="position: absolute; background-color: #f0f0f1; width: 40px; height: 20px; z-index: 40; text-align: center; font-size: 14px;">OR</span>
+			<div style="height: 2px; width: 100%; background-color: black; opacity: 0.1;"></div>
+		</div>
 		<?php
 
 		return ob_get_clean();
