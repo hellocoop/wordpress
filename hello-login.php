@@ -174,7 +174,7 @@ class Hello_Login {
 			return;
 		}
 
-		Hello_Login_Login_Form::register( $this->settings, $this->client_wrapper );
+		Hello_Login_Login_Form::register( $this->logger, $this->settings, $this->client_wrapper );
 
 		// Add a shortcode to get the auth URL.
 		add_shortcode( 'hello_login_auth_url', array( $this->client_wrapper, 'get_authentication_url' ) );

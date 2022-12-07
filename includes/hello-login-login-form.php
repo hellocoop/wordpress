@@ -20,6 +20,13 @@
 class Hello_Login_Login_Form {
 
 	/**
+	 * Plugin logger.
+	 *
+	 * @var Hello_Login_Option_Logger
+	 */
+	private $logger;
+
+	/**
 	 * Plugin settings object.
 	 *
 	 * @var Hello_Login_Option_Settings
@@ -36,10 +43,12 @@ class Hello_Login_Login_Form {
 	/**
 	 * The class constructor.
 	 *
+	 * @param Hello_Login_Option_Logger   $logger         Plugin logs.
 	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 */
-	public function __construct( $settings, $client_wrapper ) {
+	public function __construct( $logger, $settings, $client_wrapper ) {
+		$this->logger = $logger;
 		$this->settings = $settings;
 		$this->client_wrapper = $client_wrapper;
 	}
@@ -52,8 +61,8 @@ class Hello_Login_Login_Form {
 	 *
 	 * @return void
 	 */
-	public static function register( $settings, $client_wrapper ) {
-		$login_form = new self( $settings, $client_wrapper );
+	public static function register( $logger, $settings, $client_wrapper ) {
+		$login_form = new self( $logger, $settings, $client_wrapper );
 
 		// Alter the login form as dictated by settings.
 		add_filter( 'login_message', array( $login_form, 'handle_login_page' ), 99 );
