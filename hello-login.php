@@ -16,7 +16,7 @@
  * Plugin Name:       Hellō Login
  * Plugin URI:        https://github.com/hellocoop/wordpress
  * Description:       Free and simple to setup plugin provides registration and login with the Hellō Wallet. Users choose from popular social login, email, or crypto wallet. Setup in 7 clicks, not 7 hours.
- * Version:           1.0.5
+ * Version:           1.0.10
  * Requires at least: 4.9
  * Requires PHP:      7.2
  * Author:            hellocoop
@@ -84,7 +84,7 @@ class Hello_Login {
 	 *
 	 * @var string
 	 */
-	const VERSION = '1.0.5';
+	const VERSION = '1.0.10';
 
 	/**
 	 * Plugin option name.
@@ -149,11 +149,7 @@ class Hello_Login {
 	 */
 	public function init() {
 
-		$redirect_uri = admin_url( 'admin-ajax.php?action=hello-login-callback' );
-
-		if ( $this->settings->alternate_redirect_uri ) {
-			$redirect_uri = site_url( '/hello-login-callback' );
-		}
+		$redirect_uri = site_url( '?hello-login=callback' );
 
 		$state_time_limit = 180;
 		if ( $this->settings->state_time_limit ) {
@@ -286,6 +282,7 @@ class Hello_Login {
 	 */
 	public static function activation() {
 		self::setup_cron_jobs();
+		update_option('hello_login_permalinks_flushed', 0);
 	}
 
 	/**
@@ -305,6 +302,7 @@ class Hello_Login {
 	public static function uninstall() {
 		delete_option(self::OPTION_NAME);
 		delete_option(self::LOGS_OPTION_NAME);
+		delete_option('hello_login_permalinks_flushed');
 	}
 
 	/**
@@ -377,7 +375,6 @@ class Hello_Login {
 
 				// Plugin settings.
 				'enforce_privacy' => defined( 'OIDC_ENFORCE_PRIVACY' ) ? intval( OIDC_ENFORCE_PRIVACY ) : 0,
-				'alternate_redirect_uri' => 0,
 				'token_refresh_enable' => 0,
 				'link_existing_users' => defined( 'OIDC_LINK_EXISTING_USERS' ) ? intval( OIDC_LINK_EXISTING_USERS ) : 1,
 				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? intval( OIDC_CREATE_IF_DOES_NOT_EXIST ) : 1,

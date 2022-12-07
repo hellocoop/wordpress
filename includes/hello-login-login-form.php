@@ -103,7 +103,11 @@ class Hello_Login_Login_Form {
 
 		if ( ! empty( $this->settings->client_id ) ) {
 			// Login button is appended to existing messages in case of error.
-			$message .= $this->make_login_button();
+			$atts = array(
+				'redirect_to' => home_url(),
+			);
+
+			$message .= $this->make_login_button($atts);
 
 			// Login form toggle is appended right after the button
 			$message .= $this->make_login_form_toggle();
@@ -141,22 +145,26 @@ class Hello_Login_Login_Form {
 	 * @return string
 	 */
 	public function make_login_button( $atts = array() ) {
+		$redirect_to_path = '';
 
-		$atts = shortcode_atts(
-				array(
-						'button_text' => __( 'ō   Continue with Hellō', 'hello-login' ),
-				),
-				$atts,
-				'hello_login_button'
-		);
+		if ( isset( $atts['redirect_to'] ) ) {
+			$p = parse_url( $atts['redirect_to'] );
 
-		$href = $this->client_wrapper->get_authentication_url( $atts );
-		$href = esc_url_raw( $href );
+			$redirect_to_path = empty( $p['path'] ) ? '/' : $p['path'];
+
+			if ( ! empty( $p['query'] ) ) {
+				$redirect_to_path .= '?' . $p['query'];
+			}
+		}
+
+		$api_url = rest_url( 'hello-login/v1/auth_url' );
 
 		ob_start();
 		?>
 		<div class="hello-container" style="display: block; text-align: center;">
-			<button class="hello-btn" onclick="window.location.href = '<?php print esc_attr( $href ); ?>'"></button>
+			<button class="hello-btn" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '<?php print esc_js( $redirect_to_path ); ?>')">
+				<?php print esc_html__( 'ō   Continue with Hellō', 'hello-login' ); ?>
+			</button>
 			<button class="hello-about"></button>
 		</div>
 		<?php

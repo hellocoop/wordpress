@@ -25,9 +25,49 @@ List users:
 ./wp-cli.sh user list
 ```
 
+Get Hellō user id for user 1:
+```shell
+./wp-cli.sh user meta get 1 hello-login-subject-identity
+```
+
 Unlink user 1 from Hellō:
 ```shell
 ./wp-cli.sh user meta delete 1 hello-login-subject-identity
+```
+
+Get the Hellō Login plugin settings:
+```shell
+./wp-cli.sh option get hello_login_settings
+```
+
+Get the client id configured for the Hellō Login plugin:
+```shell
+./wp-cli.sh option pluck hello_login_settings client_id
+```
+
+Delete all settings for the Hellō Login plugin:
+```shell
+./wp-cli.sh option delete hello_login_settings
+```
+
+Delete only the client id for the Hellō Login plugin settings:
+```shell
+./wp-cli.sh option patch delete hello_login_settings client_id
+```
+
+Get the plugin logs:
+```shell
+./wp-cli.sh option get hello-login-logs
+```
+
+Delete the plugin logs:
+```shell
+./wp-cli.sh option delete hello-login-logs
+```
+
+Drop into a PHP shell:
+```shell
+./wp-cli.sh shell
 ```
 
 ## Docker Cheat Sheet

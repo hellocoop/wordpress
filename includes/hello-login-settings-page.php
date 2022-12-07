@@ -157,19 +157,23 @@ class Hello_Login_Settings_Page {
 			$this->options_page_name
 		);
 
-		add_settings_section(
-			'user_settings',
-			__( 'WordPress User Settings', 'hello-login' ),
-			array( $this, 'user_settings_description' ),
-			$this->options_page_name
-		);
+		if ( isset( $_GET['debug'] ) ) {
+			add_settings_section(
+					'user_settings',
+					__('WordPress User Settings', 'hello-login'),
+					array($this, 'user_settings_description'),
+					$this->options_page_name
+			);
+		}
 
-		add_settings_section(
-			'authorization_settings',
-			__( 'Authorization Settings', 'hello-login' ),
-			array( $this, 'authorization_settings_description' ),
-			$this->options_page_name
-		);
+		if ( isset( $_GET['debug'] ) ) {
+			add_settings_section(
+					'authorization_settings',
+					__('Authorization Settings', 'hello-login'),
+					array($this, 'authorization_settings_description'),
+					$this->options_page_name
+			);
+		}
 
 		add_settings_section(
 			'log_settings',
@@ -335,15 +339,6 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
-			*/
-			'enforce_privacy'   => array(
-				'title'       => __( 'Enforce Privacy', 'hello-login' ),
-				'description' => __( 'Require users be logged in to see the site.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
-				'section'     => 'authorization_settings',
-			),
-			/*
 			'alternate_redirect_uri'   => array(
 				'title'       => __( 'Alternate Redirect URI', 'hello-login' ),
 				'description' => __( 'Provide an alternative redirect route. Useful if your server is causing issues with the default admin-ajax method. You must flush rewrite rules after changing this setting. This can be done by saving the Permalinks settings page.', 'hello-login' ),
@@ -390,34 +385,6 @@ class Hello_Login_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			*/
-			'link_existing_users'   => array(
-				'title'       => __( 'Link Existing Users', 'hello-login' ),
-				'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
-				'section'     => 'user_settings',
-			),
-			'create_if_does_not_exist'   => array(
-				'title'       => __( 'Create user if does not exist', 'hello-login' ),
-				'description' => __( 'If the user identity is not linked to an existing WordPress user, it is created. If this setting is not enabled, and if the user authenticates with an account which is not linked to an existing WordPress user, then the authentication will fail.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
-				'section'     => 'user_settings',
-			),
-			'redirect_user_back'   => array(
-				'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
-				'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_REDIRECT_USER_BACK' ),
-				'section'     => 'user_settings',
-			),
-			'redirect_on_logout'   => array(
-				'title'       => __( 'Redirect to the login screen when session is expired', 'hello-login' ),
-				'description' => __( 'When enabled, this will automatically redirect the user back to the WordPress login page if their access token has expired.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_REDIRECT_ON_LOGOUT' ),
-				'section'     => 'user_settings',
-			),
 			'enable_logging'    => array(
 				'title'       => __( 'Enable Logging', 'hello-login' ),
 				'description' => __( 'Very simple log messages for debugging purposes.', 'hello-login' ),
@@ -431,6 +398,45 @@ class Hello_Login_Settings_Page {
 				'section'     => 'log_settings',
 			),
 		);
+
+		if ( isset( $_GET['debug'] ) ) {
+			$fields['enforce_privacy'] = array(
+					'title'       => __( 'Enforce Privacy', 'hello-login' ),
+					'description' => __( 'Require users be logged in to see the site.', 'hello-login' ),
+					'type'        => 'checkbox',
+					'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
+					'section'     => 'authorization_settings',
+			);
+			$fields['link_existing_users'] = array(
+					'title'       => __( 'Link Existing Users', 'hello-login' ),
+					'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'hello-login' ),
+					'type'        => 'checkbox',
+					'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
+					'section'     => 'user_settings',
+			);
+			$fields['create_if_does_not_exist'] = array(
+					'title'       => __( 'Create user if does not exist', 'hello-login' ),
+					'description' => __( 'If the user identity is not linked to an existing WordPress user, it is created. If this setting is not enabled, and if the user authenticates with an account which is not linked to an existing WordPress user, then the authentication will fail.', 'hello-login' ),
+					'type'        => 'checkbox',
+					'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
+					'section'     => 'user_settings',
+			);
+			$fields['redirect_user_back'] = array(
+					'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
+					'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'hello-login' ),
+					'type'        => 'checkbox',
+					'disabled'    => defined( 'OIDC_REDIRECT_USER_BACK' ),
+					'section'     => 'user_settings',
+			);
+
+			$fields['redirect_on_logout'] = array(
+					'title' => __('Redirect to the login screen when session is expired', 'hello-login'),
+					'description' => __('When enabled, this will automatically redirect the user back to the WordPress login page if their access token has expired.', 'hello-login'),
+					'type' => 'checkbox',
+					'disabled' => defined('OIDC_REDIRECT_ON_LOGOUT'),
+					'section' => 'user_settings',
+			);
+		}
 
 		return apply_filters( 'hello-login-settings-fields', $fields );
 
@@ -466,20 +472,8 @@ class Hello_Login_Settings_Page {
 	public function settings_page() {
 		wp_enqueue_style( 'hello-login-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
-		$redirect_uri = admin_url( 'admin-ajax.php?action=hello-login-callback' );
-		$plugin_settings_uri = admin_url( '/options-general.php?page=hello-login-settings' );
-
-		if ( $this->settings->alternate_redirect_uri ) {
-			$redirect_uri = site_url( '/hello-login-callback' );
-		}
-
-		$show_succeeded = false;
-		if ( isset( $_GET['client_id'] ) && empty( $this->settings->client_id ) ) {
-			$this->settings->client_id = sanitize_text_field( $_GET['client_id'] );
-			$this->settings->save();
-			$show_succeeded = true;
-			$this->logger->log("Client ID set through Quickstart: " . $this->settings->client_id, 'quickstart');
-		}
+		$redirect_uri = site_url( '?hello-login=callback' );
+		$quickstart_uri = rest_url( 'hello-login/v1/quickstart' );
 
 		$custom_logo_url = '';
 		if ( has_custom_logo() ) {
@@ -488,19 +482,20 @@ class Hello_Login_Settings_Page {
 			$custom_logo_url = $custom_logo_data[0];
 		}
 
-		$href = $this->client_wrapper->get_authentication_url();
-		$href = esc_url_raw( $href );
+		$api_url = rest_url( 'hello-login/v1/auth_url' );
 
+		$debug = isset( $_GET['debug'] );
+		$configured = ! empty( $this->settings->client_id );
 		?>
 		<div class="wrap">
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
 
-			<?php if ( empty( $this->settings->client_id ) ) { ?>
-			<p>The Hellō Login plug-in uses the Hellō Quickstart to get you up and running in seconds.</p>
+			<?php if ( ! $configured ) { ?>
+			<p><h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already.</h2></p>
 
 			<form method="get" action="https://quickstart.hello.coop/">
 				<input type="hidden" name="integration" id="integration" value="wordpress" />
-				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $plugin_settings_uri ); ?>" />
+				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $quickstart_uri ); ?>" />
 				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo('name') ); ?>" />
 				<input type="hidden" name="pp_uri" id="pp_uri" value="<?php print esc_attr( get_privacy_policy_url() ); ?>" />
 				<input type="hidden" name="image_uri" id="image_uri" value="<?php print esc_attr( $custom_logo_url ); ?>" />
@@ -508,13 +503,12 @@ class Hello_Login_Settings_Page {
 				<input type="submit" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Continue with Hellō Quickstart" />
 			</form>
 
-			<?php } else { ?>
+			<?php } ?>
 
-			<?php if ( $show_succeeded ) { ?><p id="quickstart_success">Quickstart Succeeded!</p><?php } ?>
-
+			<?php if ( $configured || $debug ) { ?>
 			<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ) { ?>
-				<p id="link-hello-wallet">You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</p>
-				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="window.location.href = '<?php print esc_attr( $href ); ?>'"></button>
+				<p id="link-hello-wallet"><h2>You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</h2></p>
+				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
 			<?php } ?>
 
 			<p>Use the <a href="https://console.hello.coop/" target="_blank">Hellō Console</a> to update your Hellō configuration</p>
@@ -526,17 +520,6 @@ class Hello_Login_Settings_Page {
 				submit_button();
 				?>
 			</form>
-
-			<?php } ?>
-
-			<?php if ( isset( $_GET['debug'] ) ) { ?>
-				<h4>Debug</h4>
-				<p>Hellō user id: <code><?php print esc_html( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ?></code></p>
-				<pre>
-				<?php print esc_html( var_dump( $this->settings->get_values() ) ); ?>
-				</pre>
-			}
-			<?php } ?>
 
 			<h4><?php esc_html_e( 'Notes', 'hello-login' ); ?></h4>
 
@@ -552,6 +535,20 @@ class Hello_Login_Settings_Page {
 				<strong><?php esc_html_e( 'Authentication URL Shortcode', 'hello-login' ); ?></strong>
 				<code>[hello_login_auth_url]</code>
 			</p>
+
+			<?php } ?>
+
+			<?php if ( $debug ) { ?>
+				<h4>Debug</h4>
+
+				<p>Hellō user id: <code><?php print esc_html( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ); ?></code></p>
+
+				<p>Settings:</p>
+				<pre>
+				<?php var_dump( $this->settings->get_values() ); ?>
+				</pre>
+			}
+			<?php } ?>
 
 			<?php if ( $this->settings->enable_logging ) { ?>
 				<h2><?php esc_html_e( 'Logs', 'hello-login' ); ?></h2>
@@ -574,11 +571,12 @@ class Hello_Login_Settings_Page {
 	public function do_text_field( $field ) {
 		$disabled = ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true;
 
+		$readonly = '';
 		if ( $field['key'] == 'client_id' ) {
-			$disabled = true;
+			$readonly = 'readonly';
 		}
 		?>
-		<input type="<?php print esc_attr( $field['type'] ); ?>"
+		<input type="<?php print esc_attr( $field['type'] ); ?>" <?php print esc_attr( $readonly ); ?>
 				<?php echo ( $disabled ? ' disabled' : '' ); ?>
 			  id="<?php print esc_attr( $field['key'] ); ?>"
 			  class="large-text<?php echo ( $disabled ? ' disabled' : '' ); ?>"

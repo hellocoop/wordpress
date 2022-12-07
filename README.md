@@ -1,29 +1,25 @@
 # Hellō Login #
-**Contributors:** [marius1hello](https://profiles.wordpress.org/marius1hello/)  
+**Contributors:** [marius1hello](https://profiles.wordpress.org/marius1hello/), [dickhardt](https://profiles.wordpress.org/dickhardt/), [remotelychris](https://profiles.wordpress.org/remotelychris/), [rohanharikr](https://profiles.wordpress.org/rohanharikr/)  
 **Donate link:** https://www.hello.dev/  
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.1  
-**Stable tag:** 1.0.5  
+**Stable tag:** 1.0.10  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
-Free and simple to setup plugin provides registration and login with the  Hellō Wallet. Users choose from popular social login,
-email, or crypto wallet. Setup in 7 clicks, not 7 hours.
+Free and simple to setup plugin provides registration and login with the Hellō Wallet. Users choose from popular social login, email, or crypto wallet. Setup in 7 clicks, not 7 hours.
 
 ## Description ##
 
-Provide your users a registration and login using their choice of popular social login, email, or even a crypto wallet.
-No need for you to configure your application at each provider or pay for a premium plugin.
+Provide your users a registration and login using their choice of popular social login, email, or even a crypto wallet. No need for you to configure your application at each provider or pay for a premium plugin.
 
-Hellō Login verifies your users' email addresses so you don't have to. No longer do they have to manage another username
-and password to use your site.
+Hellō Login verifies your users' email addresses so you don't have to. No longer do they have to manage another username and password to use your site.
 
-Hellō is a cloud identity wallet cooperatively operated with a mission to empower users to control their identity. Learn
-more at [hello.coop](https://www.hello.coop/).
+Hellō is a cloud identity wallet cooperatively operated with a mission to empower users to control their identity. Learn more at [hello.coop](https://www.hello.coop/).
 
-* Hellō Login installs with Hellō Quickstart to get you up and running in minutes.
+* Hellō Login installs with Hellō Quickstart to get you up and running in seconds.
 * Users control their identity with their Hellō Wallet. No need for you to manage how they login.
 * Hellō Login is free for users and early adopting sites. See [hello.coop](https://www.hello.coop/) for details.
 
@@ -51,29 +47,23 @@ Documentation, configuration, and settings can be found in Settings >  Hellō Lo
 
 ### What is Hellō? ###
 
-Hellō is a cloud identity wallet that empowers users to prove who they are to any site that accepts Hellō. Learn more at
-[hello.coop](https://www.hello.coop/).
+Hellō is a cloud identity wallet that empowers users to prove who they are to any site that accepts Hellō. Learn more at [hello.coop](https://www.hello.coop/).
 
 ### How can users login to their wallet? ###
 
-Hellō supports all popular ways to login including Apple, Facebook, GitHub, Google, Line, Microsoft, Twitch, Twitter,
-Yahoo, as well as email, phone and crypto wallets. We are adding more methods on a regular basis. See
-[hello.coop](https://www.hello.coop/) for a complete list.
+Hellō supports all popular ways to login including Apple, Facebook, GitHub, Google, Line, Microsoft, Twitch, Twitter, Yahoo, as well as email, phone and crypto wallets. We are adding more methods on a regular basis. See [hello.coop](https://www.hello.coop/) for a complete list.
 
 ### Does Hellō sell user data? ###
 
-No. Hellō provides sites user data only with informed consent. User data is only accessible while the user has unlocked
-their wallet by logging in with their preferred provider.
+No. Hellō provides sites user data only with informed consent. User data is only accessible while the user has unlocked their wallet by logging in with their preferred provider.
 
 ### How does Hellō make money? ###
 
-The Hellō business model is to charge sites a few cents for each new verified claim the user provides to a site, such as
-a phone number and in the future claims such as a professional certification.
+The Hellō business model is to charge sites a few cents for each new verified claim the user provides to a site, such as a phone number and in the future claims such as a professional certification.
 
 ### Why is Hellō free to sites now? ###
 
-While we are building out the network, we are not charging sites for verified claims and rewarding early adopters of
-Hellō with credits for bringing users to Hellō.
+While we are building out the network, we are not charging sites for verified claims and rewarding early adopters of Hellō with credits for bringing users to Hellō.
 
 ### How can I change the image for my site? ###
 
@@ -83,7 +73,42 @@ You can update your site configuration at [console.hello.coop](https://console.h
 
 Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.com/hellocoop/wordpress/issues)
 
+## Screenshots ##
+
+1. The `/wp-login.php` page with Hellō Login.
+2. The Hellō Wallet login choices offered.
+
 ## Changelog ##
+
+### 1.0.10 ###
+
+* Improvement: show settings form in debug mode
+
+### 1.0.9 ###
+
+* Fix: disable caching on REST API response
+* Improvement: enable logging by default
+* Improvement: content changes on plugin settings page
+
+### 1.0.8 ###
+
+* Fix: use query parameter based redirect URI
+
+### 1.0.7 ###
+
+* Fix: authentication request URL generated through REST API on button click
+* Improvement: removed the WordPress User Settings section
+* Improvement: removed the Authorization Settings section
+* Improvement: use /hello-login/callback path for redirect URI
+* Improvement: added endpoint for Quickstart response
+* Fix: client id field being reset on settings save
+* Fix: automatic configuration of rewrite rules
+
+### 1.0.6 ###
+
+* Feature: added screenshots
+* Update: plugin details
+* Fix: plugin settings and login page redirects after connecting with Hellō
 
 ### 1.0.5 ###
 
@@ -120,11 +145,10 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 ### 1.0.0 ###
 
 * Forked https://github.com/oidc-wp/openid-connect-generic
-* Feature: merged PR that adds [PKCE support](https://github.com/oidc-wp/openid-connect-generic/pull/421).
+* Feature: merged PR that adds [PKCE support](https://github.com/oidc-wp/openid-connect-generic/pull/421)
 * Feature: integrated Hellō Quickstart
 * Feature: removed unnecessary configuration options
 * Improvement: renamed all relevant identifiers to be Hellō Login specific
-
 
 --------
 
