@@ -183,7 +183,7 @@ class Hello_Login_Login_Form {
 
 		ob_start();
 		?>
-		<div style="display: flex; align-items: center; justify-content: center;">
+		<div style="display: flex; align-items: center; justify-content: center; margin: 25px auto;">
 			<span style="position: absolute; background-color: #f0f0f1; width: 40px; height: 20px; z-index: 40; text-align: center; font-size: 14px;">OR</span>
 			<div style="height: 2px; width: 100%; background-color: black; opacity: 0.1;"></div>
 		</div>

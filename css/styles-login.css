@@ -5,9 +5,6 @@
 #loginform > *:not(#toggle-form) {
     visibility: hidden;
 }
-.hello-container {
-    margin-bottom: 25px;
-}
 #toggle-form {
     background: transparent;
     border: none;
