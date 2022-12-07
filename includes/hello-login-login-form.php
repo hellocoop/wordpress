@@ -101,7 +101,10 @@ class Hello_Login_Login_Form {
 			$message .= $this->make_error_output( sanitize_text_field( wp_unslash( $_GET['login-error'] ) ), $error_message );
 		}
 
-		if ( ! empty( $this->settings->client_id ) ) {
+		$configured = !empty($this->settings->client_id);
+		$on_lost_password = isset( $_GET['action'] ) && 'lostpassword' == $_GET['action'];
+
+		if ( $configured && ! $on_lost_password ) {
 			// Login button is appended to existing messages in case of error.
 			$atts = array(
 				'redirect_to' => home_url(),
