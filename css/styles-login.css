@@ -1,9 +1,9 @@
-#loginform > *:not(#toggle-form) {
-    visibility: hidden;
-}
-.login form {
+#loginform {
     height: 16px;
     padding: 20px 24px;
+}
+#loginform > *:not(#toggle-form) {
+    visibility: hidden;
 }
 .hello-container {
     margin-bottom: 25px;
