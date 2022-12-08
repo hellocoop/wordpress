@@ -681,8 +681,7 @@ class Hello_Login_Client_Wrapper {
 			} else {
 				// no current user session and no user found based on 'sub'
 
-//				if ( $this->settings->link_existing_users || $this->settings->create_if_does_not_exist ) {
-				if ( $this->settings->link_existing_users || get_option( 'users_can_register' ) == '1' ) {
+				if ( $this->settings->link_existing_users || $this->settings->create_if_does_not_exist ) {
 					// If linking existing users or creating new ones call the `create_new_user` method which
 					// handles both cases. Linking uses email.
 					$user = $this->create_new_user( $subject_identity, $user_claim );
@@ -1235,8 +1234,7 @@ class Hello_Login_Client_Wrapper {
 		 * Allow other plugins / themes to determine authorization of new accounts
 		 * based on the returned user claim.
 		 */
-//		$create_user = apply_filters( 'hello-login-user-creation-test', $this->settings->create_if_does_not_exist, $user_claim );
-		$create_user = apply_filters( 'hello-login-user-creation-test', get_option( 'users_can_register' ) == '1', $user_claim );
+		$create_user = apply_filters( 'hello-login-user-creation-test', $this->settings->create_if_does_not_exist, $user_claim );
 
 		if ( ! $create_user ) {
 			return new WP_Error( 'cannot-authorize', __( 'Can not authorize.', 'hello-login' ), $create_user );
