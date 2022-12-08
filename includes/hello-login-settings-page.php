@@ -159,7 +159,7 @@ class Hello_Login_Settings_Page {
 
 		add_settings_section(
 				'user_settings',
-				__('WordPress User Settings', 'hello-login'),
+				__('User Settings', 'hello-login'),
 				array($this, 'user_settings_description'),
 				$this->options_page_name
 		);
@@ -398,15 +398,15 @@ class Hello_Login_Settings_Page {
 		);
 
 		$fields['link_existing_users'] = array(
-				'title'       => __( 'Link Existing Users', 'hello-login' ),
-				'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'hello-login' ),
+				'title'       => __( 'Link Existing Users via Email', 'hello-login' ),
+				'description' => __( 'If a newly-authenticated Hellō user does not have an account, and a WordPress account already exists with the same email, link the user to that Wordpress account.', 'hello-login' ),
 				'type'        => 'checkbox',
 				'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
 				'section'     => 'user_settings',
 		);
 		$fields['create_if_does_not_exist'] = array(
-				'title'       => __( 'Create user if does not exist', 'hello-login' ),
-				'description' => __( 'If the user identity is not linked to an existing WordPress user, it is created. If this setting is not enabled, and if the user authenticates with an account which is not linked to an existing WordPress user, then the authentication will fail.', 'hello-login' ),
+				'title'       => __( 'Allow anyone to register with Hellō', 'hello-login' ),
+				'description' => __( 'Create a new user if the do not have an account. Authentication will fail if the user does not have an account and this is disabled.', 'hello-login' ),
 				'type'        => 'checkbox',
 				'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
 				'section'     => 'user_settings',
