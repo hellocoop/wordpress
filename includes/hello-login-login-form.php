@@ -56,6 +56,7 @@ class Hello_Login_Login_Form {
 	/**
 	 * Create an instance of the Hello_Login_Login_Form class.
 	 *
+	 * @param Hello_Login_Option_Logger   $logger   The plugin logging class object.
 	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 *
@@ -64,8 +65,14 @@ class Hello_Login_Login_Form {
 	public static function register( $logger, $settings, $client_wrapper ) {
 		$login_form = new self( $logger, $settings, $client_wrapper );
 
+		$on_logged_out = isset( $_GET['loggedout'] ) && 'true' == $_GET['loggedout'];
+
 		// Alter the login form as dictated by settings.
-		add_filter( 'login_message', array( $login_form, 'handle_login_page' ), 99 );
+		if ( $on_logged_out ) {
+			add_filter( 'login_messages', array( $login_form, 'handle_login_page' ), 99 );
+		} else {
+			add_filter( 'login_message', array( $login_form, 'handle_login_page' ), 99 );
+		}
 
 		// Add a shortcode for the login button.
 		add_shortcode( 'hello_login_button', array( $login_form, 'make_login_button' ) );
