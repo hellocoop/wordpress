@@ -483,11 +483,14 @@ class Hello_Login_Settings_Page {
 		}
 
 		$api_url = rest_url( 'hello-login/v1/auth_url' );
+
+		$debug = isset( $_GET['debug'] );
+		$configured = ! empty( $this->settings->client_id );
 		?>
 		<div class="wrap">
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
 
-			<?php if ( empty( $this->settings->client_id ) ) { ?>
+			<?php if ( ! $configured ) { ?>
 			<p><h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already.</h2></p>
 
 			<form method="get" action="https://quickstart.hello.coop/">
@@ -500,8 +503,9 @@ class Hello_Login_Settings_Page {
 				<input type="submit" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Continue with Hellō Quickstart" />
 			</form>
 
-			<?php } else { ?>
+			<?php } ?>
 
+			<?php if ( $configured || $debug ) { ?>
 			<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ) { ?>
 				<p id="link-hello-wallet"><h2>You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</h2></p>
 				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
@@ -534,11 +538,14 @@ class Hello_Login_Settings_Page {
 
 			<?php } ?>
 
-			<?php if ( isset( $_GET['debug'] ) ) { ?>
+			<?php if ( $debug ) { ?>
 				<h4>Debug</h4>
-				<p>Hellō user id: <code><?php print esc_html( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ?></code></p>
+
+				<p>Hellō user id: <code><?php print esc_html( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ); ?></code></p>
+
+				<p>Settings:</p>
 				<pre>
-				<?php print esc_html( var_dump( $this->settings->get_values() ) ); ?>
+				<?php var_dump( $this->settings->get_values() ); ?>
 				</pre>
 			}
 			<?php } ?>

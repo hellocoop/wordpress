@@ -1,10 +1,10 @@
 # Hellō Login #
-**Contributors:** [marius1hello](https://profiles.wordpress.org/marius1hello/), [dickhardt](https://profiles.wordpress.org/dickhardt/), [remotelychris](https://profiles.wordpress.org/remotelychris/)  
+**Contributors:** [marius1hello](https://profiles.wordpress.org/marius1hello/), [dickhardt](https://profiles.wordpress.org/dickhardt/), [remotelychris](https://profiles.wordpress.org/remotelychris/), [rohanharikr](https://profiles.wordpress.org/rohanharikr/)  
 **Donate link:** https://www.hello.dev/  
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.1  
-**Stable tag:** 1.0.9  
+**Stable tag:** 1.0.10  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,10 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 2. The Hellō Wallet login choices offered.
 
 ## Changelog ##
+
+### 1.0.10 ###
+
+* Improvement: show settings form in debug mode
 
 ### 1.0.9 ###
 

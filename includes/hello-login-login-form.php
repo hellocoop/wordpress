@@ -20,6 +20,13 @@
 class Hello_Login_Login_Form {
 
 	/**
+	 * Plugin logger.
+	 *
+	 * @var Hello_Login_Option_Logger
+	 */
+	private $logger;
+
+	/**
 	 * Plugin settings object.
 	 *
 	 * @var Hello_Login_Option_Settings
@@ -36,10 +43,12 @@ class Hello_Login_Login_Form {
 	/**
 	 * The class constructor.
 	 *
+	 * @param Hello_Login_Option_Logger   $logger         Plugin logs.
 	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 */
-	public function __construct( $settings, $client_wrapper ) {
+	public function __construct( $logger, $settings, $client_wrapper ) {
+		$this->logger = $logger;
 		$this->settings = $settings;
 		$this->client_wrapper = $client_wrapper;
 	}
@@ -52,8 +61,8 @@ class Hello_Login_Login_Form {
 	 *
 	 * @return void
 	 */
-	public static function register( $settings, $client_wrapper ) {
-		$login_form = new self( $settings, $client_wrapper );
+	public static function register( $logger, $settings, $client_wrapper ) {
+		$login_form = new self( $logger, $settings, $client_wrapper );
 
 		// Alter the login form as dictated by settings.
 		add_filter( 'login_message', array( $login_form, 'handle_login_page' ), 99 );
@@ -101,10 +110,14 @@ class Hello_Login_Login_Form {
 			$message .= $this->make_error_output( sanitize_text_field( wp_unslash( $_GET['login-error'] ) ), $error_message );
 		}
 
-		if ( ! empty( $this->settings->client_id ) ) {
+		$configured = !empty($this->settings->client_id);
+		$on_lost_password = isset( $_GET['action'] ) && 'lostpassword' == $_GET['action'];
+		$on_register = isset( $_GET['action'] ) && 'register' == $_GET['action'];
+
+		if ( $configured && ! $on_lost_password && ! $on_register) {
 			// Login button is appended to existing messages in case of error.
 			$atts = array(
-				'redirect_to' => home_url(),
+				'redirect_to' => admin_url(),
 			);
 
 			$message .= $this->make_login_button($atts);
@@ -163,7 +176,7 @@ class Hello_Login_Login_Form {
 		?>
 		<div class="hello-container" style="display: block; text-align: center;">
 			<button class="hello-btn" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '<?php print esc_js( $redirect_to_path ); ?>')">
-				<?php print esc_html__( 'ō   Continue with Hellō', 'hello-login' ); ?>
+				<?php print esc_html__( 'ō&nbsp;&nbsp;&nbsp;Continue with Hellō', 'hello-login' ); ?>
 			</button>
 			<button class="hello-about"></button>
 		</div>
@@ -183,7 +196,10 @@ class Hello_Login_Login_Form {
 
 		ob_start();
 		?>
-		<button id="login-form-toggle" onclick="toggleLoginForm()"></button>
+		<div style="display: flex; align-items: center; justify-content: center; margin: 25px auto;">
+			<span style="position: absolute; background-color: #f0f0f1; width: 40px; height: 20px; z-index: 40; text-align: center; font-size: 14px;">OR</span>
+			<div style="height: 2px; width: 100%; background-color: black; opacity: 0.1;"></div>
+		</div>
 		<?php
 
 		return ob_get_clean();
