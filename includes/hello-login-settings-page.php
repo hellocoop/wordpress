@@ -263,8 +263,8 @@ class Hello_Login_Settings_Page {
 			*/
 			'scope'             => array(
 				'title'       => __( 'Scopes', 'hello-login' ),
-				'description' => __( 'Space separated list of scopes you are requesting - "openid" is required. Available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
-				'example'     => 'openid name nickname family_name given_name picture email phone profile_update ethereum',
+				'description' => __( 'The default scopes gather the default user properties. Only modify after reviewing available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
+				'example'     => 'openid name nickname family_name given_name email',
 				'type'        => 'text',
 				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
 				'section'     => 'client_settings',
