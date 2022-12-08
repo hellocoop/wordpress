@@ -157,14 +157,12 @@ class Hello_Login_Settings_Page {
 			$this->options_page_name
 		);
 
-		if ( isset( $_GET['debug'] ) ) {
-			add_settings_section(
-					'user_settings',
-					__('WordPress User Settings', 'hello-login'),
-					array($this, 'user_settings_description'),
-					$this->options_page_name
-			);
-		}
+		add_settings_section(
+				'user_settings',
+				__('WordPress User Settings', 'hello-login'),
+				array($this, 'user_settings_description'),
+				$this->options_page_name
+		);
 
 		if ( isset( $_GET['debug'] ) ) {
 			add_settings_section(
@@ -399,6 +397,21 @@ class Hello_Login_Settings_Page {
 			),
 		);
 
+		$fields['link_existing_users'] = array(
+				'title'       => __( 'Link Existing Users', 'hello-login' ),
+				'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'hello-login' ),
+				'type'        => 'checkbox',
+				'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
+				'section'     => 'user_settings',
+		);
+		$fields['create_if_does_not_exist'] = array(
+				'title'       => __( 'Create user if does not exist', 'hello-login' ),
+				'description' => __( 'If the user identity is not linked to an existing WordPress user, it is created. If this setting is not enabled, and if the user authenticates with an account which is not linked to an existing WordPress user, then the authentication will fail.', 'hello-login' ),
+				'type'        => 'checkbox',
+				'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
+				'section'     => 'user_settings',
+		);
+
 		if ( isset( $_GET['debug'] ) ) {
 			$fields['enforce_privacy'] = array(
 					'title'       => __( 'Enforce Privacy', 'hello-login' ),
@@ -406,20 +419,6 @@ class Hello_Login_Settings_Page {
 					'type'        => 'checkbox',
 					'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
 					'section'     => 'authorization_settings',
-			);
-			$fields['link_existing_users'] = array(
-					'title'       => __( 'Link Existing Users', 'hello-login' ),
-					'description' => __( 'If a WordPress account already exists with the same identity as a newly-authenticated Hellō user, login as that user instead of generating an error.', 'hello-login' ),
-					'type'        => 'checkbox',
-					'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
-					'section'     => 'user_settings',
-			);
-			$fields['create_if_does_not_exist'] = array(
-					'title'       => __( 'Create user if does not exist', 'hello-login' ),
-					'description' => __( 'If the user identity is not linked to an existing WordPress user, it is created. If this setting is not enabled, and if the user authenticates with an account which is not linked to an existing WordPress user, then the authentication will fail.', 'hello-login' ),
-					'type'        => 'checkbox',
-					'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
-					'section'     => 'user_settings',
 			);
 			$fields['redirect_user_back'] = array(
 					'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
