@@ -4,7 +4,7 @@
 docker-compose up  -d
 
 # wait for the WordPress service to start
-sleep 10
+sleep 3
 
 # open WordPress in browser
 open http://localhost:8080/
