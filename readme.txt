@@ -80,6 +80,13 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 == Changelog ==
 
+= 1.0.11 =
+
+* Improvement: disable logging by default
+* Improvement: login page layout fixes and improvements
+* Improvement: logins from wp-login.php redirect users to admin area
+* Improvement: show "User Settings" section
+
 = 1.0.10 =
 
 * Improvement: show settings form in debug mode
