@@ -245,6 +245,14 @@ class Hello_Login_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			*/
+			'scope'             => array(
+					'title'       => __( 'Scopes', 'hello-login' ),
+					'description' => __( 'The default scopes gather the default user properties. Only modify after reviewing available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
+					'example'     => 'openid name nickname family_name given_name email',
+					'type'        => 'text',
+					'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
+					'section'     => 'client_settings',
+			),
 			'client_id'         => array(
 				'title'       => __( 'Client ID', 'hello-login' ),
 				'description' => __( 'The client identifier provided by Hellō and set by Quickstart.', 'hello-login' ),
@@ -261,14 +269,6 @@ class Hello_Login_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			*/
-			'scope'             => array(
-				'title'       => __( 'Scopes', 'hello-login' ),
-				'description' => __( 'The default scopes gather the default user properties. Only modify after reviewing available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
-				'example'     => 'openid name nickname family_name given_name email',
-				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
-				'section'     => 'client_settings',
-			),
 			/*
 			'endpoint_login'    => array(
 				'title'       => __( 'Login Endpoint URL', 'hello-login' ),
