@@ -80,6 +80,14 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 == Changelog ==
 
+= 1.0.12 =
+
+* Improvement: restructured the settings page
+* Improvement: added information about what data is being sent through Quickstart
+* Improvement: increased state time limit to 10 minutes
+* Improvement: updated the short description of the plugin
+* Fix: logged out message on login page moved to top
+
 = 1.0.11 =
 
 * Improvement: disable logging by default
