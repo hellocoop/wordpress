@@ -92,13 +92,13 @@ class Hello_Login_Client {
 	private $acr_values;
 
 	/**
-	 * The state time limit. States are only valid for 3 minutes.
+	 * The state time limit. States are only valid for 10 minutes.
 	 *
 	 * @see Hello_Login_Option_Settings::state_time_limit
 	 *
 	 * @var int
 	 */
-	private $state_time_limit = 180;
+	private $state_time_limit = 600;
 
 	/**
 	 * The logger object instance.
