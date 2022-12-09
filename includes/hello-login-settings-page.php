@@ -151,17 +151,17 @@ class Hello_Login_Settings_Page {
 		);
 
 		add_settings_section(
-			'client_settings',
-			__( 'Client Settings', 'hello-login' ),
-			array( $this, 'client_settings_description' ),
-			$this->options_page_name
-		);
-
-		add_settings_section(
 				'user_settings',
 				__('User Settings', 'hello-login'),
 				array($this, 'user_settings_description'),
 				$this->options_page_name
+		);
+
+		add_settings_section(
+			'client_settings',
+			__( 'Client Settings', 'hello-login' ),
+			array( $this, 'client_settings_description' ),
+			$this->options_page_name
 		);
 
 		if ( isset( $_GET['debug'] ) ) {
