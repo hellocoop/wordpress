@@ -16,12 +16,17 @@ window.addEventListener("DOMContentLoaded", () => {
 	toggleBtnEle.append(toggleBtnTextEle, toggleBtnDropdownEle)
 	loginFormRef.prepend(toggleBtnEle)
 
+	//move lost your password link inside continue with username form
+	const lostPasswordRef = document.querySelector("#login #nav")
+	loginFormRef.appendChild(lostPasswordRef)
+	lostPasswordRef.style.display = "block"
+
 	let isCollapsed = true
 
 	toggleBtnEle.addEventListener("click", (e) => {
 		e.preventDefault()
 	
-		loginFormRef.style.height = isCollapsed ? "230px" : loginFormInitialHeight
+		loginFormRef.style.height = isCollapsed ? "270px" : loginFormInitialHeight
 		for(const child of loginFormRef.children) {
 			if(child.id === "toggle-form") continue
 			child.style.visibility = isCollapsed ? "visible" : "hidden"

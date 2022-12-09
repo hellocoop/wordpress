@@ -17,3 +17,8 @@
     width: 100%;
     position: relative;
 }
+#login #nav {
+    display: none;
+    margin-top: 50px;
+    padding-left: 0px;
+}
