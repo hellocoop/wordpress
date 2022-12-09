@@ -151,7 +151,7 @@ class Hello_Login {
 
 		$redirect_uri = site_url( '?hello-login=callback' );
 
-		$state_time_limit = 180;
+		$state_time_limit = 600;
 		if ( $this->settings->state_time_limit ) {
 			$state_time_limit = intval( $this->settings->state_time_limit );
 		}
