@@ -532,18 +532,6 @@ class Hello_Login_Settings_Page {
 				submit_button();
 				?>
 			</form>
-
-			<h4><?php esc_html_e( 'Notes', 'hello-login' ); ?></h4>
-
-			<p class="description">
-				<strong><?php esc_html_e( 'Redirect URI', 'hello-login' ); ?></strong>
-				<code><?php print esc_url( $redirect_uri ); ?></code>
-			</p>
-			<p class="description">
-				<strong><?php esc_html_e( 'Login Button Shortcode', 'hello-login' ); ?></strong>
-				<code>[hello_login_button]</code>
-			</p>
-
 			<?php } ?>
 
 			<?php if ( $debug ) { ?>
