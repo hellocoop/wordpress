@@ -529,7 +529,7 @@ class Hello_Login_Settings_Page {
 				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
 			<?php } ?>
 
-			<h2>Use the <a href="https://console.hello.coop/" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.<h2>
+			<h2>Use the <a href="https://console.hello.coop/" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>
 
 			<h2>Hellō Button</h2>
 			<p>In order to add a "Continue with Hellō" button you have the following options:
