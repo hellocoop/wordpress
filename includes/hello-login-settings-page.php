@@ -543,10 +543,6 @@ class Hello_Login_Settings_Page {
 				<strong><?php esc_html_e( 'Login Button Shortcode', 'hello-login' ); ?></strong>
 				<code>[hello_login_button]</code>
 			</p>
-			<p class="description">
-				<strong><?php esc_html_e( 'Authentication URL Shortcode', 'hello-login' ); ?></strong>
-				<code>[hello_login_auth_url]</code>
-			</p>
 
 			<?php } ?>
 
