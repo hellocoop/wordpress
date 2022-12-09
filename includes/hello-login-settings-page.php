@@ -246,18 +246,24 @@ class Hello_Login_Settings_Page {
 			),
 			*/
 			'scope'             => array(
-					'title'       => __( 'Scopes', 'hello-login' ),
-					'description' => __( 'The default scopes gather the default user properties. Only modify after reviewing available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
-					'example'     => 'openid name nickname family_name given_name email',
-					'type'        => 'text',
-					'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
-					'section'     => 'client_settings',
+				'title'       => __( 'Scopes', 'hello-login' ),
+				'description' => __( 'The default scopes gather the default user properties. Only modify after reviewing available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
+				'example'     => 'openid name nickname family_name given_name email',
+				'type'        => 'text',
+				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
+				'section'     => 'client_settings',
 			),
 			'client_id'         => array(
 				'title'       => __( 'Client ID', 'hello-login' ),
 				'description' => __( 'The client identifier provided by Hellō and set by Quickstart.', 'hello-login' ),
 				'type'        => 'text',
 				'disabled'    => defined( 'OIDC_CLIENT_ID' ),
+				'section'     => 'client_settings',
+			),
+			'redirect_uri'         => array(
+				'title'       => __( 'Redirect URI', 'hello-login' ),
+				'description' => __( 'The endpoint used to receive authentication data.', 'hello-login' ),
+				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
 			/*
@@ -525,6 +531,13 @@ class Hello_Login_Settings_Page {
 
 			<h2>Use the <a href="https://console.hello.coop/" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.<h2>
 
+			<h2>Hellō Button</h2>
+			<p>In order to add a "Continue with Hellō" button you have the following options:
+				<ul style="list-style-type:disc; padding-left: 3em">
+					<li>Shortcode: <code>[hello_login_button]</code></li>
+					<li>Block: <em>coming soon...</em></li>
+				</ul>
+			</p>
 			<form method="post" action="options.php">
 				<?php
 				settings_fields( $this->settings_field_group );
@@ -566,10 +579,15 @@ class Hello_Login_Settings_Page {
 	 */
 	public function do_text_field( $field ) {
 		$disabled = ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true;
+		$value = $this->settings->{ $field['key'] };
 
 		$readonly = '';
 		if ( $field['key'] == 'client_id' ) {
 			$readonly = 'readonly';
+		}
+		if ( $field['key'] == 'redirect_uri' ) {
+			$readonly = 'readonly';
+			$value = site_url( '?hello-login=callback' );
 		}
 		?>
 		<input type="<?php print esc_attr( $field['type'] ); ?>" <?php print esc_attr( $readonly ); ?>
@@ -577,7 +595,7 @@ class Hello_Login_Settings_Page {
 			  id="<?php print esc_attr( $field['key'] ); ?>"
 			  class="large-text<?php echo ( $disabled ? ' disabled' : '' ); ?>"
 			  name="<?php print esc_attr( $field['name'] ); ?>"
-			  value="<?php print esc_attr( $this->settings->{ $field['key'] } ); ?>">
+			  value="<?php print esc_attr( $value ); ?>">
 		<?php
 		$this->do_field_description( $field );
 	}
