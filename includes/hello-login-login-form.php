@@ -198,8 +198,8 @@ class Hello_Login_Login_Form {
 	 * @return string
 	 */
 	public function make_login_form_toggle() {
-		wp_enqueue_script( 'hello-username-password-form', plugin_dir_url( __DIR__ ) . 'js/scripts-login.js' );
-		wp_enqueue_style( 'hello-username-password-form', plugin_dir_url( __DIR__ ) . 'css/styles-login.css' );
+		wp_enqueue_script( 'hello-username-password-form', plugin_dir_url( __DIR__ ) . 'js/scripts-login.js', array(), Hello_Login::VERSION );
+		wp_enqueue_style( 'hello-username-password-form', plugin_dir_url( __DIR__ ) . 'css/styles-login.css', array(), Hello_Login::VERSION, 'all' );
 
 		ob_start();
 		?>
