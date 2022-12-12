@@ -37,7 +37,7 @@ function hello_login_user_profile( $profileuser ) {
 				<?php if ( empty( $hello_user_id ) ) { ?>
 					<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
 				<?php } else { ?>
-					<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Unlink Hellō" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'"></button>
+					<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink Hellō</button>
 				<?php } ?>
 			</td>
 		</tr>
