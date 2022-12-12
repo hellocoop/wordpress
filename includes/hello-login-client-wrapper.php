@@ -152,6 +152,10 @@ class Hello_Login_Client_Wrapper {
 				$this->authentication_request_callback();
 				exit;
 			}
+			if ( 'unlink' === $query->query_vars['hello-login'] ) {
+				$this->unlink_hello();
+				exit;
+			}
 		}
 
 		return $query;
@@ -740,6 +744,32 @@ class Hello_Login_Client_Wrapper {
 
 		wp_redirect( $redirect_url );
 
+		exit;
+	}
+
+	/**
+	 * Unlink the current WordPress user from Hellō user.
+	 *
+	 * @return void
+	 */
+	public function unlink_hello() {
+		$this->logger->log( 'Start...', 'unlink_hello' );
+		$wp_user_id = get_current_user_id();
+
+		if ( $wp_user_id == 0 ) {
+			$this->logger->log( 'No current user', 'unlink_hello' );
+		} else {
+			$hello_user_id = get_user_meta( $wp_user_id, 'hello-login-subject-identity', true );
+
+			if ( empty( $hello_user_id ) ) {
+				$this->logger->log( 'User not linked', 'unlink_hello' );
+			} else {
+				delete_user_meta( $wp_user_id, 'hello-login-subject-identity' );
+				$this->logger->log( "WordPress user $wp_user_id unlinked from Hellō user $hello_user_id.", 'unlink_hello' );
+			}
+		}
+
+		wp_redirect( get_edit_profile_url( $wp_user_id ) );
 		exit;
 	}
 
