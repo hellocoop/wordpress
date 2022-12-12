@@ -6,6 +6,7 @@ async function navigateToHelloAuthRequestUrl(api_url_str, redirect_to_path) {
 
 		api_url = new URL(api_url_str)
 		api_url.searchParams.append('redirect_to_path', redirect_to_path)
+		api_url.searchParams.append('cache_buster', new Date().getTime())
 
 		const res = await fetch(api_url.href)
 
