@@ -282,7 +282,21 @@ class Hello_Login {
 	 */
 	public static function activation() {
 		self::setup_cron_jobs();
-		update_option('hello_login_permalinks_flushed', 0);
+		update_option( 'hello_login_permalinks_flushed', 0 );
+	}
+
+	/**
+	 * Redirect after plugin Activation hook.
+	 *
+	 * @param string $plugin The slug of the plugin being activated.
+	 *
+	 * @return void
+	 */
+	public static function activation_redirect( $plugin ) {
+		if( $plugin == plugin_basename( __FILE__ ) ) {
+			wp_redirect( admin_url( '/options-general.php?page=hello-login-settings' ) );
+			exit();
+		}
 	}
 
 	/**
@@ -414,6 +428,7 @@ class Hello_Login {
 Hello_Login::instance();
 
 register_activation_hook( __FILE__, array( 'Hello_Login', 'activation' ) );
+add_action( 'activated_plugin', array( 'Hello_Login', 'activation_redirect' ) );
 register_deactivation_hook( __FILE__, array( 'Hello_Login', 'deactivation' ) );
 register_uninstall_hook( __FILE__, array( 'Hello_Login', 'uninstall' ) );
 
