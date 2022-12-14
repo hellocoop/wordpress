@@ -244,9 +244,10 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	public function admin_notice_quickstart_success() {
+		$site_name = get_bloginfo( 'name' );
 		?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php esc_html_e( 'Quickstart succeeded!', 'hello-login' ); ?></p>
+			<p><?php esc_html_e( "Quickstart has successfully registered your site \"$site_name\" at Hellō!", 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
@@ -575,7 +576,7 @@ class Hello_Login_Settings_Page {
 
 			<p>The following information is sent with the Quickstart request:
 				<ul style="list-style-type:disc; padding-left: 3em">
-					<li>Site Name: <strong><?php print esc_html( get_bloginfo('name') ); ?></strong></li>
+					<li>Site Name: <strong><?php print esc_html( get_bloginfo( 'name' ) ); ?></strong></li>
 					<?php if ( $custom_logo_url ) { ?>
 					<li>Site Logo: <img src="<?php print esc_attr( $custom_logo_url ); ?>" alt="Site Logo" height="70" /></li>
 					<?php } ?>
@@ -589,7 +590,7 @@ class Hello_Login_Settings_Page {
 			<form method="get" action="https://quickstart.hello.coop/">
 				<input type="hidden" name="integration" id="integration" value="wordpress" />
 				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $quickstart_uri ); ?>" />
-				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo('name') ); ?>" />
+				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo( 'name' ) ); ?>" />
 				<input type="hidden" name="pp_uri" id="pp_uri" value="<?php print esc_attr( get_privacy_policy_url() ); ?>" />
 				<input type="hidden" name="image_uri" id="image_uri" value="<?php print esc_attr( $custom_logo_url ); ?>" />
 				<input type="hidden" name="redirect_uri" id="redirect_uri" value="<?php print esc_attr( $redirect_uri ); ?>" />
