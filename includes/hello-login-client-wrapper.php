@@ -156,6 +156,10 @@ class Hello_Login_Client_Wrapper {
 				$this->unlink_hello();
 				exit;
 			}
+			if ( 'quickstart' === $query->query_vars['hello-login'] ) {
+				$this->quickstart_callback();
+				exit;
+			}
 		}
 
 		return $query;
@@ -173,15 +177,6 @@ class Hello_Login_Client_Wrapper {
 			array(
 				'methods' => 'GET',
 				'callback' => array( $this, 'rest_auth_url' ),
-				'permission_callback' => function() { return ''; },
-			)
-		);
-		register_rest_route(
-			'hello-login/v1',
-			'/quickstart/',
-			array(
-				'methods' => 'GET',
-				'callback' => array( $this, 'rest_quickstart_callback'),
 				'permission_callback' => function() { return ''; },
 			)
 		);
@@ -226,14 +221,13 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Process the Quickstart response.
 	 *
-	 * @param WP_REST_Request $request The REST request object.
 	 * @return void
 	 */
-	public function rest_quickstart_callback( WP_REST_Request $request ) {
+	public function quickstart_callback() {
 		$message_id = 'quickstart_success';
 
-		if ( $request->has_param( 'client_id' ) ) {
-			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
+		if ( isset( $_GET['client_id'] ) ) {
+			$client_id = sanitize_text_field( $_GET['client_id'] );
 
 			// TODO add client id format validation.
 
@@ -757,7 +751,6 @@ class Hello_Login_Client_Wrapper {
 	 * @return void
 	 */
 	public function unlink_hello() {
-		$this->logger->log( 'Start...', 'unlink_hello' );
 		$wp_user_id = get_current_user_id();
 
 		if ( $wp_user_id == 0 ) {

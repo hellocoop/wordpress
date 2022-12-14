@@ -219,7 +219,7 @@ class Hello_Login_Settings_Page {
 
 	private function add_admin_notices() {
 		if ( isset( $_GET['hello-login-msg'] ) && ! empty( $_GET['hello-login-msg'] ) ) {
-			$message_id = $_GET['hello-login-msg'];
+			$message_id = sanitize_text_field( $_GET['hello-login-msg'] );
 
 			switch ($message_id) {
 				case 'quickstart_success':
@@ -554,7 +554,7 @@ class Hello_Login_Settings_Page {
 		wp_enqueue_style( 'hello-login-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
 		$redirect_uri = site_url( '?hello-login=callback' );
-		$quickstart_uri = rest_url( 'hello-login/v1/quickstart' );
+		$quickstart_uri = site_url( '?hello-login=quickstart' );
 
 		$custom_logo_url = '';
 		if ( has_custom_logo() ) {
