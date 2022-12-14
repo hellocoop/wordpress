@@ -231,6 +231,15 @@ class Hello_Login_Settings_Page {
 				case 'quickstart_missing_client_id':
 					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_missing_client_id' ) );
 					break;
+				case 'unlink_success':
+					add_action( 'admin_notices', array( $this, 'admin_notice_unlink_success' ) );
+					break;
+				case 'unlink_no_session':
+					add_action( 'admin_notices', array( $this, 'admin_notice_unlink_no_session' ) );
+					break;
+				case 'unlink_not_linked':
+					add_action( 'admin_notices', array( $this, 'admin_notice_unlink_not_linked' ) );
+					break;
 				default:
 					$this->logger->log( 'Unknown message id: ' . $message_id, 'admin_notices' );
 					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_unknown' ) );
@@ -247,7 +256,7 @@ class Hello_Login_Settings_Page {
 		$site_name = get_bloginfo( 'name' );
 		?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php esc_html_e( "Quickstart has successfully registered your site \"$site_name\" at Hellō!", 'hello-login' ); ?></p>
+			<p><?php esc_html_e( "Quickstart has successfully registered your site \"$site_name\" at Hellō", 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
@@ -260,7 +269,7 @@ class Hello_Login_Settings_Page {
 	public function admin_notice_quickstart_existing_client_id() {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php esc_html_e( 'Quickstart failed: client id already set!', 'hello-login' ); ?></p>
+			<p><?php esc_html_e( 'Quickstart failed: client id already set', 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
@@ -273,7 +282,7 @@ class Hello_Login_Settings_Page {
 	public function admin_notice_quickstart_missing_client_id() {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php esc_html_e( 'Quickstart failed: no client id was sent!', 'hello-login' ); ?></p>
+			<p><?php esc_html_e( 'Quickstart failed: no client id was sent', 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
@@ -286,7 +295,46 @@ class Hello_Login_Settings_Page {
 	public function admin_notice_quickstart_unknown() {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php esc_html_e( 'Quickstart failed: unknown!', 'hello-login' ); ?></p>
+			<p><?php esc_html_e( 'Quickstart failed: unknown', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for successful unlink.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_unlink_success() {
+		?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( "This account has been unlinked with Hellō", 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed unlink because no current user was found.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_unlink_no_session() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Unlink failed: no current user was found', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed unlink because current user is not linked.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_unlink_not_linked() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Unlink failed: current user not linked', 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
