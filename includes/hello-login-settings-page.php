@@ -240,6 +240,9 @@ class Hello_Login_Settings_Page {
 				case 'unlink_not_linked':
 					add_action( 'admin_notices', array( $this, 'admin_notice_unlink_not_linked' ) );
 					break;
+				case 'link_success':
+					add_action( 'admin_notices', array( $this, 'admin_notice_link_success' ) );
+					break;
 				default:
 					$this->logger->log( 'Unknown message id: ' . $message_id, 'admin_notices' );
 					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_unknown' ) );
@@ -335,6 +338,19 @@ class Hello_Login_Settings_Page {
 		?>
 		<div class="notice notice-error is-dismissible">
 			<p><?php esc_html_e( 'Unlink failed: current user not linked', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for successful link.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_link_success() {
+		?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( "This account has been linked with Hellō", 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}

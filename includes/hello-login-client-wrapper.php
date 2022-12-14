@@ -663,6 +663,7 @@ class Hello_Login_Client_Wrapper {
 
 		$link_error = new WP_Error( self::LINK_ERROR_CODE, __( self::LINK_ERROR_MESSAGE, 'hello-login' ) );
 		$link_error->add_data( $subject_identity );
+		$message_id = '';
 
 		if ( ! $user ) {
 			// A pre-existing Hellō mapped user wasn't found.
@@ -680,6 +681,7 @@ class Hello_Login_Client_Wrapper {
 				// link accounts
 				$user = wp_get_current_user();
 				add_user_meta( $user->ID, 'hello-login-subject-identity', (string) $subject_identity, true );
+				$message_id = 'link_success';
 			} else {
 				// no current user session and no user found based on 'sub'
 
@@ -738,6 +740,10 @@ class Hello_Login_Client_Wrapper {
 		// Only do redirect-user-back action hook when the plugin is configured for it.
 		if ( $this->settings->redirect_user_back ) {
 			do_action( 'hello-login-redirect-user-back', $redirect_url, $user );
+		}
+
+		if ( ! empty( $message_id ) ) {
+			$redirect_url .= ( parse_url( $redirect_url, PHP_URL_QUERY ) ? '&' : '?' ) . 'hello-login-msg=' . $message_id;
 		}
 
 		wp_redirect( $redirect_url );
