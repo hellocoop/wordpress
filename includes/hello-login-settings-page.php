@@ -672,11 +672,7 @@ class Hello_Login_Settings_Page {
 			<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>
 
 			<h2>Hellō Button</h2>
-			<p>In order to add a "Continue with Hellō" button you have the following options:
-				<ul style="list-style-type:disc; padding-left: 3em">
-					<li>Shortcode: <code>[hello_login_button]</code></li>
-					<li>Block: <em>coming soon...</em></li>
-				</ul>
+			<p>The Hellō Button has been added to the /wp-login.php page. You can add a "Continue with Hellō" button to other pages with the shortcode <code>[hello_login_button]</code>. Block support coming soon!
 			</p>
 			<form method="post" action="options.php">
 				<?php
