@@ -227,27 +227,31 @@ class Hello_Login_Client_Wrapper {
 	 * Process the Quickstart response.
 	 *
 	 * @param WP_REST_Request $request The REST request object.
-	 * @return WP_Error A Quickstart response processing error.
+	 * @return void
 	 */
 	public function rest_quickstart_callback( WP_REST_Request $request ) {
+		$message_id = 'quickstart_success';
+
 		if ( $request->has_param( 'client_id' ) ) {
 			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
 
-			// TODO add client id format validation
+			// TODO add client id format validation.
 
-			if ( ! empty( $this->settings->client_id ) ) {
-				return new WP_Error( 'existing_client_id', 'Client id already set', array( 'status' => 403 ) );
+			if ( empty( $this->settings->client_id ) ) {
+				$this->settings->client_id = $client_id;
+				$this->settings->save();
+				$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
+			} else {
+				$message_id = 'quickstart_existing_client_id';
+				$this->logger->log( 'Client id already set', 'quickstart' );
 			}
-
-			$this->settings->client_id = $client_id;
-			$this->settings->save();
-			$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
-
-			wp_redirect( admin_url( '/options-general.php?page=hello-login-settings' ) );
-			exit();
 		} else {
-			return new WP_Error( 'missing_client_id', 'Missing client id', array( 'status' => 400 ) );
+			$message_id = 'quickstart_missing_client_id';
+			$this->logger->log( 'Missing client id', 'quickstart' );
 		}
+
+		wp_redirect( admin_url( '/options-general.php?page=hello-login-settings&hello-login-msg=' . $message_id ) );
+		exit();
 	}
 
 	/**

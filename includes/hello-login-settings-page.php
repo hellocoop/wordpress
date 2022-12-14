@@ -213,6 +213,81 @@ class Hello_Login_Settings_Page {
 				$field
 			);
 		}
+
+		$this->add_admin_notices();
+	}
+
+	private function add_admin_notices() {
+		if ( isset( $_GET['hello-login-msg'] ) && ! empty( $_GET['hello-login-msg'] ) ) {
+			$message_id = $_GET['hello-login-msg'];
+
+			switch ($message_id) {
+				case 'quickstart_success':
+					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_success' ) );
+					break;
+				case 'quickstart_existing_client_id':
+					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_existing_client_id' ) );
+					break;
+				case 'quickstart_missing_client_id':
+					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_missing_client_id' ) );
+					break;
+				default:
+					$this->logger->log( 'Unknown message id: ' . $message_id, 'admin_notices' );
+					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_unknown' ) );
+			}
+		}
+	}
+
+	/**
+	 * Show admin notice for successful Quickstart.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_quickstart_success() {
+		?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( 'Quickstart succeeded!', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed Quickstart because the client id is already set.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_quickstart_existing_client_id() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Quickstart failed: client id already set!', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed Quickstart because the client id is missing.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_quickstart_missing_client_id() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Quickstart failed: no client id was sent!', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed Quickstart, unknown message id.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_quickstart_unknown() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Quickstart failed: unknown!', 'hello-login' ); ?></p>
+		</div>
+		<?php
 	}
 
 	/**
