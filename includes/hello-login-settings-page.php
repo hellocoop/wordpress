@@ -638,19 +638,6 @@ class Hello_Login_Settings_Page {
 			<?php if ( ! $configured ) { ?>
 			<h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already.</h2>
 
-			<p>The following information is sent with the Quickstart request:
-				<ul style="list-style-type:disc; padding-left: 3em">
-					<li>Site Name: <strong><?php print esc_html( get_bloginfo( 'name' ) ); ?></strong></li>
-					<?php if ( $custom_logo_url ) { ?>
-					<li>Site Logo: <img src="<?php print esc_attr( $custom_logo_url ); ?>" alt="Site Logo" height="70" /></li>
-					<?php } ?>
-					<?php if ( get_privacy_policy_url() ) { ?>
-					<li>Privacy Policy URL: <code><?php print esc_html( get_privacy_policy_url() ); ?></code></li>
-					<?php } ?>
-					<li>Redirect URI: <code><?php print esc_html( $redirect_uri ); ?></code></li>
-				</ul>
-			</p>
-
 			<form method="get" action="https://quickstart.hello.coop/">
 				<input type="hidden" name="integration" id="integration" value="wordpress" />
 				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $quickstart_uri ); ?>" />
