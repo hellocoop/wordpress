@@ -29,15 +29,15 @@ function hello_login_user_profile( $profileuser ) {
 	$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
 	$unlink_url = site_url( '?hello-login=unlink' );
 	?>
-	<h2>Hellō Login</h2>
+	<h2>Hellō</h2>
 	<table class="form-table">
 		<tr>
-			<th>Hellō Wallet</th>
+			<th>This Account</th>
 			<td>
 				<?php if ( empty( $hello_user_id ) ) { ?>
-					<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
+					<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link with Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
 				<?php } else { ?>
-					<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink Hellō</button>
+					<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink from Hellō</button>
 				<?php } ?>
 			</td>
 		</tr>
