@@ -483,12 +483,6 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
-			'alternate_redirect_uri'   => array(
-				'title'       => __( 'Alternate Redirect URI', 'hello-login' ),
-				'description' => __( 'Provide an alternative redirect route. Useful if your server is causing issues with the default admin-ajax method. You must flush rewrite rules after changing this setting. This can be done by saving the Permalinks settings page.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'section'     => 'authorization_settings',
-			),
 			'nickname_key'     => array(
 				'title'       => __( 'Nickname Key', 'hello-login' ),
 				'description' => __( 'Where in the user claim array to find the user\'s nickname. Possible standard values: preferred_username, name, or sub.', 'hello-login' ),
