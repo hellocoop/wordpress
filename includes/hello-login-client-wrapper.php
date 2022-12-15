@@ -205,6 +205,7 @@ class Hello_Login_Client_Wrapper {
 
 			if ( empty( $this->settings->client_id ) ) {
 				$this->settings->client_id = $client_id;
+				$this->settings->link_not_now = 0;
 				$this->settings->save();
 				$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
 			} else {
