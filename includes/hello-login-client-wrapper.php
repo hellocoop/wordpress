@@ -134,8 +134,6 @@ class Hello_Login_Client_Wrapper {
 			add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 3 );
 		}
 
-		add_action( 'rest_api_init', array( $client_wrapper, 'register_rest_routes' ) );
-
 		return $client_wrapper;
 	}
 
@@ -167,59 +165,6 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		return $query;
-	}
-
-	/**
-	 * Register REST API routes.
-	 *
-	 * @return void
-	 */
-	public function register_rest_routes() {
-		register_rest_route(
-			'hello-login/v1',
-			'/auth_url/',
-			array(
-				'methods' => 'GET',
-				'callback' => array( $this, 'rest_auth_url' ),
-				'permission_callback' => function() { return ''; },
-			)
-		);
-	}
-
-	/**
-	 * Get the authentication URL for the REST API.
-	 *
-	 * @param WP_REST_Request $request The REST request object.
-	 * @return WP_REST_Response|WP_Error A Hello service authentication URL.
-	 */
-	public function rest_auth_url( WP_REST_Request $request ) {
-		$atts = array();
-
-		if ( $request->has_param( 'redirect_to_path' ) ) {
-			$redirect_to_path = $request->get_param( 'redirect_to_path' );
-
-			// Validate that only a path was passed in.
-			$p = parse_url( $redirect_to_path );
-
-			if ( isset( $p['scheme'] ) || isset( $p['host'] ) || isset( $p['port'] ) || isset( $p['user'] ) || isset( $p['pass'] ) ) {
-				return new WP_Error( 'invalid_path', 'Invalid redirect_to_path', array( 'status' => 400 ) );
-			}
-
-			$redirect_to_path = '/' . ltrim( $redirect_to_path, '/' );
-			$redirect_to = rtrim( home_url(), '/' ) . $redirect_to_path;
-			$atts = array(
-				'redirect_to' => $redirect_to,
-			);
-		}
-
-		$body = array(
-			'url' => $this->get_authentication_url( $atts ),
-		);
-
-		$response = new WP_REST_Response( $body );
-		$response->set_headers( array( 'Cache-Control' => 'no-cache' ) );
-
-		return $response;
 	}
 
 	/**
@@ -296,10 +241,6 @@ class Hello_Login_Client_Wrapper {
 
 		// If using the login form, default redirect to the home page.
 		if ( isset( $GLOBALS['pagenow'] ) && 'wp-login.php' == $GLOBALS['pagenow'] ) {
-			return home_url();
-		}
-
-		if ( defined( 'REST_REQUEST' ) ) {
 			return home_url();
 		}
 
