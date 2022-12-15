@@ -229,7 +229,7 @@ class Hello_Login {
 	 */
 	public function hello_login_user_profile_other( $profileuser ) {
 		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
-		$unlink_url = site_url( '?hello-login=unlink' );
+		$unlink_url = site_url( '?hello-login=unlink&user_id=' . $profileuser->ID );
 		?>
 		<h2>Hellō</h2>
 		<table class="form-table">

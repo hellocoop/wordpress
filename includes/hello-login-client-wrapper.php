@@ -759,23 +759,29 @@ class Hello_Login_Client_Wrapper {
 	public function unlink_hello() {
 		$message_id = 'unlink_success';
 		$wp_user_id = get_current_user_id();
+		$target_user_id = $wp_user_id;
 
-		if ( $wp_user_id == 0 ) {
+		if ( isset( $_GET[ 'user_id' ] ) ) {
+			$target_user_id = sanitize_text_field( $_GET[ 'user_id' ] );
+		}
+
+		if ( $wp_user_id == 0 || ! current_user_can( 'edit_user' ) ) {
+			// No valid session found, or current user is not an administrator.
 			$this->logger->log( 'No current user', 'unlink_hello' );
 			$message_id = 'unlink_no_session';
 		} else {
-			$hello_user_id = get_user_meta( $wp_user_id, 'hello-login-subject-identity', true );
+			$hello_user_id = get_user_meta( $target_user_id, 'hello-login-subject-identity', true );
 
 			if ( empty( $hello_user_id ) ) {
 				$this->logger->log( 'User not linked', 'unlink_hello' );
 				$message_id = 'unlink_not_linked';
 			} else {
-				delete_user_meta( $wp_user_id, 'hello-login-subject-identity' );
-				$this->logger->log( "WordPress user $wp_user_id unlinked from Hellō user $hello_user_id.", 'unlink_hello' );
+				delete_user_meta( $target_user_id, 'hello-login-subject-identity' );
+				$this->logger->log( "WordPress user $target_user_id unlinked from Hellō user $hello_user_id.", 'unlink_hello' );
 			}
 		}
 
-		$profile_url = get_edit_profile_url ($wp_user_id );
+		$profile_url = get_edit_user_link( $target_user_id );
 		$profile_url .= ( parse_url( $profile_url, PHP_URL_QUERY ) ? '&' : '?' ) . 'hello-login-msg=' . $message_id;
 		wp_redirect( $profile_url );
 		exit;
