@@ -645,7 +645,7 @@ class Hello_Login_Settings_Page {
 				<input type="hidden" name="pp_uri" id="pp_uri" value="<?php print esc_attr( get_privacy_policy_url() ); ?>" />
 				<input type="hidden" name="image_uri" id="image_uri" value="<?php print esc_attr( $custom_logo_url ); ?>" />
 				<input type="hidden" name="redirect_uri" id="redirect_uri" value="<?php print esc_attr( $redirect_uri ); ?>" />
-				<input type="submit" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Continue with Hellō Quickstart" />
+				<input type="submit" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Configure your site with Hellō Quickstart" />
 			</form>
 
 			<?php } ?>
