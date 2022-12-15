@@ -285,7 +285,7 @@ class Hello_Login_Settings_Page {
 	public function admin_notice_quickstart_missing_client_id() {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php esc_html_e( 'Quickstart failed: no client id was sent', 'hello-login' ); ?></p>
+			<p><?php esc_html_e( 'Quickstart failed: missing or invalid client id', 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
@@ -483,12 +483,6 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
-			'alternate_redirect_uri'   => array(
-				'title'       => __( 'Alternate Redirect URI', 'hello-login' ),
-				'description' => __( 'Provide an alternative redirect route. Useful if your server is causing issues with the default admin-ajax method. You must flush rewrite rules after changing this setting. This can be done by saving the Permalinks settings page.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'section'     => 'authorization_settings',
-			),
 			'nickname_key'     => array(
 				'title'       => __( 'Nickname Key', 'hello-login' ),
 				'description' => __( 'Where in the user claim array to find the user\'s nickname. Possible standard values: preferred_username, name, or sub.', 'hello-login' ),
@@ -632,7 +626,8 @@ class Hello_Login_Settings_Page {
 			$custom_logo_url = $custom_logo_data[0];
 		}
 
-		$api_url = rest_url( 'hello-login/v1/auth_url' );
+		$redirect_to_path = Hello_Login::extract_path_and_query( admin_url( '/options-general.php?page=hello-login-settings' ) );
+		$start_url = site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( $redirect_to_path ) );
 
 		$debug = isset( $_GET['debug'] );
 		$configured = ! empty( $this->settings->client_id );
@@ -671,7 +666,7 @@ class Hello_Login_Settings_Page {
 			<?php if ( $configured || $debug ) { ?>
 				<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) && ! $link_not_now ) { ?>
 					<h2>You are logged into this account with a username and password. Link this account with Hellō to login with Hellō in the future.</h2>
-					<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link this account with Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
+					<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link this account with Hellō" onclick="parent.location='<?php print esc_js( $start_url ); ?>'"></button>
 					<a href="<?php print esc_attr( $settings_page_not_now_url ); ?>" class="hello-link-not-now">Not Now</a>
 				<?php } else { ?>
 					<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>

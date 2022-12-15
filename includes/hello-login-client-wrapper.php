@@ -115,14 +115,8 @@ class Hello_Login_Client_Wrapper {
 		// Alter the requests according to settings.
 		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 3 );
 
-		add_rewrite_rule( '^hello-login/([a-z]+)/?.*', 'index.php?hello-login=$matches[1]', 'top' );
 		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
 		add_action( 'parse_request', array( $client_wrapper, 'redirect_uri_parse_request' ) );
-
-		if( !get_option('hello_login_permalinks_flushed') ) {
-			flush_rewrite_rules(false);
-			update_option('hello_login_permalinks_flushed', 1);
-		}
 
 		// Verify token for any logged in user.
 		if ( is_user_logged_in() ) {
@@ -133,8 +127,6 @@ class Hello_Login_Client_Wrapper {
 		if ( true === (bool) $settings->enable_pkce ) {
 			add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 3 );
 		}
-
-		add_action( 'rest_api_init', array( $client_wrapper, 'register_rest_routes' ) );
 
 		return $client_wrapper;
 	}
@@ -160,39 +152,25 @@ class Hello_Login_Client_Wrapper {
 				$this->quickstart_callback();
 				exit;
 			}
+			if ( 'start' === $query->query_vars['hello-login'] ) {
+				$this->start_auth();
+				exit;
+			}
 		}
 
 		return $query;
 	}
 
 	/**
-	 * Register REST API routes.
+	 * Generate an authorization request URL and redirect to it.
 	 *
-	 * @return void
+	 * @return WP_Error
 	 */
-	public function register_rest_routes() {
-		register_rest_route(
-			'hello-login/v1',
-			'/auth_url/',
-			array(
-				'methods' => 'GET',
-				'callback' => array( $this, 'rest_auth_url' ),
-				'permission_callback' => function() { return ''; },
-			)
-		);
-	}
-
-	/**
-	 * Get the authentication URL for the REST API.
-	 *
-	 * @param WP_REST_Request $request The REST request object.
-	 * @return WP_REST_Response|WP_Error A Hello service authentication URL.
-	 */
-	public function rest_auth_url( WP_REST_Request $request ) {
+	public function start_auth() {
 		$atts = array();
 
-		if ( $request->has_param( 'redirect_to_path' ) ) {
-			$redirect_to_path = $request->get_param( 'redirect_to_path' );
+		if ( isset( $_GET['redirect_to_path'] ) ) {
+			$redirect_to_path = sanitize_text_field( $_GET['redirect_to_path'] );
 
 			// Validate that only a path was passed in.
 			$p = parse_url( $redirect_to_path );
@@ -208,14 +186,8 @@ class Hello_Login_Client_Wrapper {
 			);
 		}
 
-		$body = array(
-			'url' => $this->get_authentication_url( $atts ),
-		);
-
-		$response = new WP_REST_Response( $body );
-		$response->set_headers( array( 'Cache-Control' => 'no-cache' ) );
-
-		return $response;
+		wp_redirect ( $this->get_authentication_url( $atts ) );
+		exit();
 	}
 
 	/**
@@ -229,15 +201,19 @@ class Hello_Login_Client_Wrapper {
 		if ( isset( $_GET['client_id'] ) ) {
 			$client_id = sanitize_text_field( $_GET['client_id'] );
 
-			// TODO add client id format validation.
-
-			if ( empty( $this->settings->client_id ) ) {
-				$this->settings->client_id = $client_id;
-				$this->settings->save();
-				$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
+			if ( preg_match( "/^[a-z0-9_-]{1,64}$/", $client_id ) ) {
+				if (empty($this->settings->client_id)) {
+					$this->settings->client_id = $client_id;
+					$this->settings->link_not_now = 0;
+					$this->settings->save();
+					$this->logger->log("Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart');
+				} else {
+					$message_id = 'quickstart_existing_client_id';
+					$this->logger->log('Client id already set', 'quickstart');
+				}
 			} else {
-				$message_id = 'quickstart_existing_client_id';
-				$this->logger->log( 'Client id already set', 'quickstart' );
+				$message_id = 'quickstart_missing_client_id';
+				$this->logger->log( 'Invalid client id', 'quickstart' );
 			}
 		} else {
 			$message_id = 'quickstart_missing_client_id';
@@ -263,10 +239,6 @@ class Hello_Login_Client_Wrapper {
 
 		// If using the login form, default redirect to the home page.
 		if ( isset( $GLOBALS['pagenow'] ) && 'wp-login.php' == $GLOBALS['pagenow'] ) {
-			return home_url();
-		}
-
-		if ( defined( 'REST_REQUEST' ) ) {
 			return home_url();
 		}
 
@@ -771,7 +743,7 @@ class Hello_Login_Client_Wrapper {
 				$this->logger->log( 'No current user', 'unlink_hello' );
 				$message_id = 'unlink_no_session';
 			} else {
-				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' ) )  {
+				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' . $target_user_id ) )  {
 					$hello_user_id = get_user_meta( $target_user_id, 'hello-login-subject-identity', true );
 
 					if ( empty( $hello_user_id ) ) {
