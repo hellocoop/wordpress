@@ -396,6 +396,7 @@ class Hello_Login {
 				'redirect_on_logout' => defined( 'OIDC_REDIRECT_ON_LOGOUT' ) ? intval( OIDC_REDIRECT_ON_LOGOUT ) : 1,
 				'enable_logging'  => 0,
 				'log_limit'       => 1000,
+				'link_not_now'    => 0,
 			)
 		);
 

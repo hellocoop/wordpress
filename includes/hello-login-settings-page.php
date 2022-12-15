@@ -583,6 +583,10 @@ class Hello_Login_Settings_Page {
 			);
 		}
 
+		$fields['link_not_now'] = array(
+				'section' => 'hidden_settings',
+		);
+
 		return apply_filters( 'hello-login-settings-fields', $fields );
 
 	}
@@ -619,6 +623,7 @@ class Hello_Login_Settings_Page {
 
 		$redirect_uri = site_url( '?hello-login=callback' );
 		$quickstart_uri = site_url( '?hello-login=quickstart' );
+		$settings_page_not_now_url = admin_url( '/options-general.php?page=hello-login-settings&link_not_now=1' );
 
 		$custom_logo_url = '';
 		if ( has_custom_logo() ) {
@@ -631,6 +636,19 @@ class Hello_Login_Settings_Page {
 
 		$debug = isset( $_GET['debug'] );
 		$configured = ! empty( $this->settings->client_id );
+
+		$link_not_now = ( 1 == $this->settings->link_not_now );
+		if ( isset( $_GET['link_not_now'] ) ) {
+			if ( '1' == $_GET['link_not_now'] ) {
+				$link_not_now = true;
+				$this->settings->link_not_now = 1;
+				$this->settings->save();
+			} else {
+				$link_not_now = false;
+				$this->settings->link_not_now = 0;
+				$this->settings->save();
+			}
+		}
 		?>
 		<div class="wrap">
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
@@ -651,23 +669,24 @@ class Hello_Login_Settings_Page {
 			<?php } ?>
 
 			<?php if ( $configured || $debug ) { ?>
-			<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ) { ?>
-				<p id="link-hello-wallet"><h2>You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</h2></p>
-				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
-			<?php } ?>
+				<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) && ! $link_not_now ) { ?>
+					<h2>You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</h2>
+					<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link this account with Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
+					<a href="<?php print esc_attr( $settings_page_not_now_url ); ?>" class="hello-link-not-now">Not Now</a>
+				<?php } else { ?>
+					<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>
 
-			<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>
-
-			<h2>Hellō Button</h2>
-			<p>The Hellō Button has been added to the /wp-login.php page. You can add a "Continue with Hellō" button to other pages with the shortcode <code>[hello_login_button]</code>. Block support coming soon!
-			</p>
-			<form method="post" action="options.php">
-				<?php
-				settings_fields( $this->settings_field_group );
-				do_settings_sections( $this->options_page_name );
-				submit_button();
-				?>
-			</form>
+					<h2>Hellō Button</h2>
+					<p>The Hellō Button has been added to the /wp-login.php page. You can add a "Continue with Hellō" button to other pages with the shortcode <code>[hello_login_button]</code>. Block support coming soon!
+					</p>
+					<form method="post" action="options.php">
+						<?php
+						settings_fields( $this->settings_field_group );
+						do_settings_sections( $this->options_page_name );
+						submit_button();
+						?>
+					</form>
+				<?php } ?>
 			<?php } ?>
 
 			<?php if ( $debug ) { ?>
