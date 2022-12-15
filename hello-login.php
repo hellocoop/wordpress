@@ -340,7 +340,6 @@ class Hello_Login {
 	 */
 	public static function activation() {
 		self::setup_cron_jobs();
-		update_option( 'hello_login_permalinks_flushed', 0 );
 	}
 
 	/**

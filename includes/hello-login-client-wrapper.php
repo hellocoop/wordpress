@@ -115,14 +115,8 @@ class Hello_Login_Client_Wrapper {
 		// Alter the requests according to settings.
 		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 3 );
 
-		add_rewrite_rule( '^hello-login/([a-z]+)/?.*', 'index.php?hello-login=$matches[1]', 'top' );
 		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
 		add_action( 'parse_request', array( $client_wrapper, 'redirect_uri_parse_request' ) );
-
-		if( !get_option('hello_login_permalinks_flushed') ) {
-			flush_rewrite_rules(false);
-			update_option('hello_login_permalinks_flushed', 1);
-		}
 
 		// Verify token for any logged in user.
 		if ( is_user_logged_in() ) {
