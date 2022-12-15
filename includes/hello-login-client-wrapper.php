@@ -761,24 +761,34 @@ class Hello_Login_Client_Wrapper {
 		$wp_user_id = get_current_user_id();
 		$target_user_id = $wp_user_id;
 
-		if ( isset( $_GET[ 'user_id' ] ) ) {
-			$target_user_id = sanitize_text_field( $_GET[ 'user_id' ] );
+		if ( isset( $_GET['user_id'] ) ) {
+			$target_user_id = sanitize_text_field( $_GET['user_id'] );
 		}
 
-		if ( $wp_user_id == 0 || ! current_user_can( 'edit_user' ) ) {
-			// No valid session found, or current user is not an administrator.
-			$this->logger->log( 'No current user', 'unlink_hello' );
-			$message_id = 'unlink_no_session';
-		} else {
-			$hello_user_id = get_user_meta( $target_user_id, 'hello-login-subject-identity', true );
-
-			if ( empty( $hello_user_id ) ) {
-				$this->logger->log( 'User not linked', 'unlink_hello' );
-				$message_id = 'unlink_not_linked';
+		if ( current_user_can( 'edit_user' ) ) {
+			if ( $wp_user_id == 0 ) {
+				// No valid session found, or current user is not an administrator.
+				$this->logger->log( 'No current user', 'unlink_hello' );
+				$message_id = 'unlink_no_session';
 			} else {
-				delete_user_meta( $target_user_id, 'hello-login-subject-identity' );
-				$this->logger->log( "WordPress user $target_user_id unlinked from Hellō user $hello_user_id.", 'unlink_hello' );
+				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' ) )  {
+					$hello_user_id = get_user_meta( $target_user_id, 'hello-login-subject-identity', true );
+
+					if ( empty( $hello_user_id ) ) {
+						$this->logger->log( 'User not linked', 'unlink_hello' );
+						$message_id = 'unlink_not_linked';
+					} else {
+						delete_user_meta( $target_user_id, 'hello-login-subject-identity' );
+						$this->logger->log( "WordPress user $target_user_id unlinked from Hellō user $hello_user_id.", 'unlink_hello' );
+					}
+				} else {
+					$this->logger->log( 'CSRF nonce verification failed: ' . $_GET['_wpnonce'], 'unlink_hello' );
+					$message_id = 'unlink_no_session';
+				}
 			}
+		} else {
+			$this->logger->log( 'Current user has no edit_user capability', 'unlink_hello' );
+			$message_id = 'unlink_no_session';
 		}
 
 		$profile_url = get_edit_user_link( $target_user_id );
