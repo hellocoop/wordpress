@@ -213,6 +213,146 @@ class Hello_Login_Settings_Page {
 				$field
 			);
 		}
+
+		$this->add_admin_notices();
+	}
+
+	private function add_admin_notices() {
+		if ( isset( $_GET['hello-login-msg'] ) && ! empty( $_GET['hello-login-msg'] ) ) {
+			$message_id = sanitize_text_field( $_GET['hello-login-msg'] );
+
+			switch ($message_id) {
+				case 'quickstart_success':
+					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_success' ) );
+					break;
+				case 'quickstart_existing_client_id':
+					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_existing_client_id' ) );
+					break;
+				case 'quickstart_missing_client_id':
+					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_missing_client_id' ) );
+					break;
+				case 'unlink_success':
+					add_action( 'admin_notices', array( $this, 'admin_notice_unlink_success' ) );
+					break;
+				case 'unlink_no_session':
+					add_action( 'admin_notices', array( $this, 'admin_notice_unlink_no_session' ) );
+					break;
+				case 'unlink_not_linked':
+					add_action( 'admin_notices', array( $this, 'admin_notice_unlink_not_linked' ) );
+					break;
+				case 'link_success':
+					add_action( 'admin_notices', array( $this, 'admin_notice_link_success' ) );
+					break;
+				default:
+					$this->logger->log( 'Unknown message id: ' . $message_id, 'admin_notices' );
+					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_unknown' ) );
+			}
+		}
+	}
+
+	/**
+	 * Show admin notice for successful Quickstart.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_quickstart_success() {
+		$site_name = get_bloginfo( 'name' );
+		?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( "Quickstart has successfully registered your site \"$site_name\" at Hellō", 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed Quickstart because the client id is already set.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_quickstart_existing_client_id() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Quickstart failed: client id already set', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed Quickstart because the client id is missing.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_quickstart_missing_client_id() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Quickstart failed: no client id was sent', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed Quickstart, unknown message id.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_quickstart_unknown() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Quickstart failed: unknown', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for successful unlink.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_unlink_success() {
+		?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( "This account has been unlinked with Hellō", 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed unlink because no current user was found.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_unlink_no_session() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Unlink failed: no current user was found', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for failed unlink because current user is not linked.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_unlink_not_linked() {
+		?>
+		<div class="notice notice-error is-dismissible">
+			<p><?php esc_html_e( 'Unlink failed: current user not linked', 'hello-login' ); ?></p>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Show admin notice for successful link.
+	 *
+	 * @return void
+	 */
+	public function admin_notice_link_success() {
+		?>
+		<div class="notice notice-success is-dismissible">
+			<p><?php esc_html_e( "This account has been linked with Hellō", 'hello-login' ); ?></p>
+		</div>
+		<?php
 	}
 
 	/**
@@ -443,6 +583,10 @@ class Hello_Login_Settings_Page {
 			);
 		}
 
+		$fields['link_not_now'] = array(
+				'section' => 'hidden_settings',
+		);
+
 		return apply_filters( 'hello-login-settings-fields', $fields );
 
 	}
@@ -478,7 +622,8 @@ class Hello_Login_Settings_Page {
 		wp_enqueue_style( 'hello-login-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
 		$redirect_uri = site_url( '?hello-login=callback' );
-		$quickstart_uri = rest_url( 'hello-login/v1/quickstart' );
+		$quickstart_uri = site_url( '?hello-login=quickstart' );
+		$settings_page_not_now_url = admin_url( '/options-general.php?page=hello-login-settings&link_not_now=1' );
 
 		$custom_logo_url = '';
 		if ( has_custom_logo() ) {
@@ -491,6 +636,19 @@ class Hello_Login_Settings_Page {
 
 		$debug = isset( $_GET['debug'] );
 		$configured = ! empty( $this->settings->client_id );
+
+		$link_not_now = ( 1 == $this->settings->link_not_now );
+		if ( isset( $_GET['link_not_now'] ) ) {
+			if ( '1' == $_GET['link_not_now'] ) {
+				$link_not_now = true;
+				$this->settings->link_not_now = 1;
+				$this->settings->save();
+			} else {
+				$link_not_now = false;
+				$this->settings->link_not_now = 0;
+				$this->settings->save();
+			}
+		}
 		?>
 		<div class="wrap">
 			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
@@ -498,53 +656,37 @@ class Hello_Login_Settings_Page {
 			<?php if ( ! $configured ) { ?>
 			<h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already.</h2>
 
-			<p>The following information is sent with the Quickstart request:
-				<ul style="list-style-type:disc; padding-left: 3em">
-					<li>Site Name: <strong><?php print esc_html( get_bloginfo('name') ); ?></strong></li>
-					<?php if ( $custom_logo_url ) { ?>
-					<li>Site Logo: <img src="<?php print esc_attr( $custom_logo_url ); ?>" alt="Site Logo" height="70" /></li>
-					<?php } ?>
-					<?php if ( get_privacy_policy_url() ) { ?>
-					<li>Privacy Policy URL: <code><?php print esc_html( get_privacy_policy_url() ); ?></code></li>
-					<?php } ?>
-					<li>Redirect URI: <code><?php print esc_html( $redirect_uri ); ?></code></li>
-				</ul>
-			</p>
-
 			<form method="get" action="https://quickstart.hello.coop/">
 				<input type="hidden" name="integration" id="integration" value="wordpress" />
 				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $quickstart_uri ); ?>" />
-				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo('name') ); ?>" />
+				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo( 'name' ) ); ?>" />
 				<input type="hidden" name="pp_uri" id="pp_uri" value="<?php print esc_attr( get_privacy_policy_url() ); ?>" />
 				<input type="hidden" name="image_uri" id="image_uri" value="<?php print esc_attr( $custom_logo_url ); ?>" />
 				<input type="hidden" name="redirect_uri" id="redirect_uri" value="<?php print esc_attr( $redirect_uri ); ?>" />
-				<input type="submit" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Continue with Hellō Quickstart" />
+				<input type="submit" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Configure your site with Hellō Quickstart" />
 			</form>
 
 			<?php } ?>
 
 			<?php if ( $configured || $debug ) { ?>
-			<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) ) { ?>
-				<p id="link-hello-wallet"><h2>You are logged in with a username and a password. Link your Hellō Wallet to use Hellō in the future.</h2></p>
-				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
-			<?php } ?>
+				<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) && ! $link_not_now ) { ?>
+					<h2>You are logged into this account with a username and password. Link this account with Hellō to login with Hellō in the future.</h2>
+					<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link this account with Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
+					<a href="<?php print esc_attr( $settings_page_not_now_url ); ?>" class="hello-link-not-now">Not Now</a>
+				<?php } else { ?>
+					<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>
 
-			<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>
-
-			<h2>Hellō Button</h2>
-			<p>In order to add a "Continue with Hellō" button you have the following options:
-				<ul style="list-style-type:disc; padding-left: 3em">
-					<li>Shortcode: <code>[hello_login_button]</code></li>
-					<li>Block: <em>coming soon...</em></li>
-				</ul>
-			</p>
-			<form method="post" action="options.php">
-				<?php
-				settings_fields( $this->settings_field_group );
-				do_settings_sections( $this->options_page_name );
-				submit_button();
-				?>
-			</form>
+					<h2>Hellō Button</h2>
+					<p>The Hellō Button has been added to the /wp-login.php page. You can add a "Continue with Hellō" button to other pages with the shortcode <code>[hello_login_button]</code>. Block support coming soon!
+					</p>
+					<form method="post" action="options.php">
+						<?php
+						settings_fields( $this->settings_field_group );
+						do_settings_sections( $this->options_page_name );
+						submit_button();
+						?>
+					</form>
+				<?php } ?>
 			<?php } ?>
 
 			<?php if ( $debug ) { ?>

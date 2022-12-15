@@ -156,6 +156,10 @@ class Hello_Login_Client_Wrapper {
 				$this->unlink_hello();
 				exit;
 			}
+			if ( 'quickstart' === $query->query_vars['hello-login'] ) {
+				$this->quickstart_callback();
+				exit;
+			}
 		}
 
 		return $query;
@@ -173,15 +177,6 @@ class Hello_Login_Client_Wrapper {
 			array(
 				'methods' => 'GET',
 				'callback' => array( $this, 'rest_auth_url' ),
-				'permission_callback' => function() { return ''; },
-			)
-		);
-		register_rest_route(
-			'hello-login/v1',
-			'/quickstart/',
-			array(
-				'methods' => 'GET',
-				'callback' => array( $this, 'rest_quickstart_callback'),
 				'permission_callback' => function() { return ''; },
 			)
 		);
@@ -226,28 +221,31 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Process the Quickstart response.
 	 *
-	 * @param WP_REST_Request $request The REST request object.
-	 * @return WP_Error A Quickstart response processing error.
+	 * @return void
 	 */
-	public function rest_quickstart_callback( WP_REST_Request $request ) {
-		if ( $request->has_param( 'client_id' ) ) {
-			$client_id = sanitize_text_field( $request->get_param( 'client_id' ) );
+	public function quickstart_callback() {
+		$message_id = 'quickstart_success';
 
-			// TODO add client id format validation
+		if ( isset( $_GET['client_id'] ) ) {
+			$client_id = sanitize_text_field( $_GET['client_id'] );
 
-			if ( ! empty( $this->settings->client_id ) ) {
-				return new WP_Error( 'existing_client_id', 'Client id already set', array( 'status' => 403 ) );
+			// TODO add client id format validation.
+
+			if ( empty( $this->settings->client_id ) ) {
+				$this->settings->client_id = $client_id;
+				$this->settings->save();
+				$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
+			} else {
+				$message_id = 'quickstart_existing_client_id';
+				$this->logger->log( 'Client id already set', 'quickstart' );
 			}
-
-			$this->settings->client_id = $client_id;
-			$this->settings->save();
-			$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
-
-			wp_redirect( admin_url( '/options-general.php?page=hello-login-settings' ) );
-			exit();
 		} else {
-			return new WP_Error( 'missing_client_id', 'Missing client id', array( 'status' => 400 ) );
+			$message_id = 'quickstart_missing_client_id';
+			$this->logger->log( 'Missing client id', 'quickstart' );
 		}
+
+		wp_redirect( admin_url( '/options-general.php?page=hello-login-settings&hello-login-msg=' . $message_id ) );
+		exit();
 	}
 
 	/**
@@ -665,6 +663,7 @@ class Hello_Login_Client_Wrapper {
 
 		$link_error = new WP_Error( self::LINK_ERROR_CODE, __( self::LINK_ERROR_MESSAGE, 'hello-login' ) );
 		$link_error->add_data( $subject_identity );
+		$message_id = '';
 
 		if ( ! $user ) {
 			// A pre-existing Hellō mapped user wasn't found.
@@ -682,6 +681,7 @@ class Hello_Login_Client_Wrapper {
 				// link accounts
 				$user = wp_get_current_user();
 				add_user_meta( $user->ID, 'hello-login-subject-identity', (string) $subject_identity, true );
+				$message_id = 'link_success';
 			} else {
 				// no current user session and no user found based on 'sub'
 
@@ -742,6 +742,10 @@ class Hello_Login_Client_Wrapper {
 			do_action( 'hello-login-redirect-user-back', $redirect_url, $user );
 		}
 
+		if ( ! empty( $message_id ) ) {
+			$redirect_url .= ( parse_url( $redirect_url, PHP_URL_QUERY ) ? '&' : '?' ) . 'hello-login-msg=' . $message_id;
+		}
+
 		wp_redirect( $redirect_url );
 
 		exit;
@@ -753,23 +757,43 @@ class Hello_Login_Client_Wrapper {
 	 * @return void
 	 */
 	public function unlink_hello() {
-		$this->logger->log( 'Start...', 'unlink_hello' );
+		$message_id = 'unlink_success';
 		$wp_user_id = get_current_user_id();
+		$target_user_id = $wp_user_id;
 
-		if ( $wp_user_id == 0 ) {
-			$this->logger->log( 'No current user', 'unlink_hello' );
-		} else {
-			$hello_user_id = get_user_meta( $wp_user_id, 'hello-login-subject-identity', true );
-
-			if ( empty( $hello_user_id ) ) {
-				$this->logger->log( 'User not linked', 'unlink_hello' );
-			} else {
-				delete_user_meta( $wp_user_id, 'hello-login-subject-identity' );
-				$this->logger->log( "WordPress user $wp_user_id unlinked from Hellō user $hello_user_id.", 'unlink_hello' );
-			}
+		if ( isset( $_GET['user_id'] ) ) {
+			$target_user_id = sanitize_text_field( $_GET['user_id'] );
 		}
 
-		wp_redirect( get_edit_profile_url( $wp_user_id ) );
+		if ( current_user_can( 'edit_user' ) ) {
+			if ( $wp_user_id == 0 ) {
+				// No valid session found, or current user is not an administrator.
+				$this->logger->log( 'No current user', 'unlink_hello' );
+				$message_id = 'unlink_no_session';
+			} else {
+				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' ) )  {
+					$hello_user_id = get_user_meta( $target_user_id, 'hello-login-subject-identity', true );
+
+					if ( empty( $hello_user_id ) ) {
+						$this->logger->log( 'User not linked', 'unlink_hello' );
+						$message_id = 'unlink_not_linked';
+					} else {
+						delete_user_meta( $target_user_id, 'hello-login-subject-identity' );
+						$this->logger->log( "WordPress user $target_user_id unlinked from Hellō user $hello_user_id.", 'unlink_hello' );
+					}
+				} else {
+					$this->logger->log( 'CSRF nonce verification failed: ' . $_GET['_wpnonce'], 'unlink_hello' );
+					$message_id = 'unlink_no_session';
+				}
+			}
+		} else {
+			$this->logger->log( 'Current user has no edit_user capability', 'unlink_hello' );
+			$message_id = 'unlink_no_session';
+		}
+
+		$profile_url = get_edit_user_link( $target_user_id );
+		$profile_url .= ( parse_url( $profile_url, PHP_URL_QUERY ) ? '&' : '?' ) . 'hello-login-msg=' . $message_id;
+		wp_redirect( $profile_url );
 		exit;
 	}
 

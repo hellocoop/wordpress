@@ -187,6 +187,64 @@ class Hello_Login {
 		if ( is_admin() ) {
 			Hello_Login_Settings_Page::register( $this->settings, $this->client_wrapper, $this->logger );
 		}
+
+		if ( ! empty( $this->settings->client_id ) ) {
+			add_action('show_user_profile', array($this, 'hello_login_user_profile_self'));
+			add_action('edit_user_profile', array($this, 'hello_login_user_profile_other'));
+		}
+	}
+
+	/**
+	 * Show Hellō account linking controls on the user's own profile page.
+	 *
+	 * @param WP_User $profileuser The user whose profile is being edited.
+	 * @return void
+	 */
+	public function hello_login_user_profile_self( $profileuser ) {
+		$api_url = rest_url( 'hello-login/v1/auth_url' );
+		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
+		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink' ), 'unlink' );
+		?>
+		<h2>Hellō</h2>
+		<table class="form-table">
+			<tr>
+				<th>This Account</th>
+				<td>
+					<?php if ( empty( $hello_user_id ) ) { ?>
+						<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link with Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
+					<?php } else { ?>
+						<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink from Hellō</button>
+					<?php } ?>
+				</td>
+			</tr>
+		</table>
+		<?php
+	}
+
+	/**
+	 * Show Hellō account linking controls on the user's own profile page.
+	 *
+	 * @param WP_User $profileuser The user whose profile is being edited.
+	 * @return void
+	 */
+	public function hello_login_user_profile_other( $profileuser ) {
+		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
+		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink&user_id=' . $profileuser->ID ), 'unlink' );
+		?>
+		<h2>Hellō</h2>
+		<table class="form-table">
+			<tr>
+				<th>This Account</th>
+				<td>
+					<?php if ( empty( $hello_user_id ) ) { ?>
+						<p>Not linked with Hellō</p>
+					<?php } else { ?>
+						<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink from Hellō</button>
+					<?php } ?>
+				</td>
+			</tr>
+		</table>
+		<?php
 	}
 
 	/**
@@ -396,6 +454,7 @@ class Hello_Login {
 				'redirect_on_logout' => defined( 'OIDC_REDIRECT_ON_LOGOUT' ) ? intval( OIDC_REDIRECT_ON_LOGOUT ) : 1,
 				'enable_logging'  => 0,
 				'log_limit'       => 1000,
+				'link_not_now'    => 0,
 			)
 		);
 
