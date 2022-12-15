@@ -285,7 +285,7 @@ class Hello_Login_Settings_Page {
 	public function admin_notice_quickstart_missing_client_id() {
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php esc_html_e( 'Quickstart failed: no client id was sent', 'hello-login' ); ?></p>
+			<p><?php esc_html_e( 'Quickstart failed: missing or invalid client id', 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}

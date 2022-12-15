@@ -201,16 +201,19 @@ class Hello_Login_Client_Wrapper {
 		if ( isset( $_GET['client_id'] ) ) {
 			$client_id = sanitize_text_field( $_GET['client_id'] );
 
-			// TODO add client id format validation.
-
-			if ( empty( $this->settings->client_id ) ) {
-				$this->settings->client_id = $client_id;
-				$this->settings->link_not_now = 0;
-				$this->settings->save();
-				$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
+			if ( preg_match( "/^[a-z0-9_-]{1,64}$/", $client_id ) ) {
+				if (empty($this->settings->client_id)) {
+					$this->settings->client_id = $client_id;
+					$this->settings->link_not_now = 0;
+					$this->settings->save();
+					$this->logger->log("Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart');
+				} else {
+					$message_id = 'quickstart_existing_client_id';
+					$this->logger->log('Client id already set', 'quickstart');
+				}
 			} else {
-				$message_id = 'quickstart_existing_client_id';
-				$this->logger->log( 'Client id already set', 'quickstart' );
+				$message_id = 'quickstart_missing_client_id';
+				$this->logger->log( 'Invalid client id', 'quickstart' );
 			}
 		} else {
 			$message_id = 'quickstart_missing_client_id';
