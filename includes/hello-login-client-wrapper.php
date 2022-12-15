@@ -160,6 +160,10 @@ class Hello_Login_Client_Wrapper {
 				$this->quickstart_callback();
 				exit;
 			}
+			if ( 'start' === $query->query_vars['hello-login'] ) {
+				$this->start_auth();
+				exit;
+			}
 		}
 
 		return $query;
@@ -216,6 +220,35 @@ class Hello_Login_Client_Wrapper {
 		$response->set_headers( array( 'Cache-Control' => 'no-cache' ) );
 
 		return $response;
+	}
+
+	/**
+	 * Generate an authorization request URL and redirect to it.
+	 *
+	 * @return WP_Error
+	 */
+	public function start_auth() {
+		$atts = array();
+
+		if ( isset( $_GET['redirect_to_path'] ) ) {
+			$redirect_to_path = sanitize_text_field( $_GET['redirect_to_path'] );
+
+			// Validate that only a path was passed in.
+			$p = parse_url( $redirect_to_path );
+
+			if ( isset( $p['scheme'] ) || isset( $p['host'] ) || isset( $p['port'] ) || isset( $p['user'] ) || isset( $p['pass'] ) ) {
+				return new WP_Error( 'invalid_path', 'Invalid redirect_to_path', array( 'status' => 400 ) );
+			}
+
+			$redirect_to_path = '/' . ltrim( $redirect_to_path, '/' );
+			$redirect_to = rtrim( home_url(), '/' ) . $redirect_to_path;
+			$atts = array(
+				'redirect_to' => $redirect_to,
+			);
+		}
+
+		wp_redirect ( $this->get_authentication_url( $atts ) );
+		exit();
 	}
 
 	/**

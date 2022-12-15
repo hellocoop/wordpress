@@ -189,8 +189,8 @@ class Hello_Login {
 		}
 
 		if ( ! empty( $this->settings->client_id ) ) {
-			add_action('show_user_profile', array($this, 'hello_login_user_profile_self'));
-			add_action('edit_user_profile', array($this, 'hello_login_user_profile_other'));
+			add_action( 'show_user_profile', array( $this, 'hello_login_user_profile_self' ) );
+			add_action( 'edit_user_profile', array( $this, 'hello_login_user_profile_other' ) );
 		}
 	}
 
@@ -201,7 +201,7 @@ class Hello_Login {
 	 * @return void
 	 */
 	public function hello_login_user_profile_self( $profileuser ) {
-		$api_url = rest_url( 'hello-login/v1/auth_url' );
+		$link_url = site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( self::extract_path_and_query( get_edit_user_link( $profileuser->ID ) ) ) );
 		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
 		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink' ), 'unlink' );
 		?>
@@ -211,7 +211,7 @@ class Hello_Login {
 				<th>This Account</th>
 				<td>
 					<?php if ( empty( $hello_user_id ) ) { ?>
-						<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link with Hellō" onclick="navigateToHelloAuthRequestUrl('<?php print esc_js( $api_url ); ?>', '')"></button>
+						<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link with Hellō" onclick="parent.location='<?php print esc_js( $link_url ); ?>'"></button>
 					<?php } else { ?>
 						<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink from Hellō</button>
 					<?php } ?>
@@ -481,6 +481,29 @@ class Hello_Login {
 			self::bootstrap();
 		}
 		return self::$_instance;
+	}
+
+	/**
+	 * Extract the path and query part from a URL.
+	 *
+	 * @param string $url The URL to extract from.
+	 *
+	 * @return string
+	 */
+	public static function extract_path_and_query( $url ) {
+		$result = '/';
+
+		$parts = parse_url( $url );
+
+		if ( isset( $parts['path'] ) ) {
+			$result = $parts['path'];
+		}
+
+		if ( isset( $parts['query'] ) ) {
+			$result .= '?' . $parts['query'];
+		}
+
+		return $result;
 	}
 }
 
