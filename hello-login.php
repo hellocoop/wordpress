@@ -203,7 +203,7 @@ class Hello_Login {
 	public function hello_login_user_profile_self( $profileuser ) {
 		$link_url = site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( self::extract_path_and_query( get_edit_user_link( $profileuser->ID ) ) ) );
 		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
-		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink' ), 'unlink' );
+		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink' ), 'unlink' . $profileuser->ID );
 		?>
 		<h2>Hellō</h2>
 		<table class="form-table">
@@ -229,7 +229,7 @@ class Hello_Login {
 	 */
 	public function hello_login_user_profile_other( $profileuser ) {
 		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
-		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink&user_id=' . $profileuser->ID ), 'unlink' );
+		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink&user_id=' . $profileuser->ID ), 'unlink' . $profileuser->ID );
 		?>
 		<h2>Hellō</h2>
 		<table class="form-table">

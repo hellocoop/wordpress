@@ -739,7 +739,7 @@ class Hello_Login_Client_Wrapper {
 				$this->logger->log( 'No current user', 'unlink_hello' );
 				$message_id = 'unlink_no_session';
 			} else {
-				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' ) )  {
+				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' . $target_user_id ) )  {
 					$hello_user_id = get_user_meta( $target_user_id, 'hello-login-subject-identity', true );
 
 					if ( empty( $hello_user_id ) ) {
