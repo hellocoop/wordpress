@@ -165,7 +165,7 @@ class Hello_Login_Login_Form {
 	 * @return string
 	 */
 	public function make_login_button( $atts = array() ) {
-		$redirect_to_path = '';
+		$redirect_to_path = '/';
 
 		if ( isset( $atts['redirect_to'] ) ) {
 			$p = parse_url( $atts['redirect_to'] );
