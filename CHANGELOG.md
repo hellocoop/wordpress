@@ -1,5 +1,13 @@
 # Hellō Login Changelog
 
+## 1.1.0
+
+* Feature: added Hellō section to profile page with link / unlink functionality
+* Feature: added admin notices for Quickstart and link/unlink actions
+* Feature: redirect to settings page on plugin activation
+* Improvement: more restructuring of the settings page
+* Improvement: moved away from all REST APIs
+
 ## 1.0.12
 
 * Improvement: restructured the settings page
