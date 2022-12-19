@@ -546,7 +546,7 @@ class Hello_Login_Settings_Page {
 		);
 		$fields['create_if_does_not_exist'] = array(
 				'title'       => __( 'Allow anyone to register with Hellō', 'hello-login' ),
-				'description' => __( 'Create a new user if the do not have an account. Authentication will fail if the user does not have an account and this is disabled.', 'hello-login' ),
+				'description' => __( 'Create a new user if they do not have an account. Authentication will fail if the user does not have an account and this is disabled.', 'hello-login' ),
 				'type'        => 'checkbox',
 				'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
 				'section'     => 'user_settings',
