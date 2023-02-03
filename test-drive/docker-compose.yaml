@@ -5,13 +5,13 @@ name: hello-login
 services:
 
   wordpress:
-    image: wordpress
+    image: wordpress:6.1.1
     restart: always
     depends_on:
       - db
       - mailhog
     ports:
-      - 8080:80
+      - '8080:80'
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: exampleuser
@@ -33,5 +33,5 @@ services:
     image: mailhog/mailhog
     restart: always
     ports:
-      - 8025:8025 # web interface
-      - 1025:1025 # SMTP
+      - '8025:8025' # web interface
+      # - '1025:1025' # SMTP
