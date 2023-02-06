@@ -186,6 +186,8 @@ class Hello_Login_Client_Wrapper {
 			);
 		}
 
+		nocache_headers();
+
 		wp_redirect ( $this->get_authentication_url( $atts ) );
 		exit();
 	}
