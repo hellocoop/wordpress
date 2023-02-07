@@ -1,5 +1,9 @@
 # Hellō Login Changelog
 
+## 1.1.1
+
+* Fix: add cache control HTTP headers to auth request start endpoint response
+
 ## 1.1.0
 
 * Feature: added Hellō section to profile page with link / unlink functionality

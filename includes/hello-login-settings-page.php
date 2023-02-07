@@ -627,7 +627,7 @@ class Hello_Login_Settings_Page {
 		}
 
 		$redirect_to_path = Hello_Login::extract_path_and_query( admin_url( '/options-general.php?page=hello-login-settings' ) );
-		$start_url = site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( $redirect_to_path ) );
+		$start_url = create_auth_request_start_url( $redirect_to_path );
 
 		$debug = isset( $_GET['debug'] );
 		$configured = ! empty( $this->settings->client_id );

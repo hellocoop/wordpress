@@ -177,7 +177,7 @@ class Hello_Login_Login_Form {
 			}
 		}
 
-		$start_url = site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( $redirect_to_path ) );
+		$start_url = create_auth_request_start_url( $redirect_to_path );
 
 		ob_start();
 		?>
