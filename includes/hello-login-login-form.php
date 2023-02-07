@@ -110,30 +110,43 @@ class Hello_Login_Login_Form {
 	 *
 	 * @return string
 	 */
-	public function handle_login_page( $message ) {
+	public function handle_login_page( string $message ): string {
 
 		if ( isset( $_GET['login-error'] ) ) {
 			$error_message = ! empty( $_GET['message'] ) ? sanitize_text_field( wp_unslash( $_GET['message'] ) ) : 'Unknown error.';
 			$message .= $this->make_error_output( sanitize_text_field( wp_unslash( $_GET['login-error'] ) ), $error_message );
 		}
 
-		$configured = !empty($this->settings->client_id);
+		$configured = ! empty( $this->settings->client_id );
 		$on_lost_password = isset( $_GET['action'] ) && 'lostpassword' == $_GET['action'];
 		$on_register = isset( $_GET['action'] ) && 'register' == $_GET['action'];
 
-		if ( $configured && ! $on_lost_password && ! $on_register) {
+		if ( $configured && ! $on_lost_password && ! $on_register ) {
 			// Login button is appended to existing messages in case of error.
 			$atts = array(
-				'redirect_to' => admin_url(),
+				'redirect_to' => $this->extract_redirect_to(),
 			);
 
-			$message .= $this->make_login_button($atts);
+			$message .= $this->make_login_button( $atts );
 
-			// Login form toggle is appended right after the button
+			// Login form toggle is appended right after the button.
 			$message .= $this->make_login_form_toggle();
 		}
 
 		return $message;
+	}
+
+	/**
+	 * Get the URL to redirect to after sign-in.
+	 *
+	 * @return string The URL to redirect to.
+	 */
+	public function extract_redirect_to(): string {
+		if ( isset( $_GET['redirect_to'] ) ) {
+			return sanitize_text_field( wp_unslash( $_GET['redirect_to'] ) );
+		} else {
+			return admin_url();
+		}
 	}
 
 	/**
