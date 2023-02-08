@@ -152,7 +152,11 @@ class Hello_Login_Login_Form {
 	 * @return array Modified list of args.
 	 */
 	public function filter_comment_reply_link_args( array $args, WP_Comment $comment, WP_Post $post ): array {
-		$args['login_text'] = 'Log in with Hellō to Reply';
+		$configured = ! empty( $this->settings->client_id );
+
+		if ( $configured ) {
+			$args['login_text'] = 'Log in with Hellō to Reply';
+		}
 
 		return $args;
 	}
@@ -168,7 +172,9 @@ class Hello_Login_Login_Form {
 	 * @return string The HTML code for the comment reply link.
 	 */
 	public function filter_comment_reply_link( string $link, array $args, WP_Comment $comment, WP_Post $post ): string {
-		if ( strpos( $link, 'comment-reply-login' ) !== false ) {
+		$configured = ! empty( $this->settings->client_id );
+
+		if ( $configured && strpos( $link, 'comment-reply-login' ) !== false ) {
 			$auth_request_start_url = 'href="' . esc_url( create_auth_request_start_url( Hello_Login::extract_path_and_query( get_permalink() ) ) ) . '"';
 
 			$link = preg_replace( '/href=[\'"][^\'"]+[\'"]/', $auth_request_start_url, $link );
@@ -185,14 +191,18 @@ class Hello_Login_Login_Form {
 	 * @return array Modified defaults.
 	 */
 	public function filter_comment_form_defaults( array $defaults ): array {
-		$atts = array(
-			'redirect_to' => get_permalink(),
-			'align' => 'left',
-			'show_hint' => false,
-			'label' => 'Log in with Hellō to post a comment',
-		);
+		$configured = ! empty( $this->settings->client_id );
 
-		$defaults['must_log_in'] = $this->make_login_button( $atts );
+		if ( $configured ) {
+			$atts = array(
+				'redirect_to' => get_permalink(),
+				'align' => 'left',
+				'show_hint' => false,
+				'label' => 'Log in with Hellō to post a comment',
+			);
+
+			$defaults['must_log_in'] = $this->make_login_button( $atts );
+		}
 
 		return $defaults;
 	}
