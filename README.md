@@ -4,7 +4,7 @@
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.1  
-**Stable tag:** 1.1.1  
+**Stable tag:** 1.1.2  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,11 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 2. The Hellō Wallet login choices offered.
 
 ## Changelog ##
+
+### 1.1.2 ###
+
+* Improvement: redirect back to blog post or page after sign-in
+* Improvement: use Hellō link and button to sign in to leave a comment
 
 ### 1.1.1 ###
 

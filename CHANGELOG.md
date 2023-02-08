@@ -1,5 +1,10 @@
 # Hellō Login Changelog
 
+## 1.1.2
+
+* Improvement: redirect back to blog post or page after sign-in
+* Improvement: use Hellō link and button to sign in to leave a comment
+
 ## 1.1.1
 
 * Fix: add cache control HTTP headers to auth request start endpoint response
