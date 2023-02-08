@@ -74,6 +74,10 @@ class Hello_Login_Login_Form {
 			add_filter( 'login_message', array( $login_form, 'handle_login_page' ), 99 );
 		}
 
+		// Alter the comment reply links.
+		add_filter( 'comment_reply_link_args', array( $login_form, 'filter_comment_reply_link_args' ), 99, 3 );
+		add_filter( 'comment_reply_link', array( $login_form, 'filter_comment_reply_link' ), 99, 4 );
+
 		// Add a shortcode for the login button.
 		add_shortcode( 'hello_login_button', array( $login_form, 'make_login_button' ) );
 
@@ -134,6 +138,42 @@ class Hello_Login_Login_Form {
 		}
 
 		return $message;
+	}
+
+	/**
+	 * Implements the filter comment_reply_link_args.
+	 *
+	 * @param array      $args    Comment reply link arguments. See get_comment_reply_link()
+	 *                            for more information on accepted arguments.
+	 * @param WP_Comment $comment The object of the comment being replied to.
+	 * @param WP_Post    $post    The WP_Post object.
+	 *
+	 * @return array Modified list of args.
+	 */
+	public function filter_comment_reply_link_args( array $args, WP_Comment $comment, WP_Post $post ): array {
+		$args['login_text'] = 'Log in with Hellō to Reply';
+
+		return $args;
+	}
+
+	/**
+	 * Implements the filter comment_reply_link.
+	 *
+	 * @param string     $link    The HTML markup for the comment reply link.
+	 * @param array      $args    An array of arguments overriding the defaults.
+	 * @param WP_Comment $comment The object of the comment being replied.
+	 * @param WP_Post    $post    The WP_Post object.
+	 *
+	 * @return string The HTML code for the comment reply link.
+	 */
+	public function filter_comment_reply_link( string $link, array $args, WP_Comment $comment, WP_Post $post ): string {
+		if ( strpos( $link, 'comment-reply-login' ) !== false ) {
+			$auth_request_start_url = 'href="' . esc_url( create_auth_request_start_url( Hello_Login::extract_path_and_query( get_permalink() ) ) ) . '"';
+
+			$link = preg_replace( '/href=[\'"][^\'"]+[\'"]/', $auth_request_start_url, $link );
+		}
+
+		return $link;
 	}
 
 	/**
