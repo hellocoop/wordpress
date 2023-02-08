@@ -23,6 +23,6 @@ add_action( 'admin_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles' );
  * @param string $redirect_to_path the path where to redirect after sign in.
  * @return string
  */
-function create_auth_request_start_url( string $redirect_to_path ) {
-	return site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( $redirect_to_path ) . '&_cc=' . microtime(true) );
+function create_auth_request_start_url( string $redirect_to_path ): string {
+	return site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( $redirect_to_path ) . '&_cc=' . microtime( true ) );
 }

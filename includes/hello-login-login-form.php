@@ -77,6 +77,7 @@ class Hello_Login_Login_Form {
 		// Alter the comment reply links.
 		add_filter( 'comment_reply_link_args', array( $login_form, 'filter_comment_reply_link_args' ), 99, 3 );
 		add_filter( 'comment_reply_link', array( $login_form, 'filter_comment_reply_link' ), 99, 4 );
+		add_filter( 'comment_form_defaults', array( $login_form, 'filter_comment_form_defaults' ), 99 );
 
 		// Add a shortcode for the login button.
 		add_shortcode( 'hello_login_button', array( $login_form, 'make_login_button' ) );
@@ -177,6 +178,26 @@ class Hello_Login_Login_Form {
 	}
 
 	/**
+	 * Implements the filter comment_reply_link.
+	 *
+	 * @param array $defaults The default comment form arguments.
+	 *
+	 * @return array Modified defaults.
+	 */
+	public function filter_comment_form_defaults( array $defaults ): array {
+		$atts = array(
+			'redirect_to' => get_permalink(),
+			'align' => 'left',
+			'show_hint' => false,
+			'label' => 'Log in with Hellō to post a comment',
+		);
+
+		$defaults['must_log_in'] = $this->make_login_button( $atts );
+
+		return $defaults;
+	}
+
+	/**
 	 * Get the URL to redirect to after sign-in.
 	 *
 	 * @return string The URL to redirect to.
@@ -218,6 +239,14 @@ class Hello_Login_Login_Form {
 	 * @return string
 	 */
 	public function make_login_button( $atts = array() ) {
+		$defaults = array(
+			'align' => 'center',
+			'show_hint' => true,
+			'label' => 'Continue with Hellō',
+		);
+
+		$atts = wp_parse_args( $atts, $defaults );
+
 		$redirect_to_path = '/';
 
 		if ( isset( $atts['redirect_to'] ) ) {
@@ -234,11 +263,9 @@ class Hello_Login_Login_Form {
 
 		ob_start();
 		?>
-		<div class="hello-container" style="display: block; text-align: center;">
-			<button class="hello-btn" onclick="parent.location='<?php print esc_js( $start_url ); ?>'">
-				<?php print esc_html__( 'ō&nbsp;&nbsp;&nbsp;Continue with Hellō', 'hello-login' ); ?>
-			</button>
-			<button class="hello-about"></button>
+		<div class="hello-container" style="display: block; text-align: <?php print esc_html( $atts['align'] ); ?>;">
+			<button class="hello-btn" onclick="parent.location='<?php print esc_js( $start_url ); ?>'" data-label="<?php print esc_html( 'ō&nbsp;&nbsp;&nbsp;' . $atts['label'] ); ?>"></button>
+			<?php if ( $atts['show_hint'] ) { ?><button class="hello-about" style="text-align: <?php print esc_html( $atts['align'] ); ?>;"></button><?php } ?>
 		</div>
 		<?php
 
