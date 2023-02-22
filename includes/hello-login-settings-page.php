@@ -385,10 +385,16 @@ class Hello_Login_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			*/
+			'default_scope'             => array(
+				'title'       => __( 'Default Scopes', 'hello-login' ),
+				'description' => __( 'The default scopes gather the default user properties.', 'hello-login' ),
+				'type'        => 'text',
+				'section'     => 'client_settings',
+			),
 			'scope'             => array(
-				'title'       => __( 'Scopes', 'hello-login' ),
-				'description' => __( 'The default scopes gather the default user properties. Only modify after reviewing available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
-				'example'     => 'openid name nickname family_name given_name email',
+				'title'       => __( 'Additional Scopes', 'hello-login' ),
+				'description' => __( 'The additional scopes gather additional user properties. Only modify after reviewing available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
+				'example'     => 'nickname family_name given_name',
 				'type'        => 'text',
 				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
 				'section'     => 'client_settings',
@@ -719,7 +725,7 @@ class Hello_Login_Settings_Page {
 		$value = $this->settings->{ $field['key'] };
 
 		$readonly = '';
-		if ( $field['key'] == 'client_id' ) {
+		if ( in_array( $field['key'], array( 'default_scope', 'client_id' ) ) ) {
 			$readonly = 'readonly';
 		}
 		if ( $field['key'] == 'redirect_uri' ) {

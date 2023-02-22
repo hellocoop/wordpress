@@ -28,7 +28,8 @@
  * @property string $login_type           How the client (login form) should provide login options.
  * @property string $client_id            The ID the client will be recognized as when connecting the to Identity provider server.
  * @property string $client_secret        The secret key the IDP server expects from the client.
- * @property string $scope                The list of scopes this client should access.
+ * @property string $default_scope        The list of default scopes this client should access.
+ * @property string $scope                The list of additional scopes this client should access.
  * @property string $endpoint_login       The IDP authorization endpoint URL.
  * @property string $endpoint_userinfo    The IDP User information endpoint URL.
  * @property string $endpoint_token       The IDP token validation endpoint URL.
