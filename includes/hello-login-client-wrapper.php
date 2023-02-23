@@ -666,6 +666,8 @@ class Hello_Login_Client_Wrapper {
 					if ( is_wp_error( $user ) ) {
 						$this->error_redirect( $user );
 					}
+
+					$this->save_extra_claims( $user->ID, $user_claim );
 				} else {
 					$this->error_redirect( new WP_Error( 'identity-not-map-existing-user', __( 'User identity is not linked to an existing WordPress user.', 'hello-login' ), $user_claim ) );
 				}
@@ -1314,6 +1316,23 @@ class Hello_Login_Client_Wrapper {
 		do_action( 'hello-login-user-create', $user, $user_claim );
 
 		return $user;
+	}
+
+	/**
+	 * Save extra user claims as user metadata.
+	 *
+	 * @param int $uid The WordPress User ID.
+	 * @param array $user_claim The user claim.
+	 * @return void
+	 */
+	public function save_extra_claims( int $uid, array $user_claim ) {
+		foreach ( $user_claim as $key => $value ) {
+			if ( ! in_array( $key, array( 'iss', 'sub', 'aud', 'exp', 'iat', 'auth_time', 'nonce', 'acr', 'amr', 'azp' ) ) ) {
+				if ( update_user_meta($uid, 'hello-login-claim-' . $key, $value) ) {
+					$this->logger->log( 'User claim saved as meta: hello-login-claim-' . $key . ' = ' . $value, 'user-claims' );
+				}
+			}
+		}
 	}
 
 	/**
