@@ -14,9 +14,9 @@ services:
       - '8080:80'
     environment:
       WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
+      WORDPRESS_DB_USER: hellouser
+      WORDPRESS_DB_PASSWORD: hellopass
+      WORDPRESS_DB_NAME: hellodb
       SMTP_HOST: mailhog
       SMTP_PORT: 1025
 
@@ -24,10 +24,24 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_DATABASE: exampledb
-      MYSQL_USER: exampleuser
-      MYSQL_PASSWORD: examplepass
-      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+      MYSQL_DATABASE: hellodb
+      MYSQL_USER: hellouser
+      MYSQL_PASSWORD: hellopass
+      MYSQL_ROOT_PASSWORD: hellodbrootpassword
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - '8081:80'
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: hellodbrootpassword
+      MYSQL_USER: hellouser
+      MYSQL_PASSWORD: hellopass
 
   mailhog:
     image: mailhog/mailhog
