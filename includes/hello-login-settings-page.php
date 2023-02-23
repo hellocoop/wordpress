@@ -392,8 +392,8 @@ class Hello_Login_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			'scope'             => array(
-				'title'       => __( 'Additional Scopes', 'hello-login' ),
-				'description' => __( 'The additional scopes gather additional user properties. Only modify after reviewing available claims at https://www.hello.dev/documentation/hello-claims.html.', 'hello-login' ),
+				'title'       => __( 'Scopes', 'hello-login' ),
+				'description' => __( 'Additional scopes to request in addition to <code>openid email name</code>. See <a href="https://www.hello.dev/documentation/hello-claims.html">https://www.hello.dev/documentation/hello-claims.html</a> for available scopes.', 'hello-login' ),
 				'example'     => 'nickname family_name given_name',
 				'type'        => 'text',
 				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
