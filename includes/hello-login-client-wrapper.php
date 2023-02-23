@@ -655,6 +655,9 @@ class Hello_Login_Client_Wrapper {
 				// link accounts
 				$user = wp_get_current_user();
 				add_user_meta( $user->ID, 'hello-login-subject-identity', (string) $subject_identity, true );
+
+				$this->save_extra_claims( $user->ID, $user_claim );
+
 				$message_id = 'link_success';
 			} else {
 				// no current user session and no user found based on 'sub'
@@ -681,6 +684,8 @@ class Hello_Login_Client_Wrapper {
 				$link_error->add_data( $user->ID );
 				$this->error_redirect( $link_error );
 			}
+
+			$this->save_extra_claims( $user->ID, $user_claim );
 		}
 
 		// Validate the found / created user.
