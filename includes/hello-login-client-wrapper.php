@@ -686,6 +686,8 @@ class Hello_Login_Client_Wrapper {
 			}
 
 			$this->save_extra_claims( $user->ID, $user_claim );
+
+			$this->update_user_claims( $user->ID, $user_claim );
 		}
 
 		// Validate the found / created user.
@@ -1336,6 +1338,24 @@ class Hello_Login_Client_Wrapper {
 				if ( update_user_meta($uid, 'hello-login-claim-' . $key, $value) ) {
 					$this->logger->log( 'User claim saved as meta: hello-login-claim-' . $key . ' = ' . $value, 'user-claims' );
 				}
+			}
+		}
+	}
+
+	public function update_user_claims( int $uid, array $user_claim ) {
+		if ( isset( $user_claim['given_name'] ) && empty( get_user_meta( $uid, 'first_name', true ) )) {
+			if ( update_user_meta( $uid, 'first_name', $user_claim['given_name'], '' ) ) {
+				$this->logger->log( 'User first name saved: ' . $user_claim['given_name'], 'user-claims' );
+			} else {
+				$this->logger->log( 'Failed saving user first name.', 'user-claims' );
+			}
+		}
+
+		if ( isset( $user_claim['family_name'] ) && empty( get_user_meta( $uid, 'last_name', true ) )) {
+			if ( update_user_meta( $uid, 'last_name', $user_claim['family_name'], '' ) ) {
+				$this->logger->log( 'User last name saved: ' . $user_claim['family_name'], 'user-claims' );
+			} else {
+				$this->logger->log( 'Failed saving user last name.', 'user-claims' );
 			}
 		}
 	}
