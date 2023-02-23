@@ -960,6 +960,7 @@ class Hello_Login_Client_Wrapper {
 		}
 		if ( empty( $desired_username ) && isset( $user_claim['name'] ) && ! empty( $user_claim['name'] ) ) {
 			$desired_username = $user_claim['name'];
+			$desired_username = strtolower( str_replace(' ', '', $desired_username) );
 		}
 		if ( empty( $desired_username ) && isset( $user_claim['email'] ) && ! empty( $user_claim['email'] ) ) {
 			$tmp = explode( '@', $user_claim['email'] );
@@ -988,18 +989,17 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @param array $user_claim The IDP authenticated user claim data.
 	 *
-	 * @return string|WP_Error|null
+	 * @return string
 	 */
-	private function get_nickname_from_claim( $user_claim ) {
-		$desired_nickname = null;
+	private function get_nickname_from_claim( array $user_claim ): string {
+		$desired_nickname = '';
 		// Allow settings to take first stab at nickname.
 		if ( ! empty( $this->settings->nickname_key ) && isset( $user_claim[ $this->settings->nickname_key ] ) ) {
 			$desired_nickname = $user_claim[ $this->settings->nickname_key ];
 		}
 
-		if ( empty( $desired_nickname ) ) {
-			// translators: %1$s is the configured User Claim nickname key.
-			return new WP_Error( 'no-nickname', sprintf( __( 'No nickname found in user claim using key: %1$s.', 'hello-login' ), $this->settings->nickname_key ), $this->settings->nickname_key );
+		if ( empty( $desired_nickname ) && isset( $user_claim['name'] ) ) {
+			$desired_nickname = $user_claim['name'];
 		}
 
 		return $desired_nickname;
@@ -1177,10 +1177,14 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		$_nickname = $this->get_nickname_from_claim( $user_claim );
-		if ( is_wp_error( $_nickname ) || empty( $_nickname ) ) {
+		if ( is_wp_error( $_nickname ) ) {
 			$values_missing = true;
 		} else {
-			$nickname = $_nickname;
+			if ( empty( $_nickname ) ) {
+				$nickname = $username;
+			} else {
+				$nickname = $_nickname;
+			}
 		}
 
 		$_displayname = $this->get_displayname_from_claim( $user_claim, true );
