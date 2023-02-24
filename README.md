@@ -4,7 +4,7 @@
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
 **Tested up to:** 6.1  
-**Stable tag:** 1.1.2  
+**Stable tag:** 1.1.3  
 **Requires PHP:** 7.2  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -79,6 +79,14 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 2. The Hellō Wallet login choices offered.
 
 ## Changelog ##
+
+### 1.1.3 ###
+
+* Improvement: set first and last name on sign-in if previously empty and if now available
+* Improvement: save extra claims under user meta
+* Improvement: add default scopes and reduce required scopes to `openid name email`
+* Improvement: set username and nickname even if only full name is available
+* Fix: alter comment links only if plugin is configured
 
 ### 1.1.2 ###
 

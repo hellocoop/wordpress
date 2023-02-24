@@ -1,5 +1,13 @@
 # Hellō Login Changelog
 
+## 1.1.3
+
+* Improvement: set first and last name on sign-in if previously empty and if now available
+* Improvement: save extra claims under user meta
+* Improvement: add default scopes and reduce required scopes to `openid name email`
+* Improvement: set username and nickname even if only full name is available
+* Fix: alter comment links only if plugin is configured
+
 ## 1.1.2
 
 * Improvement: redirect back to blog post or page after sign-in
