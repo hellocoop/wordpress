@@ -110,3 +110,30 @@ Change the owner such that WordPress can edit or delete:
 ```shell
 docker exec test-drive-hello_wordpress-1 chown -R www-data:www-data /var/www/html/wp-content/plugins/hello-login
 ```
+
+## phpMyAdmin
+
+Docker compose has a container that runs phpMyAdmin, connected to the MySQL database.
+
+* navigate to http://localhost:8081
+* login with:
+  * Server: `db`
+  * Username: `hellouser`
+  * Password: `hellopass`
+* browse and query the `hellodb` database
+
+
+## MailHog
+
+Docker compose has a container that runs MailHog. WordPress requires an SMTP plugin in order to send emails to MailHog.
+
+* install the "WP Mail SMTP by WPForms" plugin
+* start the setup wizard
+  * Choose Your SMTP Mailer: "Other SMTP"
+  * SMTP Host: `mailhog`
+  * Encryption: "None"
+  * SMPT Port: 1025
+  * Auto TLS: disable
+  * Authentication: disable
+* navigate to http://localhost:8025/ 
+* you should see an email with subject: "WP Mail SMTP Automatic Email Test"
