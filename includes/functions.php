@@ -11,6 +11,7 @@
 function hello_login_enqueue_scripts_and_styles() {
 	wp_enqueue_script( 'hello-button', 'https://cdn.hello.coop/js/hello-btn.js', array(), Hello_Login::VERSION );
 	wp_enqueue_style( 'hello-button', 'https://cdn.hello.coop/css/hello-btn.css', array(), Hello_Login::VERSION, 'all' );
+	wp_enqueue_style( 'hello-login-hello-button', plugin_dir_url( __DIR__ ) . 'css/styles.css', array(), Hello_Login::VERSION, 'all' );
 }
 
 add_action( 'wp_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles' );
