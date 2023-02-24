@@ -503,6 +503,10 @@ class Hello_Login {
 			$result .= '?' . $parts['query'];
 		}
 
+		if ( isset( $parts['fragment'] ) ) {
+			$result .= '#' . $parts['fragment'];
+		}
+
 		return $result;
 	}
 }

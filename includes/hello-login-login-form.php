@@ -175,7 +175,7 @@ class Hello_Login_Login_Form {
 		$configured = ! empty( $this->settings->client_id );
 
 		if ( $configured && strpos( $link, 'comment-reply-login' ) !== false ) {
-			$auth_request_start_url = 'href="' . esc_url( create_auth_request_start_url( Hello_Login::extract_path_and_query( get_permalink() ) ) ) . '"';
+			$auth_request_start_url = 'href="' . esc_url( create_auth_request_start_url( Hello_Login::extract_path_and_query( get_permalink() . '#respond' ) ) ) . '"';
 
 			$link = preg_replace( '/href=[\'"][^\'"]+[\'"]/', $auth_request_start_url, $link );
 		}
@@ -195,7 +195,7 @@ class Hello_Login_Login_Form {
 
 		if ( $configured ) {
 			$atts = array(
-				'redirect_to' => get_permalink(),
+				'redirect_to' => get_permalink() . '#respond',
 				'align' => 'left',
 				'show_hint' => false,
 				'label' => 'Log in with Hellō to post a comment',
@@ -260,13 +260,7 @@ class Hello_Login_Login_Form {
 		$redirect_to_path = '/';
 
 		if ( isset( $atts['redirect_to'] ) ) {
-			$p = parse_url( $atts['redirect_to'] );
-
-			$redirect_to_path = empty( $p['path'] ) ? '/' : $p['path'];
-
-			if ( ! empty( $p['query'] ) ) {
-				$redirect_to_path .= '?' . $p['query'];
-			}
+			$redirect_to_path = Hello_Login::extract_path_and_query( $atts['redirect_to'] );
 		}
 
 		$start_url = create_auth_request_start_url( $redirect_to_path );
