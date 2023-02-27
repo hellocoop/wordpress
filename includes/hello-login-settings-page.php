@@ -600,6 +600,13 @@ class Hello_Login_Settings_Page {
 				$options[ $key ] = sanitize_text_field( trim( $input[ $key ] ) );
 
 				if ( 'scope' == $key ) {
+					$no_duplicate_scope = Hello_Login::remove_duplicate_scopes( $options[ $key ] );
+
+					if ( strlen( $no_duplicate_scope ) < strlen( $options[ $key ] ) ) {
+						$options[ $key ] = $no_duplicate_scope;
+						add_settings_error( 'scope', 'scope_no_duplicate', 'Duplicate scopes removed.', 'warning' );
+					}
+
 					$no_defaults_scope = Hello_Login::remove_default_scopes( $options[ $key ] );
 
 					if ( strlen( $no_defaults_scope ) < strlen( $options[ $key ] ) ) {

@@ -552,6 +552,18 @@ class Hello_Login {
 
 		return implode( ' ', $result );
 	}
+
+	/**
+	 * Remove the duplicates from a space separate scope list.
+	 *
+	 * @param string $scope Space separate scope to remove duplicates from.
+	 * @return string A space separate list of scopes.
+	 */
+	public static function remove_duplicate_scopes( string $scope ): string {
+		$scope_arr = explode( ' ', $scope );
+
+		return implode( ' ', array_unique( $scope_arr ) );
+	}
 }
 
 Hello_Login::instance();
