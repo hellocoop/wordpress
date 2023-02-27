@@ -533,6 +533,25 @@ class Hello_Login {
 
 		return implode( ' ', $scope_arr );
 	}
+
+	/**
+	 * Remove the default scopes from a space separate scope list.
+	 *
+	 * @param string $scope Space separate scope to remove default scopes from.
+	 * @return string A space separate list of scopes.
+	 */
+	public static function remove_default_scopes( string $scope ): string {
+		$scope_arr = explode( ' ', $scope );
+		$result = array();
+
+		foreach ( $scope_arr as $s ) {
+			if ( ! in_array( $s, self::DEFAULT_SCOPES ) ) {
+				$result[] = $s;
+			}
+		}
+
+		return implode( ' ', $result );
+	}
 }
 
 Hello_Login::instance();
