@@ -87,6 +87,13 @@ class Hello_Login {
 	const VERSION = '1.1.3';
 
 	/**
+	 * Default scopes added to all auth requests.
+	 *
+	 * @var array<string>
+	 */
+	const DEFAULT_SCOPES = array( 'openid', 'email', 'name' );
+
+	/**
 	 * Plugin option name.
 	 *
 	 * @var string
@@ -159,7 +166,7 @@ class Hello_Login {
 		$this->client = new Hello_Login_Client(
 			$this->settings->client_id,
 			$this->settings->client_secret,
-			trim( $this->settings->default_scope . ' ' . $this->settings->scope ),
+			self::add_default_scopes( $this->settings->scope ),
 			$this->settings->endpoint_login,
 			$this->settings->endpoint_userinfo,
 			$this->settings->endpoint_token,
@@ -427,7 +434,6 @@ class Hello_Login {
 				'login_type'           => defined( 'OIDC_LOGIN_TYPE' ) ? OIDC_LOGIN_TYPE : 'button',
 				'client_id'            => defined( 'OIDC_CLIENT_ID' ) ? OIDC_CLIENT_ID : '',
 				'client_secret'        => defined( 'OIDC_CLIENT_SECRET' ) ? OIDC_CLIENT_SECRET : '',
-				'default_scope'        => 'openid email name',
 				'scope'                => defined( 'OIDC_CLIENT_SCOPE' ) ? OIDC_CLIENT_SCOPE : '',
 				'endpoint_login'       => defined( 'OIDC_ENDPOINT_LOGIN_URL' ) ? OIDC_ENDPOINT_LOGIN_URL : 'https://wallet.hello.coop/authorize',
 				'endpoint_userinfo'    => defined( 'OIDC_ENDPOINT_USERINFO_URL' ) ? OIDC_ENDPOINT_USERINFO_URL : 'https://wallet.hello.coop/oauth/userinfo',
@@ -508,6 +514,24 @@ class Hello_Login {
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Add the default scopes to a space separate scope list.
+	 *
+	 * @param string $scope Space separate scope to add default scopes to.
+	 * @return string A space separate list of scopes.
+	 */
+	public static function add_default_scopes( string $scope ): string {
+		$scope_arr = explode( ' ', $scope );
+
+		foreach ( self::DEFAULT_SCOPES as $ds ) {
+			if ( ! in_array( $ds, $scope_arr ) ) {
+				$scope_arr[] = $ds;
+			}
+		}
+
+		return implode( ' ', $scope_arr );
 	}
 }
 
