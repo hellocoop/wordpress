@@ -162,6 +162,11 @@ class Hello_Login_Client {
 	public function validate_authentication_request( $request ) {
 		// Look for an existing error of some kind.
 		if ( isset( $request['error'] ) ) {
+			$this->logger->log("Error response: {$request['error']}: {$request['error_description']} {$request['error_uri']}", 'validate_authentication_request');
+
+			if ( 'access_denied' == $request['error'] ) {
+				return new WP_Error( 'access_denied', 'Authorization cancelled.', $request );
+			}
 			return new WP_Error( 'unknown-error', 'An unknown error occurred.', $request );
 		}
 
