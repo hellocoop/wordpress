@@ -577,6 +577,8 @@ class Hello_Login_Settings_Page {
 		}
 
 		$fields['link_not_now'] = array(
+				'title' => 'Link Not Now',
+				'type' => 'checkbox',
 				'section' => 'hidden_settings',
 		);
 
