@@ -4,7 +4,7 @@ Donate link: https://www.hello.dev/
 Tags: security, login, oauth2, openidconnect, apps, authentication, sso
 Requires at least: 4.9
 Tested up to: 6.1
-Stable tag: 1.1.3
+Stable tag: 1.2.0
 Requires PHP: 7.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -69,6 +69,10 @@ While we are building out the network, we are not charging sites for verified cl
 
 You can update your site configuration at [console.hello.coop](https://console.hello.coop/).
 
+= My blog is on Wordpress.com. Why is Hellō not showing up for comments / log in? =
+
+If you have "Allow users to log in to this site using WordPress.com accounts" enabled under Settings / Security, then you can only use WordPress accounts for logging in, and Hellō is not available. If you have "Let visitors use a WordPress.com, Twitter, Facebook, or Google account to comment." enabled under Settings / Discussion, then you can only use WordPress for leaving comments. You will need to disable these for Hellō to be available.
+
 = Where do I submit feature requests or bugs? =
 
 Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.com/hellocoop/wordpress/issues)
@@ -79,6 +83,14 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 2. The Hellō Wallet login choices offered.
 
 == Changelog ==
+
+= 1.2.0 =
+
+* Improvement: disable account linking on settings page when in multisite mode
+* Improvement: simplified scope related settings and added scope validation
+* Improvement: scroll to comment form after log in to post a comment
+* Improvement: FAQ to clarify WordPress.com behavior
+* Fix: handle cancelled log in attempts
 
 = 1.1.3 =
 

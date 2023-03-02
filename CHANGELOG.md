@@ -1,5 +1,13 @@
 # Hellō Login Changelog
 
+## 1.2.0
+
+* Improvement: disable account linking on settings page when in multisite mode
+* Improvement: simplified scope related settings and added scope validation
+* Improvement: scroll to comment form after log in to post a comment
+* Improvement: FAQ to clarify WordPress.com behavior
+* Fix: handle cancelled log in attempts
+
 ## 1.1.3
 
 * Improvement: set first and last name on sign-in if previously empty and if now available
