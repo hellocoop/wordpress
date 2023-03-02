@@ -69,7 +69,7 @@ While we are building out the network, we are not charging sites for verified cl
 
 You can update your site configuration at [console.hello.coop](https://console.hello.coop/).
 
-= My blog is on Wordpress.com. Why is Hellō not showing up for comments / log in? =
+= My blog is on Wordpress.com. Why is Hellō not showing up for log in / comments? =
 
 If you have "Allow users to log in to this site using WordPress.com accounts" enabled under Settings / Security, then you can only use WordPress accounts for logging in, and Hellō is not available. If you have "Let visitors use a WordPress.com, Twitter, Facebook, or Google account to comment." enabled under Settings / Discussion, then you can only use WordPress for leaving comments. You will need to disable these for Hellō to be available.
 
