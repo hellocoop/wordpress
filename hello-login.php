@@ -523,6 +523,11 @@ class Hello_Login {
 	 * @return string A space separate list of scopes.
 	 */
 	public static function add_default_scopes( string $scope ): string {
+		$scope = trim( $scope );
+		if ( empty( $scope ) ) {
+			return implode(' ', self::DEFAULT_SCOPES );
+		}
+
 		$scope_arr = explode( ' ', $scope );
 
 		foreach ( self::DEFAULT_SCOPES as $ds ) {
@@ -541,6 +546,11 @@ class Hello_Login {
 	 * @return string A space separate list of scopes.
 	 */
 	public static function remove_default_scopes( string $scope ): string {
+		$scope = trim( $scope );
+		if ( empty( $scope ) ) {
+			return '';
+		}
+
 		$scope_arr = explode( ' ', $scope );
 		$result = array();
 
@@ -560,6 +570,11 @@ class Hello_Login {
 	 * @return string A space separate list of scopes.
 	 */
 	public static function remove_duplicate_scopes( string $scope ): string {
+		$scope = trim( $scope );
+		if ( empty( $scope ) ) {
+			return '';
+		}
+
 		$scope_arr = explode( ' ', $scope );
 
 		return implode( ' ', array_unique( $scope_arr ) );
