@@ -1,5 +1,9 @@
 # Hellō Login Changelog
 
+## 1.2.1
+
+* Fix: fixed parsing of empty scope
+
 ## 1.2.0
 
 * Improvement: disable account linking on settings page when in multisite mode
