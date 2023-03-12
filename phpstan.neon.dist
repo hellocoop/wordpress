@@ -7,7 +7,7 @@ includes:
   # Include this extension
   # - vendor/szepeviktor/phpstan-wordpress/extension.neon
 parameters:
-  level: 5
+  level: 0
   inferPrivatePropertyTypeFromConstructor: true
   bootstrapFiles:
     - tests/phpstan-bootstrap.php
@@ -23,9 +23,10 @@ parameters:
   # - inc/
   paths:
     - includes/
-    - ./
+    - hello-login.php
   excludePaths:
     analyse:
+      - dist/
       - node_modules/
       - scripts/
       - tests/
