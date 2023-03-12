@@ -97,13 +97,13 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Hook the client into WordPress.
 	 *
-	 * @param \Hello_Login_Client          $client   The plugin client instance.
-	 * @param \Hello_Login_Option_Settings $settings The plugin settings instance.
-	 * @param \Hello_Login_Option_Logger   $logger   The plugin logger instance.
+	 * @param Hello_Login_Client          $client   The plugin client instance.
+	 * @param Hello_Login_Option_Settings $settings The plugin settings instance.
+	 * @param Hello_Login_Option_Logger   $logger   The plugin logger instance.
 	 *
-	 * @return \Hello_Login_Client_Wrapper
+	 * @return Hello_Login_Client_Wrapper
 	 */
-	public static function register( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
+	public static function register( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ): Hello_Login_Client_Wrapper {
 		$client_wrapper  = new self( $client, $settings, $logger );
 
 		// Integrated logout.
@@ -136,7 +136,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @param WP_Query $query The WordPress query object.
 	 */
-	public function redirect_uri_parse_request( $query ) {
+	public function redirect_uri_parse_request( WP_Query $query ) {
 		if ( isset( $query->query_vars['hello-login'] ) ) {
 			if ( 'callback' === $query->query_vars['hello-login'] ) {
 				$this->authentication_request_callback();
@@ -162,7 +162,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return WP_Error
 	 */
-	public function start_auth() {
+	public function start_auth(): WP_Error {
 		$atts = array();
 
 		if ( isset( $_GET['redirect_to_path'] ) ) {
@@ -227,7 +227,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return string
 	 */
-	public function get_redirect_to() {
+	public function get_redirect_to(): string {
 		// @var WP $wp WordPress environment setup class.
 		global $wp;
 
@@ -277,7 +277,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return string
 	 */
-	public function get_authentication_url( $atts = array() ) {
+	public function get_authentication_url( array $atts = array() ): string {
 
 		$atts = shortcode_atts(
 			array(
@@ -402,7 +402,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return void
 	 */
-	public function error_redirect( $error ) {
+	public function error_redirect( WP_Error $error ) {
 		$this->logger->log( $error );
 
 		// Redirect user back to login page.
@@ -430,7 +430,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return array<string>|bool
 	 */
-	public function update_allowed_redirect_hosts( $allowed ) {
+	public function update_allowed_redirect_hosts( array $allowed ) {
 		$host = parse_url( $this->settings->endpoint_end_session, PHP_URL_HOST );
 		if ( ! $host ) {
 			return false;
@@ -449,7 +449,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return string
 	 */
-	public function get_end_session_logout_redirect_url( $redirect_url, $requested_redirect_to, $user ) {
+	public function get_end_session_logout_redirect_url( string $redirect_url, string $requested_redirect_to, WP_User $user ): string {
 		$url = $this->settings->endpoint_end_session;
 		$query = parse_url( $url, PHP_URL_QUERY );
 		$url .= $query ? '&' : '?';
@@ -489,12 +489,12 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Modify outgoing requests according to settings.
 	 *
-	 * @param array<mixed> $request   The outgoing request array.
-	 * @param string       $operation The request operation name.
+	 * @param array  $request   The outgoing request array.
+	 * @param string $operation The request operation name.
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	public function alter_request( $request, $operation ) {
+	public function alter_request( array $request, string $operation ): array {
 		if ( ! empty( $this->settings->http_request_timeout ) && is_numeric( $this->settings->http_request_timeout ) ) {
 			$request['timeout'] = intval( $this->settings->http_request_timeout );
 		}
@@ -509,12 +509,12 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Include PKCE code verifier in authentication token request.
 	 *
-	 * @param array<mixed> $request   The outgoing request array.
-	 * @param string       $operation The request operation name.
+	 * @param array  $request   The outgoing request array.
+	 * @param string $operation The request operation name.
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	public function alter_authentication_token_request( $request, $operation ) {
+	public function alter_authentication_token_request( array $request, string $operation ): array {
 		if ( 'get-authentication-token' !== $operation ) {
 			return $request;
 		}
@@ -800,7 +800,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return WP_Error|array
 	 */
-	public function refresh_user_claim( $user, $token_response ) {
+	public function refresh_user_claim( WP_User $user, array $token_response ) {
 		$client = $this->client;
 
 		/**
@@ -862,7 +862,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return void
 	 */
-	public function login_user( $user, $token_response, $id_token_claim, $user_claim, $subject_identity ) {
+	public function login_user( WP_User $user, array $token_response, array $id_token_claim, array $user_claim, string $subject_identity ) {
 		// Store the tokens for future reference.
 		update_user_meta( $user->ID, 'hello-login-last-token-response', $token_response );
 		update_user_meta( $user->ID, 'hello-login-last-id-token-claim', $id_token_claim );
@@ -890,7 +890,7 @@ class Hello_Login_Client_Wrapper {
 	 * @param string              $token          The current users session token.
 	 * @param array|WP_Error|null $token_response The authentication token response.
 	 */
-	public function save_refresh_token( $manager, $token, $token_response ) {
+	public function save_refresh_token( WP_Session_Tokens $manager, string $token, $token_response ) {
 		if ( ! $this->settings->token_refresh_enable ) {
 			return;
 		}
@@ -898,7 +898,7 @@ class Hello_Login_Client_Wrapper {
 		$now = time();
 		$session[ $this->cookie_token_refresh_key ] = array(
 			'next_access_token_refresh_time' => $token_response['expires_in'] + $now,
-			'refresh_token' => isset( $token_response['refresh_token'] ) ? $token_response['refresh_token'] : false,
+			'refresh_token' => $token_response['refresh_token'] ?? false,
 			'refresh_expires' => false,
 		);
 		if ( isset( $token_response['refresh_expires_in'] ) ) {
@@ -920,7 +920,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return false|WP_User
 	 */
-	public function get_user_by_identity( $subject_identity ) {
+	public function get_user_by_identity( string $subject_identity ) {
 		// Look for user by their hello-login-subject-identity value.
 		$user_query = new WP_User_Query(
 			array(
