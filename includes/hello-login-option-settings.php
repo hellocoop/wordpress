@@ -107,11 +107,11 @@ class Hello_Login_Option_Settings {
 	/**
 	 * The class constructor.
 	 *
-	 * @param string       $option_name       The option name/key.
-	 * @param array<mixed> $default_settings  The default plugin settings values.
-	 * @param bool         $granular_defaults The granular defaults.
+	 * @param string $option_name       The option name/key.
+	 * @param array  $default_settings  The default plugin settings values.
+	 * @param bool   $granular_defaults The granular defaults.
 	 */
-	public function __construct( $option_name, $default_settings = array(), $granular_defaults = true ) {
+	public function __construct( string $option_name, array $default_settings = array(), bool $granular_defaults = true ) {
 		$this->option_name = $option_name;
 		$this->default_settings = $default_settings;
 		$this->values = array();
@@ -139,7 +139,7 @@ class Hello_Login_Option_Settings {
 	 *
 	 * @return mixed
 	 */
-	public function __get( $key ) {
+	public function __get( string $key ) {
 		if ( isset( $this->values[ $key ] ) ) {
 			return $this->values[ $key ];
 		}
@@ -153,7 +153,7 @@ class Hello_Login_Option_Settings {
 	 *
 	 * @return void
 	 */
-	public function __set( $key, $value ) {
+	public function __set( string $key, $value ) {
 		$this->values[ $key ] = $value;
 	}
 
@@ -164,7 +164,7 @@ class Hello_Login_Option_Settings {
 	 *
 	 * @return bool
 	 */
-	public function __isset( $key ) {
+	public function __isset( string $key ): bool {
 		return isset( $this->values[ $key ] );
 	}
 
@@ -175,7 +175,7 @@ class Hello_Login_Option_Settings {
 	 *
 	 * @return void
 	 */
-	public function __unset( $key ) {
+	public function __unset( string $key ) {
 		unset( $this->values[ $key ] );
 	}
 
@@ -184,7 +184,7 @@ class Hello_Login_Option_Settings {
 	 *
 	 * @return array
 	 */
-	public function get_values() {
+	public function get_values(): array {
 		return $this->values;
 	}
 
@@ -193,7 +193,7 @@ class Hello_Login_Option_Settings {
 	 *
 	 * @return string
 	 */
-	public function get_option_name() {
+	public function get_option_name(): string {
 		return $this->option_name;
 	}
 
@@ -212,6 +212,5 @@ class Hello_Login_Option_Settings {
 		}
 
 		update_option( $this->option_name, $this->values );
-
 	}
 }

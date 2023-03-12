@@ -62,7 +62,7 @@ class Hello_Login_Option_Logger {
 	 * @param bool|TRUE $logging_enabled      Whether logging is enabled.
 	 * @param int       $log_limit            The log entry limit.
 	 */
-	public function __construct( $option_name, $default_message_type = 'none', $logging_enabled = true, $log_limit = 1000 ) {
+	public function __construct( string $option_name, string $default_message_type = 'none', bool $logging_enabled = true, int $log_limit = 1000 ) {
 		$this->option_name = $option_name;
 		$this->default_message_type = $default_message_type;
 		$this->logging_enabled = boolval( $logging_enabled );
@@ -77,7 +77,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return void
 	 */
-	public function log_filters( $filter_names, $priority = 10 ) {
+	public function log_filters( $filter_names, int $priority = 10 ) {
 		if ( ! is_array( $filter_names ) ) {
 			$filter_names = array( $filter_names );
 		}
@@ -95,7 +95,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return void
 	 */
-	public function log_actions( $action_names, $priority ) {
+	public function log_actions( $action_names, int $priority ) {
 		if ( ! is_array( $action_names ) ) {
 			$action_names = array( $action_names );
 		}
@@ -141,7 +141,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return array
 	 */
-	public function get_logs() {
+	public function get_logs(): array {
 		if ( empty( $this->logs ) ) {
 			$this->logs = get_option( $this->option_name, array() );
 		}
@@ -154,7 +154,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return string
 	 */
-	public function get_option_name() {
+	public function get_option_name(): string {
 		return $this->option_name;
 	}
 
@@ -166,7 +166,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return array
 	 */
-	private function make_message( $data, $type ) {
+	private function make_message( $data, $type ): array {
 		// Determine the type of message.
 		if ( empty( $type ) ) {
 			$type = $this->default_message_type;
@@ -181,15 +181,13 @@ class Hello_Login_Option_Logger {
 		$request_uri = ( ! empty( $_SERVER['REQUEST_URI'] ) ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : 'Unknown';
 
 		// Construct the message.
-		$message = array(
+		return array(
 			'type'    => $type,
 			'time'    => time(),
 			'user_ID' => get_current_user_id(),
 			'uri'     => preg_replace( '/code=([^&]+)/i', 'code=', $request_uri ),
 			'data'    => $data,
 		);
-
-		return $message;
 	}
 
 	/**
@@ -199,7 +197,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return array
 	 */
-	private function upkeep_logs( $logs ) {
+	private function upkeep_logs( array $logs ): array {
 		$items_to_remove = count( $logs ) - $this->log_limit;
 
 		if ( $items_to_remove > 0 ) {
@@ -217,7 +215,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return bool
 	 */
-	private function save_logs( $logs ) {
+	private function save_logs( array $logs ): bool {
 		// Save the logs.
 		$this->logs = $logs;
 		return update_option( $this->option_name, $logs, false );
@@ -239,7 +237,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return string
 	 */
-	public function get_logs_table( $logs = array() ) {
+	public function get_logs_table( array $logs = array() ): string {
 		if ( empty( $logs ) ) {
 			$logs = $this->get_logs();
 		}

@@ -110,18 +110,18 @@ class Hello_Login_Client {
 	/**
 	 * Client constructor.
 	 *
-	 * @param string                               $client_id         @see Hello_Login_Option_Settings::client_id for description.
-	 * @param string                               $client_secret     @see Hello_Login_Option_Settings::client_secret for description.
-	 * @param string                               $scope             @see Hello_Login_Option_Settings::scope for description.
-	 * @param string                               $endpoint_login    @see Hello_Login_Option_Settings::endpoint_login for description.
-	 * @param string                               $endpoint_userinfo @see Hello_Login_Option_Settings::endpoint_userinfo for description.
-	 * @param string                               $endpoint_token    @see Hello_Login_Option_Settings::endpoint_token for description.
-	 * @param string                               $redirect_uri      @see Hello_Login_Option_Settings::redirect_uri for description.
-	 * @param string                               $acr_values        @see Hello_Login_Option_Settings::acr_values for description.
-	 * @param int                                  $state_time_limit  @see Hello_Login_Option_Settings::state_time_limit for description.
+	 * @param string                    $client_id         @see Hello_Login_Option_Settings::client_id for description.
+	 * @param string                    $client_secret     @see Hello_Login_Option_Settings::client_secret for description.
+	 * @param string                    $scope             @see Hello_Login_Option_Settings::scope for description.
+	 * @param string                    $endpoint_login    @see Hello_Login_Option_Settings::endpoint_login for description.
+	 * @param string                    $endpoint_userinfo @see Hello_Login_Option_Settings::endpoint_userinfo for description.
+	 * @param string                    $endpoint_token    @see Hello_Login_Option_Settings::endpoint_token for description.
+	 * @param string                    $redirect_uri      @see Hello_Login_Option_Settings::redirect_uri for description.
+	 * @param string                    $acr_values        @see Hello_Login_Option_Settings::acr_values for description.
+	 * @param int                       $state_time_limit  @see Hello_Login_Option_Settings::state_time_limit for description.
 	 * @param Hello_Login_Option_Logger $logger            The plugin logging object instance.
 	 */
-	public function __construct( $client_id, $client_secret, $scope, $endpoint_login, $endpoint_userinfo, $endpoint_token, $redirect_uri, $acr_values, $state_time_limit, $logger ) {
+	public function __construct( string $client_id, string $client_secret, string $scope, string $endpoint_login, string $endpoint_userinfo, string $endpoint_token, string $redirect_uri, string $acr_values, int $state_time_limit, $logger ) {
 		$this->client_id = $client_id;
 		$this->client_secret = $client_secret;
 		$this->scope = $scope;
@@ -159,10 +159,10 @@ class Hello_Login_Client {
 	 *
 	 * @return array<string>|WP_Error
 	 */
-	public function validate_authentication_request( $request ) {
+	public function validate_authentication_request( array $request ) {
 		// Look for an existing error of some kind.
 		if ( isset( $request['error'] ) ) {
-			$this->logger->log("Error response: {$request['error']}: {$request['error_description']} {$request['error_uri']}", 'validate_authentication_request');
+			$this->logger->log( "Error response: {$request['error']}: {$request['error_description']} {$request['error_uri']}", 'validate_authentication_request' );
 
 			if ( 'access_denied' == $request['error'] ) {
 				return new WP_Error( 'access_denied', 'Authorization cancelled.', $request );
@@ -208,7 +208,7 @@ class Hello_Login_Client {
 	 *
 	 * @param string|WP_Error $code The authorization code.
 	 *
-	 * @return array<mixed>|WP_Error
+	 * @return array|WP_Error
 	 */
 	public function request_authentication_token( $code ) {
 
@@ -253,7 +253,7 @@ class Hello_Login_Client {
 	 *
 	 * @return array|WP_Error
 	 */
-	public function request_new_tokens( $refresh_token ) {
+	public function request_new_tokens( string $refresh_token ) {
 		$request = array(
 			'body' => array(
 				'refresh_token' => $refresh_token,
@@ -280,9 +280,9 @@ class Hello_Login_Client {
 	/**
 	 * Extract and decode the token body of a token response
 	 *
-	 * @param array<mixed>|WP_Error $token_result The token response.
+	 * @param array|WP_Error $token_result The token response.
 	 *
-	 * @return array<mixed>|WP_Error|null
+	 * @return array|WP_Error|null
 	 */
 	public function get_token_response( $token_result ) {
 		if ( ! isset( $token_result['body'] ) ) {
@@ -316,7 +316,7 @@ class Hello_Login_Client {
 	 *
 	 * @return array|WP_Error
 	 */
-	public function request_userinfo( $access_token ) {
+	public function request_userinfo( string $access_token ) {
 		// Allow modifications to the request.
 		$request = apply_filters( 'hello-login-alter-request', array(), 'get-userinfo' );
 
@@ -359,7 +359,7 @@ class Hello_Login_Client {
 	 *
 	 * @return string
 	 */
-	public function new_state( $redirect_to, $pkce_code_verifier = '' ) {
+	public function new_state( string $redirect_to, string $pkce_code_verifier = '' ): string {
 		// New state w/ timestamp.
 		$state = md5( mt_rand() . microtime( true ) );
 		$state_value = array(
@@ -380,7 +380,7 @@ class Hello_Login_Client {
 	 *
 	 * @return bool
 	 */
-	public function check_state( $state ) {
+	public function check_state( string $state ): bool {
 
 		$state_found = true;
 
@@ -420,7 +420,7 @@ class Hello_Login_Client {
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function validate_token_response( $token_response ) {
+	public function validate_token_response( array $token_response ) {
 		/*
 		 * Ensure 2 specific items exist with the token response in order
 		 * to proceed with confidence:  id_token and token_type == 'Bearer'
@@ -441,7 +441,7 @@ class Hello_Login_Client {
 	 *
 	 * @return array|WP_Error
 	 */
-	public function get_id_token_claim( $token_response ) {
+	public function get_id_token_claim( array $token_response ) {
 		// Validate there is an id_token.
 		if ( ! isset( $token_response['id_token'] ) ) {
 			return new WP_Error( 'no-identity-token', __( 'No identity token.', 'hello-login' ), $token_response );
@@ -455,7 +455,7 @@ class Hello_Login_Client {
 		}
 
 		// Extract the id_token's claims from the token.
-		$id_token_claim = json_decode(
+		return json_decode(
 			base64_decode(
 				str_replace( // Because token is encoded in base64 URL (and not just base64).
 					array( '-', '_' ),
@@ -465,8 +465,6 @@ class Hello_Login_Client {
 			),
 			true
 		);
-
-		return $id_token_claim;
 	}
 
 	/**
@@ -476,13 +474,13 @@ class Hello_Login_Client {
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function validate_id_token_claim( $id_token_claim ) {
+	public function validate_id_token_claim( array $id_token_claim ) {
 		if ( ! is_array( $id_token_claim ) ) {
 			return new WP_Error( 'bad-id-token-claim', __( 'Bad ID token claim.', 'hello-login' ), $id_token_claim );
 		}
 
 		// Validate the identification data and it's value.
-		if ( ! isset( $id_token_claim['sub'] ) || empty( $id_token_claim['sub'] ) ) {
+		if ( empty( $id_token_claim['sub'] ) ) {
 			return new WP_Error( 'no-subject-identity', __( 'No subject identity.', 'hello-login' ), $id_token_claim );
 		}
 
@@ -503,7 +501,7 @@ class Hello_Login_Client {
 	 *
 	 * @return array|WP_Error|null
 	 */
-	public function get_user_claim( $token_response ) {
+	public function get_user_claim( array $token_response ) {
 		// Send a userinfo request to get user claim.
 		$user_claim_result = $this->request_userinfo( $token_response['access_token'] );
 
@@ -512,9 +510,7 @@ class Hello_Login_Client {
 			return new WP_Error( 'bad-claim', __( 'Bad user claim.', 'hello-login' ), $user_claim_result );
 		}
 
-		$user_claim = json_decode( $user_claim_result['body'], true );
-
-		return $user_claim;
+		return json_decode( $user_claim_result['body'], true );
 	}
 
 	/**
@@ -526,7 +522,7 @@ class Hello_Login_Client {
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function validate_user_claim( $user_claim, $id_token_claim ) {
+	public function validate_user_claim( array $user_claim, array $id_token_claim ) {
 		// Validate the user claim.
 		if ( ! is_array( $user_claim ) ) {
 			return new WP_Error( 'invalid-user-claim', __( 'Invalid user claim.', 'hello-login' ), $user_claim );

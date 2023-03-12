@@ -228,7 +228,7 @@ class Hello_Login_Login_Form {
 	 *
 	 * @return string
 	 */
-	public function make_error_output( $error_code, $error_message ) {
+	public function make_error_output( string $error_code, string $error_message ): string {
 
 		ob_start();
 		?>
@@ -248,7 +248,7 @@ class Hello_Login_Login_Form {
 	 *
 	 * @return string
 	 */
-	public function make_login_button( $atts = array() ) {
+	public function make_login_button( array $atts = array() ): string {
 		$defaults = array(
 			'align' => 'center',
 			'show_hint' => true,
@@ -281,7 +281,7 @@ class Hello_Login_Login_Form {
 	 *
 	 * @return string
 	 */
-	public function make_login_form_toggle() {
+	public function make_login_form_toggle(): string {
 		wp_enqueue_script( 'hello-username-password-form', plugin_dir_url( __DIR__ ) . 'js/scripts-login.js', array(), Hello_Login::VERSION );
 		wp_enqueue_style( 'hello-username-password-form', plugin_dir_url( __DIR__ ) . 'css/styles-login.css', array(), Hello_Login::VERSION, 'all' );
 

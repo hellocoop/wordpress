@@ -113,7 +113,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		// Alter the requests according to settings.
-		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 3 );
+		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 2 );
 
 		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
 		add_action( 'parse_request', array( $client_wrapper, 'redirect_uri_parse_request' ) );
@@ -125,7 +125,7 @@ class Hello_Login_Client_Wrapper {
 
 		// Modify authentication-token request to include PKCE code verifier.
 		if ( true === (bool) $settings->enable_pkce ) {
-			add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 3 );
+			add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 2 );
 		}
 
 		return $client_wrapper;
@@ -135,8 +135,6 @@ class Hello_Login_Client_Wrapper {
 	 * Implements WordPress parse_request action.
 	 *
 	 * @param WP_Query $query The WordPress query object.
-	 *
-	 * @return mixed
 	 */
 	public function redirect_uri_parse_request( $query ) {
 		if ( isset( $query->query_vars['hello-login'] ) ) {
@@ -157,8 +155,6 @@ class Hello_Login_Client_Wrapper {
 				exit;
 			}
 		}
-
-		return $query;
 	}
 
 	/**
@@ -170,7 +166,7 @@ class Hello_Login_Client_Wrapper {
 		$atts = array();
 
 		if ( isset( $_GET['redirect_to_path'] ) ) {
-			$redirect_to_path = sanitize_text_field( $_GET['redirect_to_path'] );
+			$redirect_to_path = sanitize_text_field( wp_unslash( $_GET['redirect_to_path'] ) );
 
 			// Validate that only a path was passed in.
 			$p = parse_url( $redirect_to_path );
@@ -188,7 +184,7 @@ class Hello_Login_Client_Wrapper {
 
 		nocache_headers();
 
-		wp_redirect ( $this->get_authentication_url( $atts ) );
+		wp_redirect( $this->get_authentication_url( $atts ) );
 		exit();
 	}
 
@@ -201,17 +197,17 @@ class Hello_Login_Client_Wrapper {
 		$message_id = 'quickstart_success';
 
 		if ( isset( $_GET['client_id'] ) ) {
-			$client_id = sanitize_text_field( $_GET['client_id'] );
+			$client_id = sanitize_text_field( wp_unslash( $_GET['client_id'] ) );
 
-			if ( preg_match( "/^[a-z0-9_-]{1,64}$/", $client_id ) ) {
-				if (empty($this->settings->client_id)) {
+			if ( preg_match( '/^[a-z0-9_-]{1,64}$/', $client_id ) ) {
+				if ( empty( $this->settings->client_id ) ) {
 					$this->settings->client_id = $client_id;
 					$this->settings->link_not_now = 0;
 					$this->settings->save();
-					$this->logger->log("Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart');
+					$this->logger->log( "Client ID set through Quickstart: {$this->settings->client_id}", 'quickstart' );
 				} else {
 					$message_id = 'quickstart_existing_client_id';
-					$this->logger->log('Client id already set', 'quickstart');
+					$this->logger->log( 'Client id already set', 'quickstart' );
 				}
 			} else {
 				$message_id = 'quickstart_missing_client_id';
@@ -245,7 +241,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		if ( is_admin() ) {
-			return admin_url( sprintf( basename( $_SERVER['REQUEST_URI'] ) ) );
+			return admin_url( sprintf( basename( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
 		}
 
 		// Default redirect to the homepage.
@@ -525,8 +521,8 @@ class Hello_Login_Client_Wrapper {
 
 		$code_verifier = '';
 		if ( ! empty( $_GET['state'] ) ) {
-			$state_object  = get_transient( 'hello-login-state--' . sanitize_text_field(  $_GET['state']  ) );
-			$code_verifier = $state_object[  $_GET['state'] ]['code_verifier'] ?? '';
+			$state_object  = get_transient( 'hello-login-state--' . sanitize_text_field( wp_unslash( $_GET['state'] ) ) );
+			$code_verifier = $state_object[ sanitize_text_field( wp_unslash( $_GET['state'] ) ) ]['code_verifier'] ?? '';
 		}
 
 		$request['body']['code_verifier'] = $code_verifier;
@@ -642,9 +638,9 @@ class Hello_Login_Client_Wrapper {
 		if ( ! $user ) {
 			// A pre-existing Hellō mapped user wasn't found.
 			if ( is_user_logged_in() ) {
-				// current user session, no user found based on 'sub'
+				// Current user session, no user found based on 'sub'.
 
-				// check if current user is already linked to a different Hellō account
+				// Check if current user is already linked to a different Hellō account.
 				$current_user_hello_sub = get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true );
 				if ( ! empty( $current_user_hello_sub ) && $current_user_hello_sub !== $subject_identity ) {
 					$link_error->add_data( $current_user_hello_sub );
@@ -652,7 +648,7 @@ class Hello_Login_Client_Wrapper {
 					$this->error_redirect( $link_error );
 				}
 
-				// link accounts
+				// Link accounts.
 				$user = wp_get_current_user();
 				add_user_meta( $user->ID, 'hello-login-subject-identity', (string) $subject_identity, true );
 
@@ -660,7 +656,7 @@ class Hello_Login_Client_Wrapper {
 
 				$message_id = 'link_success';
 			} else {
-				// no current user session and no user found based on 'sub'
+				// No current user session and no user found based on 'sub'.
 
 				if ( $this->settings->link_existing_users || $this->settings->create_if_does_not_exist ) {
 					// If linking existing users or creating new ones call the `create_new_user` method which
@@ -676,7 +672,7 @@ class Hello_Login_Client_Wrapper {
 				}
 			}
 		} else {
-			// Pre-existing Hellō mapped user was found
+			// Pre-existing Hellō mapped user was found.
 
 			if ( is_user_logged_in() && get_current_user_id() !== $user->ID ) {
 				$link_error->add_data( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) );
@@ -745,16 +741,16 @@ class Hello_Login_Client_Wrapper {
 		$target_user_id = $wp_user_id;
 
 		if ( isset( $_GET['user_id'] ) ) {
-			$target_user_id = sanitize_text_field( $_GET['user_id'] );
+			$target_user_id = sanitize_text_field( wp_unslash( $_GET['user_id'] ) );
 		}
 
 		if ( current_user_can( 'edit_user' ) ) {
-			if ( $wp_user_id == 0 ) {
+			if ( 0 == $wp_user_id ) {
 				// No valid session found, or current user is not an administrator.
 				$this->logger->log( 'No current user', 'unlink_hello' );
 				$message_id = 'unlink_no_session';
 			} else {
-				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' . $target_user_id ) )  {
+				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' . $target_user_id ) ) {
 					$hello_user_id = get_user_meta( $target_user_id, 'hello-login-subject-identity', true );
 
 					if ( empty( $hello_user_id ) ) {
@@ -955,7 +951,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return string|WP_Error
 	 */
-	private function get_username_from_claim( $user_claim ) {
+	private function get_username_from_claim( array $user_claim ) {
 
 		// @var string $desired_username
 		$desired_username = '';
@@ -969,7 +965,7 @@ class Hello_Login_Client_Wrapper {
 		}
 		if ( empty( $desired_username ) && isset( $user_claim['name'] ) && ! empty( $user_claim['name'] ) ) {
 			$desired_username = $user_claim['name'];
-			$desired_username = strtolower( str_replace(' ', '', $desired_username) );
+			$desired_username = strtolower( str_replace( ' ', '', $desired_username ) );
 		}
 		if ( empty( $desired_username ) && isset( $user_claim['email'] ) && ! empty( $user_claim['email'] ) ) {
 			$tmp = explode( '@', $user_claim['email'] );
@@ -1021,9 +1017,9 @@ class Hello_Login_Client_Wrapper {
 	 * @param string $claimname the claim name to look for.
 	 * @param array  $userinfo the JSON to look in.
 	 * @param string $claimvalue the source claim value ( from the body of the JWT of the claim source).
-	 * @return true|false
+	 * @return bool
 	 */
-	private function get_claim( $claimname, $userinfo, &$claimvalue ) {
+	private function get_claim( string $claimname, array $userinfo, string &$claimvalue ): bool {
 		/**
 		 * If we find a simple claim, return it.
 		 */
@@ -1086,13 +1082,13 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Build a string from the user claim according to the specified format.
 	 *
-	 * @param string $format               The format format of the user identity.
+	 * @param string $format               The format of the user identity.
 	 * @param array  $user_claim           The authorized user claim.
 	 * @param bool   $error_on_missing_key Whether to return and error on a missing key.
 	 *
 	 * @return string|WP_Error
 	 */
-	private function format_string_with_claim( $format, $user_claim, $error_on_missing_key = false ) {
+	private function format_string_with_claim( string $format, array $user_claim, bool $error_on_missing_key = false ) {
 		$matches = null;
 		$string = '';
 		$info = '';
@@ -1132,7 +1128,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return string|null|WP_Error
 	 */
-	private function get_displayname_from_claim( $user_claim, $error_on_missing_key = false ) {
+	private function get_displayname_from_claim( array $user_claim, bool $error_on_missing_key = false ) {
 		if ( ! empty( $this->settings->displayname_format ) ) {
 			return $this->format_string_with_claim( $this->settings->displayname_format, $user_claim, $error_on_missing_key );
 		}
@@ -1147,7 +1143,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @return string|null|WP_Error
 	 */
-	private function get_email_from_claim( $user_claim, $error_on_missing_key = false ) {
+	private function get_email_from_claim( array $user_claim, bool $error_on_missing_key = false ) {
 		if ( ! empty( $this->settings->email_format ) ) {
 			return $this->format_string_with_claim( $this->settings->email_format, $user_claim, $error_on_missing_key );
 		}
@@ -1160,9 +1156,9 @@ class Hello_Login_Client_Wrapper {
 	 * @param string $subject_identity The authenticated user's identity with the IDP.
 	 * @param array  $user_claim       The authorized user claim.
 	 *
-	 * @return \WP_Error | \WP_User
+	 * @return WP_Error|WP_User
 	 */
-	public function create_new_user( $subject_identity, $user_claim ) {
+	public function create_new_user( string $subject_identity, array $user_claim ) {
 		// Default username & email to the subject identity.
 		$username       = $subject_identity;
 		$email          = $subject_identity;
@@ -1186,14 +1182,10 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		$_nickname = $this->get_nickname_from_claim( $user_claim );
-		if ( is_wp_error( $_nickname ) ) {
-			$values_missing = true;
+		if ( empty( $_nickname ) ) {
+			$nickname = $username;
 		} else {
-			if ( empty( $_nickname ) ) {
-				$nickname = $username;
-			} else {
-				$nickname = $_nickname;
-			}
+			$nickname = $_nickname;
 		}
 
 		$_displayname = $this->get_displayname_from_claim( $user_claim, true );
@@ -1234,9 +1226,6 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		$_nickname = $this->get_nickname_from_claim( $user_claim );
-		if ( is_wp_error( $_nickname ) ) {
-			return $_nickname;
-		}
 		// Use the username as the nickname if the userinfo request nickname is empty.
 		if ( empty( $_nickname ) ) {
 			$nickname = $username;
@@ -1328,22 +1317,30 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Save extra user claims as user metadata.
 	 *
-	 * @param int $uid The WordPress User ID.
+	 * @param int   $uid The WordPress User ID.
 	 * @param array $user_claim The user claim.
 	 * @return void
 	 */
 	public function save_extra_claims( int $uid, array $user_claim ) {
 		foreach ( $user_claim as $key => $value ) {
 			if ( ! in_array( $key, array( 'iss', 'sub', 'aud', 'exp', 'iat', 'auth_time', 'nonce', 'acr', 'amr', 'azp' ) ) ) {
-				if ( update_user_meta($uid, 'hello-login-claim-' . $key, $value) ) {
+				if ( update_user_meta( $uid, 'hello-login-claim-' . $key, $value ) ) {
 					$this->logger->log( 'User claim saved as meta: hello-login-claim-' . $key . ' = ' . $value, 'user-claims' );
 				}
 			}
 		}
 	}
 
+	/**
+	 * Update user claims as user metadata.
+	 *
+	 * @param int   $uid The WordPress User ID.
+	 * @param array $user_claim The user claim.
+	 *
+	 * @return void
+	 */
 	public function update_user_claims( int $uid, array $user_claim ) {
-		if ( isset( $user_claim['given_name'] ) && empty( get_user_meta( $uid, 'first_name', true ) )) {
+		if ( isset( $user_claim['given_name'] ) && empty( get_user_meta( $uid, 'first_name', true ) ) ) {
 			if ( update_user_meta( $uid, 'first_name', $user_claim['given_name'], '' ) ) {
 				$this->logger->log( 'User first name saved: ' . $user_claim['given_name'], 'user-claims' );
 			} else {
@@ -1351,7 +1348,7 @@ class Hello_Login_Client_Wrapper {
 			}
 		}
 
-		if ( isset( $user_claim['family_name'] ) && empty( get_user_meta( $uid, 'last_name', true ) )) {
+		if ( isset( $user_claim['family_name'] ) && empty( get_user_meta( $uid, 'last_name', true ) ) ) {
 			if ( update_user_meta( $uid, 'last_name', $user_claim['family_name'], '' ) ) {
 				$this->logger->log( 'User last name saved: ' . $user_claim['family_name'], 'user-claims' );
 			} else {

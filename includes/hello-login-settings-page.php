@@ -66,12 +66,13 @@ class Hello_Login_Settings_Page {
 	 * Settings page class constructor.
 	 *
 	 * @param Hello_Login_Option_Settings $settings The plugin settings object.
+	 * @param Hello_Login_Client_Wrapper  $client_wrapper The client wrapper.
 	 * @param Hello_Login_Option_Logger   $logger   The plugin logging class object.
 	 */
 	public function __construct( Hello_Login_Option_Settings $settings, Hello_Login_Client_Wrapper $client_wrapper, Hello_Login_Option_Logger $logger ) {
 
 		$this->settings             = $settings;
-		$this->client_wrapper		= $client_wrapper;
+		$this->client_wrapper       = $client_wrapper;
 		$this->logger               = $logger;
 		$this->settings_field_group = $this->settings->get_option_name() . '-group';
 
@@ -105,11 +106,18 @@ class Hello_Login_Settings_Page {
 		// Register our settings.
 		add_action( 'admin_init', array( $settings_page, 'admin_init' ) );
 
-		// Add "Settings" to the plugin in the plugin list
+		// Add "Settings" to the plugin in the plugin list.
 		add_filter( 'plugin_action_links_hello-login/hello-login.php', array( $settings_page, 'hello_login_settings_action' ) );
 	}
 
-	public function hello_login_settings_action( $links ) {
+	/**
+	 * Create the HTML to add link to plugin settings in plugin list.
+	 *
+	 * @param array $links Existing list of plugin links in plugin list.
+	 *
+	 * @return array The expanded list of links.
+	 */
+	public function hello_login_settings_action( array $links ): array {
 		// Build and escape the URL.
 		$url = admin_url( '/options-general.php?page=hello-login-settings' );
 		// Create the link.
@@ -151,10 +159,10 @@ class Hello_Login_Settings_Page {
 		);
 
 		add_settings_section(
-				'user_settings',
-				__('User Settings', 'hello-login'),
-				array($this, 'user_settings_description'),
-				$this->options_page_name
+			'user_settings',
+			__( 'User Settings', 'hello-login' ),
+			array( $this, 'user_settings_description' ),
+			$this->options_page_name
 		);
 
 		add_settings_section(
@@ -166,10 +174,10 @@ class Hello_Login_Settings_Page {
 
 		if ( isset( $_GET['debug'] ) ) {
 			add_settings_section(
-					'authorization_settings',
-					__('Authorization Settings', 'hello-login'),
-					array($this, 'authorization_settings_description'),
-					$this->options_page_name
+				'authorization_settings',
+				__( 'Authorization Settings', 'hello-login' ),
+				array( $this, 'authorization_settings_description' ),
+				$this->options_page_name
 			);
 		}
 
@@ -217,11 +225,16 @@ class Hello_Login_Settings_Page {
 		$this->add_admin_notices();
 	}
 
+	/**
+	 * Add admin notices based on hello-login-msg query param.
+	 *
+	 * @return void
+	 */
 	private function add_admin_notices() {
 		if ( isset( $_GET['hello-login-msg'] ) && ! empty( $_GET['hello-login-msg'] ) ) {
-			$message_id = sanitize_text_field( $_GET['hello-login-msg'] );
+			$message_id = sanitize_text_field( wp_unslash( $_GET['hello-login-msg'] ) );
 
-			switch ($message_id) {
+			switch ( $message_id ) {
 				case 'quickstart_success':
 					add_action( 'admin_notices', array( $this, 'admin_notice_quickstart_success' ) );
 					break;
@@ -593,7 +606,7 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @return array
 	 */
-	public function sanitize_settings( $input ) {
+	public function sanitize_settings( array $input ): array {
 		$options = array();
 
 		// Loop through settings fields to control what we're saving.
@@ -731,7 +744,7 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @return void
 	 */
-	public function do_text_field( $field ) {
+	public function do_text_field( array $field ) {
 		$disabled = ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true;
 		$value = $this->settings->{ $field['key'] };
 
@@ -762,7 +775,7 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @return void
 	 */
-	public function do_checkbox( $field ) {
+	public function do_checkbox( array $field ) {
 		?>
 		<input type="hidden" name="<?php print esc_attr( $field['name'] ); ?>" value="0">
 		<input type="checkbox"
@@ -781,7 +794,7 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @return void
 	 */
-	public function do_select( $field ) {
+	public function do_select( array $field ) {
 		$current_value = isset( $this->settings->{ $field['key'] } ) ? $this->settings->{ $field['key'] } : '';
 		?>
 		<select name="<?php print esc_attr( $field['name'] ); ?>">
@@ -800,7 +813,7 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @return void
 	 */
-	public function do_field_description( $field ) {
+	public function do_field_description( array $field ) {
 		?>
 		<p class="description">
 			<?php print wp_kses_post( $field['description'] ); ?>

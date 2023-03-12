@@ -8,6 +8,11 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 
+/**
+ * Enqueue Hellō specific CSS and JavaScript.
+ *
+ * @return void
+ */
 function hello_login_enqueue_scripts_and_styles() {
 	wp_enqueue_script( 'hello-button', 'https://cdn.hello.coop/js/hello-btn.js', array(), Hello_Login::VERSION );
 	wp_enqueue_style( 'hello-button', 'https://cdn.hello.coop/css/hello-btn.css', array(), Hello_Login::VERSION, 'all' );
