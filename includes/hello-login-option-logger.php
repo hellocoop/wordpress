@@ -41,7 +41,7 @@ class Hello_Login_Option_Logger {
 	private $log_limit;
 
 	/**
-	 * Whether or not logging is enabled.
+	 * Whether logging is enabled.
 	 *
 	 * @var bool
 	 */
@@ -55,7 +55,7 @@ class Hello_Login_Option_Logger {
 	private $logs;
 
 	/**
-	 * Setup the logger according to the needs of the instance.
+	 * Set up the logger according to the needs of the instance.
 	 *
 	 * @param string    $option_name          The plugin log WordPress option name.
 	 * @param string    $default_message_type The log message type.
@@ -249,8 +249,10 @@ class Hello_Login_Option_Logger {
 		?>
 		<table id="logger-table" class="wp-list-table widefat fixed striped posts">
 			<thead>
-			<th class="col-details">Details</th>
-			<th class="col-data">Data</th>
+			<tr>
+				<th class="col-details">Details</th>
+				<th class="col-data">Data</th>
+			</tr>
 			</thead>
 			<tbody>
 			<?php foreach ( $logs as $log ) { ?>
