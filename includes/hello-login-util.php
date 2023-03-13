@@ -1,5 +1,22 @@
 <?php
+/**
+ * Utility functions.
+ *
+ * @package   Hello_Login
+ * @category  Util
+ * @author    Marius Scurtescu <marius.scurtescu@hello.coop>
+ * @copyright 2023 Hello Identity Co-op
+ * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
+ */
 
+/**
+ * Hello_Login_Util class.
+ *
+ * Utility functions.
+ *
+ * @package Hello_Login
+ * @category  Util
+ */
 class Hello_Login_Util {
 	/**
 	 * Default scopes added to all auth requests.
