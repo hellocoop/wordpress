@@ -22,6 +22,7 @@ phpunit.xml
 .DS_Store
 Thumbs.db
 .cache
+.phpunit.result.cache
 tags.*
 .project
 .settings

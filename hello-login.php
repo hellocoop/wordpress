@@ -18,7 +18,7 @@
  * Description:       Free and simple to setup plugin provides registration and login with the Hellō Wallet. Users choose from popular social login, email, or phone.
  * Version:           1.2.1
  * Requires at least: 4.9
- * Requires PHP:      7.2
+ * Requires PHP:      7.4
  * Author:            hellocoop
  * Author URI:        http://www.hello.coop
  * Text Domain:       hello-login

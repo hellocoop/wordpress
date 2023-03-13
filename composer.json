@@ -20,7 +20,7 @@
 	},
 	"config": {
 		"platform": {
-			"php": "7.2"
+			"php": "7.4"
 		},
 		"optimize-autoloader": true,
 		"sort-packages": true,
@@ -33,11 +33,11 @@
 		}
 	},
 	"require": {
-		"php": ">=7.2",
+		"php": ">=7.4",
 		"composer/installers": "~1.0|~2.0"
 	},
 	"require-dev": {
-		"php": ">=7.2",
+		"php": ">=7.4",
 		"brain/monkey": "^2.4",
 		"dealerdirect/phpcodesniffer-composer-installer": "~0.7",
 		"johnpbloch/wordpress-core": "~5.9.0",
@@ -51,7 +51,7 @@
 		"phpstan/extension-installer": "^1.1",
 		"phpstan/phpstan": "^1.6",
 		"phpstan/phpstan-deprecation-rules": "^1.0",
-		"phpunit/phpunit": "^7",
+		"phpunit/phpunit": "^9",
 		"roave/security-advisories": "dev-master",
 		"squizlabs/php_codesniffer": "^3.6",
 		"szepeviktor/phpstan-wordpress": "^1.1",
