@@ -175,7 +175,7 @@ class Hello_Login_Login_Form {
 		$configured = ! empty( $this->settings->client_id );
 
 		if ( $configured && strpos( $link, 'comment-reply-login' ) !== false ) {
-			$auth_request_start_url = 'href="' . esc_url( create_auth_request_start_url( Hello_Login::extract_path_and_query( get_permalink() . '#respond' ) ) ) . '"';
+			$auth_request_start_url = 'href="' . esc_url( create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_permalink() . '#respond' ) ) ) . '"';
 
 			$link = preg_replace( '/href=[\'"][^\'"]+[\'"]/', $auth_request_start_url, $link );
 		}
@@ -260,7 +260,7 @@ class Hello_Login_Login_Form {
 		$redirect_to_path = '/';
 
 		if ( isset( $atts['redirect_to'] ) ) {
-			$redirect_to_path = Hello_Login::extract_path_and_query( $atts['redirect_to'] );
+			$redirect_to_path = Hello_Login_Util::extract_path_and_query( $atts['redirect_to'] );
 		}
 
 		$start_url = create_auth_request_start_url( $redirect_to_path );

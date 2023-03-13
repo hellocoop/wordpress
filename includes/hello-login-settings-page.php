@@ -615,14 +615,14 @@ class Hello_Login_Settings_Page {
 				$options[ $key ] = sanitize_text_field( trim( $input[ $key ] ) );
 
 				if ( 'scope' == $key ) {
-					$no_duplicate_scope = Hello_Login::remove_duplicate_scopes( $options[ $key ] );
+					$no_duplicate_scope = Hello_Login_Util::remove_duplicate_scopes( $options[ $key ] );
 
 					if ( strlen( $no_duplicate_scope ) < strlen( $options[ $key ] ) ) {
 						$options[ $key ] = $no_duplicate_scope;
 						add_settings_error( 'scope', 'scope_no_duplicate', 'Duplicate scopes removed.', 'warning' );
 					}
 
-					$no_defaults_scope = Hello_Login::remove_default_scopes( $options[ $key ] );
+					$no_defaults_scope = Hello_Login_Util::remove_default_scopes( $options[ $key ] );
 
 					if ( strlen( $no_defaults_scope ) < strlen( $options[ $key ] ) ) {
 						$options[ $key ] = $no_defaults_scope;
@@ -656,7 +656,7 @@ class Hello_Login_Settings_Page {
 			$custom_logo_url = $custom_logo_data[0];
 		}
 
-		$redirect_to_path = Hello_Login::extract_path_and_query( admin_url( '/options-general.php?page=hello-login-settings' ) );
+		$redirect_to_path = Hello_Login_Util::extract_path_and_query( admin_url( '/options-general.php?page=hello-login-settings' ) );
 		$start_url = create_auth_request_start_url( $redirect_to_path );
 
 		$debug = isset( $_GET['debug'] );

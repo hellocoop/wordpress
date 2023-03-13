@@ -282,7 +282,7 @@ class Hello_Login_Client_Wrapper {
 		$atts = shortcode_atts(
 			array(
 				'endpoint_login' => $this->settings->endpoint_login,
-				'scope' => Hello_Login::add_default_scopes( $this->settings->scope ),
+				'scope' => Hello_Login_Util::add_default_scopes( $this->settings->scope ),
 				'client_id' => $this->settings->client_id,
 				'redirect_uri' => $this->client->get_redirect_uri(),
 				'redirect_to' => $this->get_redirect_to(),
