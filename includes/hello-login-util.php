@@ -54,7 +54,7 @@ class Hello_Login_Util {
 
 		$parts = parse_url( $url );
 
-		if ( isset( $parts['path'] ) ) {
+		if ( isset( $parts['path'] ) && ! empty( $parts['path'] ) ) {
 			$result = $parts['path'];
 		}
 
