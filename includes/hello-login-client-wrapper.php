@@ -134,23 +134,23 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Implements WordPress parse_request action.
 	 *
-	 * @param WP_Query $query The WordPress query object.
+	 * @param WP $wp The WordPress environment instance.
 	 */
-	public function redirect_uri_parse_request( WP_Query $query ) {
-		if ( isset( $query->query_vars['hello-login'] ) ) {
-			if ( 'callback' === $query->query_vars['hello-login'] ) {
+	public function redirect_uri_parse_request( WP $wp ) {
+		if ( isset( $wp->query_vars['hello-login'] ) ) {
+			if ( 'callback' === $wp->query_vars['hello-login'] ) {
 				$this->authentication_request_callback();
 				exit;
 			}
-			if ( 'unlink' === $query->query_vars['hello-login'] ) {
+			if ( 'unlink' === $wp->query_vars['hello-login'] ) {
 				$this->unlink_hello();
 				exit;
 			}
-			if ( 'quickstart' === $query->query_vars['hello-login'] ) {
+			if ( 'quickstart' === $wp->query_vars['hello-login'] ) {
 				$this->quickstart_callback();
 				exit;
 			}
-			if ( 'start' === $query->query_vars['hello-login'] ) {
+			if ( 'start' === $wp->query_vars['hello-login'] ) {
 				$this->start_auth();
 				exit;
 			}
