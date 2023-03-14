@@ -757,7 +757,7 @@ class Hello_Login_Client_Wrapper {
 			$target_user_id = sanitize_text_field( wp_unslash( $_GET['user_id'] ) );
 		}
 
-		if ( current_user_can( 'edit_user' ) ) {
+		if ( $wp_user_id == $target_user_id || current_user_can( 'edit_user' ) ) {
 			if ( 0 == $wp_user_id ) {
 				// No valid session found, or current user is not an administrator.
 				$this->logger->log( 'No current user', 'unlink_hello' );
