@@ -202,6 +202,7 @@ class Hello_Login {
 	 */
 	public function hello_login_user_profile_self( $profileuser ) {
 		$link_url = create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_edit_user_link( $profileuser->ID ) ) );
+		$update_email_url = create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_edit_user_link( $profileuser->ID ) ), 'update_email' );
 		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
 		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink' ), 'unlink' . $profileuser->ID );
 		?>
@@ -217,6 +218,17 @@ class Hello_Login {
 					<?php } ?>
 				</td>
 			</tr>
+			<?php if ( ! empty( $hello_user_id ) ) { ?>
+			<tr id="hello-update-email">
+				<th>Email</th>
+				<td>
+					<div id="hello-email"><?php print esc_html( $profileuser->user_email ); ?></div>
+					<div>
+						<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Update Email with Hellō" onclick="parent.location='<?php print esc_js( $update_email_url ); ?>'"></button>
+					</div>
+				</td>
+			</tr>
+			<?php } ?>
 		</table>
 		<?php
 	}

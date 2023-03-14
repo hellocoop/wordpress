@@ -27,8 +27,9 @@ add_action( 'admin_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles' );
  * Create the full URL of the auth request start endpoint. Redirecting to this URL will start the sign-in process.
  *
  * @param string $redirect_to_path the path where to redirect after sign in.
+ * @param string $scope_set The type of interaction for this auth request. Could be 'auth' (default) or 'update_email').
  * @return string
  */
-function create_auth_request_start_url( string $redirect_to_path ): string {
-	return site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( $redirect_to_path ) . '&_cc=' . microtime( true ) );
+function create_auth_request_start_url( string $redirect_to_path, string $scope_set = 'auth' ): string {
+	return site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( $redirect_to_path ) . '&scope_set=' . rawurlencode( $scope_set ) . '&_cc=' . microtime( true ) );
 }

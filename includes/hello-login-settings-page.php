@@ -272,7 +272,7 @@ class Hello_Login_Settings_Page {
 		$site_name = get_bloginfo( 'name' );
 		?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php esc_html_e( "Quickstart has successfully registered your site \"$site_name\" at Hellō", 'hello-login' ); ?></p>
+			<p><?php esc_html( "Quickstart has successfully registered your site \"$site_name\" at Hellō", 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
@@ -324,7 +324,7 @@ class Hello_Login_Settings_Page {
 	public function admin_notice_unlink_success() {
 		?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php esc_html_e( "This account has been unlinked with Hellō", 'hello-login' ); ?></p>
+			<p><?php esc_html_e( 'This account has been unlinked with Hellō', 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
@@ -363,7 +363,7 @@ class Hello_Login_Settings_Page {
 	public function admin_notice_link_success() {
 		?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php esc_html_e( "This account has been linked with Hellō", 'hello-login' ); ?></p>
+			<p><?php esc_html_e( 'This account has been linked with Hellō', 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}

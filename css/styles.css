@@ -1,3 +1,7 @@
 #respond .hello-container {
 	margin-top: 1em;
 }
+
+#hello-update-email #hello-email {
+	margin-bottom: 1em;
+}

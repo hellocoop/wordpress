@@ -177,10 +177,15 @@ class Hello_Login_Client_Wrapper {
 
 			$redirect_to_path = '/' . ltrim( $redirect_to_path, '/' );
 			$redirect_to = rtrim( home_url(), '/' ) . $redirect_to_path;
-			$atts = array(
-				'redirect_to' => $redirect_to,
-			);
+			$atts['redirect_to'] = $redirect_to;
 		}
+
+		$scope_set = 'auth';
+		if ( isset( $_GET['scope_set'] ) ) {
+			$scope_set = sanitize_text_field( wp_unslash( $_GET['scope_set'] ) );
+		}
+
+		$atts['scope_set'] = $scope_set;
 
 		nocache_headers();
 
@@ -278,11 +283,19 @@ class Hello_Login_Client_Wrapper {
 	 * @return string
 	 */
 	public function get_authentication_url( array $atts = array() ): string {
+		$scope_set = $atts['scope_set'] ?? 'auth';
+		switch ( $scope_set ) {
+			case 'update_email':
+				$scope = 'opneid profile_update email';
+				break;
+			default:
+				$scope = Hello_Login_Util::add_default_scopes( $this->settings->scope );
+		}
 
 		$atts = shortcode_atts(
 			array(
 				'endpoint_login' => $this->settings->endpoint_login,
-				'scope' => Hello_Login_Util::add_default_scopes( $this->settings->scope ),
+				'scope' => $scope,
 				'client_id' => $this->settings->client_id,
 				'redirect_uri' => $this->client->get_redirect_uri(),
 				'redirect_to' => $this->get_redirect_to(),
