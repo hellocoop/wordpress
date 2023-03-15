@@ -88,6 +88,7 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 * Improvement: added "Update Email with Hellō" functionality
 * Improvement: internal restructuring for better testability and added basic unit tests
+* Improvement: PHP 7.4 is the new minimum required version
 
 = 1.2.1 =
 
