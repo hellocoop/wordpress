@@ -1,5 +1,10 @@
 # Hellō Login Changelog
 
+## 1.3.0
+
+* Improvement: added "Update Email with Hellō" functionality
+* Improvement: internal restructuring for better testability and added basic unit tests
+
 ## 1.2.1
 
 * Fix: fixed parsing of empty scope
