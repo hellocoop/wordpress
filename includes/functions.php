@@ -50,3 +50,51 @@ add_action( 'admin_enqueue_scripts', 'hello_login_enqueue_edit_profile_styles' )
 function create_auth_request_start_url( string $redirect_to_path, string $scope_set = 'auth' ): string {
 	return site_url( '?hello-login=start&redirect_to_path=' . rawurlencode( $redirect_to_path ) . '&scope_set=' . rawurlencode( $scope_set ) . '&_cc=' . microtime( true ) );
 }
+
+/**
+ * Check if the current user (if any) is linked to Hellō.
+ *
+ * @return bool
+ */
+function hello_login_is_user_linked(): bool {
+	if ( is_user_logged_in() ) {
+		$hello_user_id = get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true );
+
+		return ! empty( $hello_user_id );
+	}
+
+	return false;
+}
+
+add_filter( 'body_class', 'hello_login_body_class', 999 );
+add_filter( 'admin_body_class', 'hello_login_admin_body_class', 999 );
+
+/**
+ * Add Hellō specific CSS classes to the body tag.
+ *
+ * @param array $classes List of classes to add to.
+ *
+ * @return array
+ */
+function hello_login_body_class( array $classes ): array {
+	if ( hello_login_is_user_linked() ) {
+		$classes[] = 'hello-login-linked';
+	}
+
+	return $classes;
+}
+
+/**
+ * Add Hellō specific CSS classes to the body tag of the admin interface.
+ *
+ * @param string $classes Space separated list of classes to add to.
+ *
+ * @return array
+ */
+function hello_login_admin_body_class( string $classes ): string {
+	if ( hello_login_is_user_linked() ) {
+		$classes .= ' hello-login-linked';
+	}
+
+	return $classes;
+}
