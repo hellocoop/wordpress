@@ -269,10 +269,9 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	public function admin_notice_quickstart_success() {
-		$site_name = get_bloginfo( 'name' );
 		?>
 		<div class="notice notice-success is-dismissible">
-			<p><?php esc_html( "Quickstart has successfully registered your site \"$site_name\" at Hellō", 'hello-login' ); ?></p>
+			<p><?php esc_html_e( 'Quickstart has successfully registered your site at Hellō', 'hello-login' ); ?></p>
 		</div>
 		<?php
 	}
