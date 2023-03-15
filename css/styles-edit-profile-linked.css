@@ -1,7 +1,3 @@
-input#email {
-	pointer-events: none;
-}
-
-#email-description {
+body.profile-php tr.user-email-wrap {
 	display: none;
 }

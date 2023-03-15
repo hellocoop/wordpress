@@ -234,7 +234,7 @@ class Hello_Login {
 	}
 
 	/**
-	 * Show Hellō account linking controls on the user's own profile page.
+	 * Show Hellō account linking controls on a user's profile page when edited by an admin.
 	 *
 	 * @param WP_User $profileuser The user whose profile is being edited.
 	 * @return void
