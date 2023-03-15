@@ -667,6 +667,8 @@ class Hello_Login_Client_Wrapper {
 
 				$this->save_extra_claims( $user->ID, $user_claim );
 
+				$this->update_user_claims( $user, $user_claim );
+
 				$message_id = 'link_success';
 			} else {
 				// No current user session and no user found based on 'sub'.
@@ -680,6 +682,8 @@ class Hello_Login_Client_Wrapper {
 					}
 
 					$this->save_extra_claims( $user->ID, $user_claim );
+
+					$this->update_user_claims( $user, $user_claim );
 				} else {
 					$this->error_redirect( new WP_Error( 'identity-not-map-existing-user', __( 'User identity is not linked to an existing WordPress user.', 'hello-login' ), $user_claim ) );
 				}
@@ -696,7 +700,7 @@ class Hello_Login_Client_Wrapper {
 
 			$this->save_extra_claims( $user->ID, $user_claim );
 
-			$this->update_user_claims( $user->ID, $user_claim );
+			$this->update_user_claims( $user, $user_claim );
 		}
 
 		// Validate the found / created user.
@@ -1347,12 +1351,14 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Update user claims as user metadata.
 	 *
-	 * @param int   $uid The WordPress User ID.
-	 * @param array $user_claim The user claim.
+	 * @param WP_User $user The WordPress User.
+	 * @param array   $user_claim The user claim.
 	 *
 	 * @return void
 	 */
-	public function update_user_claims( int $uid, array $user_claim ) {
+	public function update_user_claims( WP_User $user, array $user_claim ) {
+		$uid = $user->ID;
+
 		if ( isset( $user_claim['given_name'] ) && empty( get_user_meta( $uid, 'first_name', true ) ) ) {
 			if ( update_user_meta( $uid, 'first_name', $user_claim['given_name'], '' ) ) {
 				$this->logger->log( 'User first name saved: ' . $user_claim['given_name'], 'user-claims' );
@@ -1366,6 +1372,23 @@ class Hello_Login_Client_Wrapper {
 				$this->logger->log( 'User last name saved: ' . $user_claim['family_name'], 'user-claims' );
 			} else {
 				$this->logger->log( 'Failed saving user last name.', 'user-claims' );
+			}
+		}
+
+		if ( isset( $user_claim['email'] ) && $user_claim['email'] != $user->user_email ) {
+			$res = wp_update_user(
+				array(
+					'ID' => $uid,
+					'user_email' => $user_claim['email'],
+				)
+			);
+
+			if ( is_wp_error( $res ) ) {
+				$this->logger->log( $res );
+				$this->logger->log( "Email update failed for user $uid to email {$user_claim['email']}", 'user-claims' );
+			} else {
+				$this->logger->log( "User email updated from {$user->user_email} to {$user_claim['email']}.", 'user-claims' );
+				$user->user_email = $user_claim['email'];
 			}
 		}
 	}
