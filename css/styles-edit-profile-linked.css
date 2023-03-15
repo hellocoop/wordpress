@@ -1,0 +1,7 @@
+input#email {
+	pointer-events: none;
+}
+
+#email-description {
+	display: none;
+}

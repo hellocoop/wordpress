@@ -24,6 +24,23 @@ add_action( 'login_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles' );
 add_action( 'admin_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles' );
 
 /**
+ * Enqueue Hellō specific CSS for profile editing page.
+ *
+ * @return void
+ */
+function hello_login_enqueue_edit_profile_styles(): void {
+	if ( is_user_logged_in() ) {
+		$hello_user_id = get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true );
+
+		if ( ! empty( $hello_user_id ) ) {
+			wp_enqueue_style( 'hello-login-edit-profile', plugin_dir_url( __DIR__ ) . 'css/styles-edit-profile-linked.css', array(), Hello_Login::VERSION, 'all' );
+		}
+	}
+}
+
+add_action( 'admin_enqueue_scripts', 'hello_login_enqueue_edit_profile_styles' );
+
+/**
  * Create the full URL of the auth request start endpoint. Redirecting to this URL will start the sign-in process.
  *
  * @param string $redirect_to_path the path where to redirect after sign in.
