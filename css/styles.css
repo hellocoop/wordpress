@@ -5,3 +5,7 @@
 #hello-update-email #hello-email {
 	margin-bottom: 1em;
 }
+
+body.profile-php.hello-login-linked tr.user-email-wrap {
+	display: none;
+}
