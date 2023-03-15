@@ -286,7 +286,7 @@ class Hello_Login_Client_Wrapper {
 		$scope_set = $atts['scope_set'] ?? 'auth';
 		switch ( $scope_set ) {
 			case 'update_email':
-				$scope = 'opneid profile_update email';
+				$scope = 'openid profile_update email';
 				break;
 			default:
 				$scope = Hello_Login_Util::add_default_scopes( $this->settings->scope );
