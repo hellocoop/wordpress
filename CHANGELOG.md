@@ -1,5 +1,9 @@
 # Hellō Login Changelog
 
+## 1.4.0
+
+* Improvement: added support for provider hint
+
 ## 1.3.0
 
 * Improvement: added "Update Email with Hellō" functionality
