@@ -419,7 +419,7 @@ class Hello_Login_Settings_Page {
 			),
 			'provider_hint' => array(
 				'title'       => __( 'Provider Hint', 'hello-login' ),
-				'description' => __( 'Change which providers are recommended to better align with your users\' preferences.<br><strong>Example:</strong> <code>wordpress apple--</code> will promote Wordpress.com to be recommended, and demote Apple.<br>See <a href="https://www.hello.dev/documentation/provider-hint.html" target="_blank">https://www.hello.dev/documentation/provider-hint.html</a> for details.', 'hello-login' ),
+				'description' => __( 'Change which providers are recommended to better align with your users\' preferences.<br><strong>Example:</strong> <code>wordpress email--</code> will promote Wordpress.com to be recommended, and demote email.<br>See <a href="https://www.hello.dev/documentation/provider-hint.html" target="_blank">https://www.hello.dev/documentation/provider-hint.html</a> for details.', 'hello-login' ),
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
