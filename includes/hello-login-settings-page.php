@@ -417,6 +417,12 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
+			'provider_hint' => array(
+				'title'       => __( 'Provider Hint', 'hello-login' ),
+				'description' => __( 'Change which providers are recommended to better align with your users\' preferences.<br><strong>Example:</strong> <code>wordpress apple--</code> will promote Wordpress.com to be recommended, and demote Apple.<br>See <a href="https://www.hello.dev/documentation/provider-hint.html" target="_blank">https://www.hello.dev/documentation/provider-hint.html</a> for details.', 'hello-login' ),
+				'type'        => 'text',
+				'section'     => 'client_settings',
+			),
 			/*
 			'client_secret'     => array(
 				'title'       => __( 'Client Secret Key', 'hello-login' ),

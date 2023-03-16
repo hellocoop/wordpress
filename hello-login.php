@@ -466,6 +466,7 @@ class Hello_Login {
 				'enable_logging'  => 0,
 				'log_limit'       => 1000,
 				'link_not_now'    => 0,
+				'provider_hint'   => '',
 			)
 		);
 

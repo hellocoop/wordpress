@@ -35,6 +35,7 @@
  * @property string $endpoint_end_session The IDP logout endpoint URL.
  * @property string $acr_values           The Authentication contract as defined on the IDP.
  * @property bool   $enable_pkce          The flag to enable/disable PKCE support.
+ * @property string provider_hint         The provider hint.
  *
  * Non-standard Settings:
  *

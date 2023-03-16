@@ -300,6 +300,7 @@ class Hello_Login_Client_Wrapper {
 				'redirect_uri' => $this->client->get_redirect_uri(),
 				'redirect_to' => $this->get_redirect_to(),
 				'acr_values' => $this->settings->acr_values,
+				'provider_hint' => $this->settings->provider_hint,
 			),
 			$atts,
 			'hello_login_auth_url'
@@ -327,6 +328,10 @@ class Hello_Login_Client_Wrapper {
 			}
 		}
 
+		if ( ! empty( $atts['provider_hint'] ) ) {
+			$url_format .= '&provider_hint=%10$s';
+		}
+
 		$url = sprintf(
 			$url_format,
 			$atts['endpoint_login'],
@@ -337,7 +342,8 @@ class Hello_Login_Client_Wrapper {
 			rawurlencode( $atts['redirect_uri'] ),
 			rawurlencode( $atts['acr_values'] ),
 			rawurlencode( $pkce_data['code_challenge'] ?? '' ),
-			rawurlencode( $pkce_data['code_challenge_method'] ?? '' )
+			rawurlencode( $pkce_data['code_challenge_method'] ?? '' ),
+			rawurlencode( $atts['provider_hint'] ?? '' )
 		);
 
 		$this->logger->log( apply_filters( 'hello-login-auth-url', $url ), 'make_authentication_url' );
