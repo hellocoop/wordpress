@@ -289,6 +289,25 @@ class Hello_Login {
 	}
 
 	/**
+	 * Append the Hellō Login signature to the user-agent string when the target URL is a Hellō API endpoint.
+	 *
+	 * @param string $user_agent The default WordPress user-agent string.
+	 * @param string $url The target URL.
+	 *
+	 * @return string The augmented user-agent string.
+	 */
+	public function user_agent_hook( string $user_agent, string $url ): string {
+		$target_host = parse_url( $url, PHP_URL_HOST );
+		$token_endpoint_host = parse_url( $this->settings->endpoint_token, PHP_URL_HOST );
+
+		if ( $target_host == $token_endpoint_host ) {
+			$user_agent .= ';HelloLogin/' . self::VERSION;
+		}
+
+		return $user_agent;
+	}
+
+	/**
 	 * Handle plugin upgrades
 	 *
 	 * @return void
@@ -481,6 +500,9 @@ class Hello_Login {
 		add_filter( 'the_content_feed', array( $plugin, 'enforce_privacy_feeds' ), 999 );
 		add_filter( 'the_excerpt_rss', array( $plugin, 'enforce_privacy_feeds' ), 999 );
 		add_filter( 'comment_text_rss', array( $plugin, 'enforce_privacy_feeds' ), 999 );
+
+		// User-Agent hook.
+		add_filter( 'http_headers_useragent', array( $plugin, 'user_agent_hook' ), 0, 2 );
 	}
 
 	/**
