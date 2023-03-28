@@ -9,7 +9,7 @@
 	>
 	<testsuites>
 		<testsuite name="Includes">
-			<directory suffix="_test.php">./tests/phpunit/includes/</directory>
+			<directory suffix="_test.php">./tests/phpunit/</directory>
 		</testsuite>
 	</testsuites>
 	<filter>
