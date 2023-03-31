@@ -1,5 +1,9 @@
 # Hellō Login Changelog
 
+## 1.4.1
+
+* Improvement: WordPress 6.2 support
+
 ## 1.4.0
 
 * Improvement: added support for provider hint
