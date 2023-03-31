@@ -30,7 +30,6 @@
 		"@wordpress/scripts": "^26.1.0",
 		"check-node-version": "~4.1.0",
 		"grunt": "1.6.1",
-		"grunt-checkbranch": "^1.0.4",
 		"grunt-checktextdomain": "^1.0.1",
 		"grunt-cli": "1.4.3",
 		"grunt-contrib-clean": "^2.0.0",

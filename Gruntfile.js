@@ -213,7 +213,7 @@ module.exports = function (grunt) {
 	grunt.registerTask('readme', ['wp_readme_to_markdown']);
 	grunt.registerTask('test', ['checktextdomain', 'phpcs']);
 	grunt.registerTask('build', ['gitinfo', 'test', 'i18n', 'readme']);
-	grunt.registerTask('release', ['checkbranch:HEAD', 'checkrepo', 'gitinfo', 'checktextdomain', 'clean', 'copy']);
+	grunt.registerTask('release', ['checkrepo', 'gitinfo', 'checktextdomain', 'clean', 'copy']);
 
 };
 
