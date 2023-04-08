@@ -121,7 +121,7 @@ class Hello_Login_Settings_Page {
 		// Build and escape the URL.
 		$url = admin_url( '/options-general.php?page=hello-login-settings' );
 		// Create the link.
-		$settings_link = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Settings' ) );
+		$settings_link = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Settings', 'hello-login' ) );
 		// Adds the link to the beginning of the array.
 		array_unshift( $links, $settings_link );
 		return $links;
