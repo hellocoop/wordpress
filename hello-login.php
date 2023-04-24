@@ -77,7 +77,7 @@ class Hello_Login {
 	 *
 	 * @var Hello_Login
 	 */
-	protected static $_instance = null;
+	protected static Hello_Login $_instance;
 
 	/**
 	 * Plugin version.
@@ -105,28 +105,21 @@ class Hello_Login {
 	 *
 	 * @var Hello_Login_Option_Settings
 	 */
-	private $settings;
+	private Hello_Login_Option_Settings $settings;
 
 	/**
 	 * Plugin logs.
 	 *
 	 * @var Hello_Login_Option_Logger
 	 */
-	private $logger;
-
-	/**
-	 * Hellō Login client
-	 *
-	 * @var Hello_Login_Client
-	 */
-	private $client;
+	private Hello_Login_Option_Logger $logger;
 
 	/**
 	 * Client wrapper.
 	 *
 	 * @var Hello_Login_Client_Wrapper
 	 */
-	public $client_wrapper;
+	public Hello_Login_Client_Wrapper $client_wrapper;
 
 	/**
 	 * Setup the plugin
@@ -153,10 +146,10 @@ class Hello_Login {
 
 		$state_time_limit = 600;
 		if ( $this->settings->state_time_limit ) {
-			$state_time_limit = intval( $this->settings->state_time_limit );
+			$state_time_limit = $this->settings->state_time_limit;
 		}
 
-		$this->client = new Hello_Login_Client(
+		$client = new Hello_Login_Client(
 			$this->settings->client_id,
 			Hello_Login_Util::add_default_scopes( $this->settings->scope ),
 			$this->settings->endpoint_login,
@@ -168,7 +161,7 @@ class Hello_Login {
 			$this->logger
 		);
 
-		$this->client_wrapper = Hello_Login_Client_Wrapper::register( $this->client, $this->settings, $this->logger );
+		$this->client_wrapper = Hello_Login_Client_Wrapper::register( $client, $this->settings, $this->logger );
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			return;
 		}
@@ -403,7 +396,7 @@ class Hello_Login {
 	 *
 	 * @return void
 	 */
-	public static function autoload( $class ) {
+	public static function autoload( string $class ) {
 		$prefix = 'Hello_Login_';
 
 		if ( stripos( $class, $prefix ) !== 0 ) {
@@ -463,12 +456,12 @@ class Hello_Login {
 				'identify_with_username' => false,
 
 				// Plugin settings.
-				'enforce_privacy' => defined( 'OIDC_ENFORCE_PRIVACY' ) ? intval( OIDC_ENFORCE_PRIVACY ) : 0,
+				'enforce_privacy' => defined( 'OIDC_ENFORCE_PRIVACY' ) ? OIDC_ENFORCE_PRIVACY : 0,
 				'token_refresh_enable' => 0,
-				'link_existing_users' => defined( 'OIDC_LINK_EXISTING_USERS' ) ? intval( OIDC_LINK_EXISTING_USERS ) : 1,
-				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? intval( OIDC_CREATE_IF_DOES_NOT_EXIST ) : 1,
-				'redirect_user_back' => defined( 'OIDC_REDIRECT_USER_BACK' ) ? intval( OIDC_REDIRECT_USER_BACK ) : 1,
-				'redirect_on_logout' => defined( 'OIDC_REDIRECT_ON_LOGOUT' ) ? intval( OIDC_REDIRECT_ON_LOGOUT ) : 1,
+				'link_existing_users' => defined( 'OIDC_LINK_EXISTING_USERS' ) ? OIDC_LINK_EXISTING_USERS : 1,
+				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? OIDC_CREATE_IF_DOES_NOT_EXIST : 1,
+				'redirect_user_back' => defined( 'OIDC_REDIRECT_USER_BACK' ) ? OIDC_REDIRECT_USER_BACK : 1,
+				'redirect_on_logout' => defined( 'OIDC_REDIRECT_ON_LOGOUT' ) ? OIDC_REDIRECT_ON_LOGOUT : 1,
 				'enable_logging'  => 0,
 				'log_limit'       => 1000,
 				'link_not_now'    => 0,
@@ -497,7 +490,7 @@ class Hello_Login {
 	 *
 	 * @return Hello_Login
 	 */
-	public static function instance() {
+	public static function instance(): Hello_Login {
 		if ( null === self::$_instance ) {
 			self::bootstrap();
 		}

@@ -24,21 +24,21 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @var Hello_Login_Option_Settings
 	 */
-	private $settings;
+	private Hello_Login_Option_Settings $settings;
 
 	/**
 	 * Instance of the client wrapper.
 	 *
 	 * @var Hello_Login_Client_Wrapper
 	 */
-	private $client_wrapper;
+	private Hello_Login_Client_Wrapper $client_wrapper;
 
 	/**
 	 * Instance of the plugin logger.
 	 *
 	 * @var Hello_Login_Option_Logger
 	 */
-	private $logger;
+	private Hello_Login_Option_Logger $logger;
 
 	/**
 	 * The controlled list of settings & associated defined during
@@ -46,21 +46,21 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @var array
 	 */
-	private $settings_fields = array();
+	private array $settings_fields = array();
 
 	/**
 	 * Options page slug.
 	 *
 	 * @var string
 	 */
-	private $options_page_name = 'hello-login-settings';
+	private string $options_page_name = 'hello-login-settings';
 
 	/**
 	 * Options page settings group name.
 	 *
 	 * @var string
 	 */
-	private $settings_field_group;
+	private string $settings_field_group;
 
 	/**
 	 * Settings page class constructor.
@@ -231,7 +231,7 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	private function add_admin_notices() {
-		if ( isset( $_GET['hello-login-msg'] ) && ! empty( $_GET['hello-login-msg'] ) ) {
+		if ( ! empty( $_GET['hello-login-msg'] ) ) {
 			$message_id = sanitize_text_field( wp_unslash( $_GET['hello-login-msg'] ) );
 
 			switch ( $message_id ) {
@@ -372,7 +372,7 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @return array
 	 */
-	private function get_settings_fields() {
+	private function get_settings_fields(): array {
 
 		/**
 		 * Simple settings fields have:
@@ -635,7 +635,7 @@ class Hello_Login_Settings_Page {
 		$custom_logo_url = '';
 		if ( has_custom_logo() ) {
 			$custom_logo_id = get_theme_mod( 'custom_logo' );
-			$custom_logo_data = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+			$custom_logo_data = wp_get_attachment_image_src( $custom_logo_id, 'full' );
 			$custom_logo_url = $custom_logo_data[0];
 		}
 
@@ -732,10 +732,10 @@ class Hello_Login_Settings_Page {
 		$value = $this->settings->{ $field['key'] };
 
 		$readonly = '';
-		if ( $field['key'] == 'client_id' ) {
+		if ( 'client_id' == $field['key'] ) {
 			$readonly = 'readonly';
 		}
-		if ( $field['key'] == 'redirect_uri' ) {
+		if ( 'redirect_uri' == $field['key'] ) {
 			$readonly = 'readonly';
 			$value = site_url( '?hello-login=callback' );
 		}

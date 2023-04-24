@@ -24,21 +24,21 @@ class Hello_Login_Login_Form {
 	 *
 	 * @var Hello_Login_Option_Logger
 	 */
-	private $logger;
+	private Hello_Login_Option_Logger $logger;
 
 	/**
 	 * Plugin settings object.
 	 *
 	 * @var Hello_Login_Option_Settings
 	 */
-	private $settings;
+	private Hello_Login_Option_Settings $settings;
 
 	/**
 	 * Plugin client wrapper instance.
 	 *
 	 * @var Hello_Login_Client_Wrapper
 	 */
-	private $client_wrapper;
+	private Hello_Login_Client_Wrapper $client_wrapper;
 
 	/**
 	 * The class constructor.
@@ -62,7 +62,7 @@ class Hello_Login_Login_Form {
 	 *
 	 * @return void
 	 */
-	public static function register( $logger, $settings, $client_wrapper ) {
+	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Client_Wrapper $client_wrapper ) {
 		$login_form = new self( $logger, $settings, $client_wrapper );
 
 		$on_logged_out = isset( $_GET['loggedout'] ) && 'true' == $_GET['loggedout'];

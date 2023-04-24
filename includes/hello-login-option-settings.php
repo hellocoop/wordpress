@@ -64,28 +64,28 @@ class Hello_Login_Option_Settings {
 	 *
 	 * @var string
 	 */
-	private $option_name;
+	private string $option_name;
 
 	/**
 	 * Stored option values array.
 	 *
-	 * @var array<mixed>
+	 * @var array
 	 */
-	private $values;
+	private array $values;
 
 	/**
 	 * Default plugin settings values.
 	 *
-	 * @var array<mixed>
+	 * @var array
 	 */
-	private $default_settings;
+	private array $default_settings;
 
 	/**
 	 * List of settings that can be defined by environment variables.
 	 *
 	 * @var array<string,string>
 	 */
-	private $environment_settings = array(
+	private array $environment_settings = array(
 		'client_id'                 => 'OIDC_CLIENT_ID',
 		'endpoint_end_session'      => 'OIDC_ENDPOINT_LOGOUT_URL',
 		'endpoint_login'            => 'OIDC_ENDPOINT_LOGIN_URL',
@@ -140,6 +140,8 @@ class Hello_Login_Option_Settings {
 		if ( isset( $this->values[ $key ] ) ) {
 			return $this->values[ $key ];
 		}
+
+		return null;
 	}
 
 	/**

@@ -26,7 +26,7 @@ class Hello_Login_Client {
 	 *
 	 * @var string
 	 */
-	private $client_id;
+	private string $client_id;
 
 	/**
 	 * The OIDC/oAuth scopes.
@@ -35,7 +35,7 @@ class Hello_Login_Client {
 	 *
 	 * @var string
 	 */
-	private $scope;
+	private string $scope;
 
 	/**
 	 * The OIDC/oAuth authorization endpoint URL.
@@ -44,7 +44,7 @@ class Hello_Login_Client {
 	 *
 	 * @var string
 	 */
-	private $endpoint_login;
+	private string $endpoint_login;
 
 	/**
 	 * The OIDC/oAuth User Information endpoint URL.
@@ -53,7 +53,7 @@ class Hello_Login_Client {
 	 *
 	 * @var string
 	 */
-	private $endpoint_userinfo;
+	private string $endpoint_userinfo;
 
 	/**
 	 * The OIDC/oAuth token validation endpoint URL.
@@ -62,7 +62,7 @@ class Hello_Login_Client {
 	 *
 	 * @var string
 	 */
-	private $endpoint_token;
+	private string $endpoint_token;
 
 	/**
 	 * The login flow "ajax" endpoint URI.
@@ -71,7 +71,7 @@ class Hello_Login_Client {
 	 *
 	 * @var string
 	 */
-	private $redirect_uri;
+	private string $redirect_uri;
 
 	/**
 	 * The specifically requested authentication contract at the IDP
@@ -80,7 +80,7 @@ class Hello_Login_Client {
 	 *
 	 * @var string
 	 */
-	private $acr_values;
+	private string $acr_values;
 
 	/**
 	 * The state time limit. States are only valid for 10 minutes.
@@ -89,14 +89,14 @@ class Hello_Login_Client {
 	 *
 	 * @var int
 	 */
-	private $state_time_limit = 600;
+	private int $state_time_limit = 600;
 
 	/**
 	 * The logger object instance.
 	 *
 	 * @var Hello_Login_Option_Logger
 	 */
-	private $logger;
+	private Hello_Login_Option_Logger $logger;
 
 	/**
 	 * Client constructor.
@@ -128,17 +128,8 @@ class Hello_Login_Client {
 	 *
 	 * @return string
 	 */
-	public function get_redirect_uri() {
+	public function get_redirect_uri(): string {
 		return $this->redirect_uri;
-	}
-
-	/**
-	 * Provide the configured IDP endpoint login URL.
-	 *
-	 * @return string
-	 */
-	public function get_endpoint_login_url() {
-		return $this->endpoint_login;
 	}
 
 	/**

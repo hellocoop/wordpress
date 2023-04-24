@@ -72,7 +72,7 @@ function hello_login_body_class( array $classes ): array {
  *
  * @param string $classes Space separated list of classes to add to.
  *
- * @return array
+ * @return string
  */
 function hello_login_admin_body_class( string $classes ): string {
 	if ( hello_login_is_user_linked() ) {

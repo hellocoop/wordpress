@@ -24,35 +24,35 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @var string
 	 */
-	private $option_name;
+	private string $option_name;
 
 	/**
 	 * The default message type.
 	 *
 	 * @var string
 	 */
-	private $default_message_type;
+	private string $default_message_type;
 
 	/**
 	 * The number of items to keep in the log.
 	 *
 	 * @var int
 	 */
-	private $log_limit;
+	private int $log_limit;
 
 	/**
 	 * Whether logging is enabled.
 	 *
 	 * @var bool
 	 */
-	private $logging_enabled;
+	private bool $logging_enabled;
 
 	/**
 	 * Internal cache of logs.
 	 *
 	 * @var array
 	 */
-	private $logs;
+	private array $logs;
 
 	/**
 	 * Set up the logger according to the needs of the instance.
@@ -65,8 +65,8 @@ class Hello_Login_Option_Logger {
 	public function __construct( string $option_name, string $default_message_type = 'none', bool $logging_enabled = true, int $log_limit = 1000 ) {
 		$this->option_name = $option_name;
 		$this->default_message_type = $default_message_type;
-		$this->logging_enabled = boolval( $logging_enabled );
-		$this->log_limit = intval( $log_limit );
+		$this->logging_enabled = $logging_enabled;
+		$this->log_limit = $log_limit;
 	}
 
 	/**
@@ -125,7 +125,7 @@ class Hello_Login_Option_Logger {
 	 *
 	 * @return bool
 	 */
-	public function log( $data, $type = null ) {
+	public function log( $data, $type = null ): bool {
 		if ( boolval( $this->logging_enabled ) ) {
 			$logs = $this->get_logs();
 			$logs[] = $this->make_message( $data, $type );

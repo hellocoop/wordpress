@@ -26,28 +26,28 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @var Hello_Login_Client
 	 */
-	private $client;
+	private Hello_Login_Client $client;
 
 	/**
 	 * The settings object instance.
 	 *
 	 * @var Hello_Login_Option_Settings
 	 */
-	private $settings;
+	private Hello_Login_Option_Settings $settings;
 
 	/**
 	 * The logger object instance.
 	 *
 	 * @var Hello_Login_Option_Logger
 	 */
-	private $logger;
+	private Hello_Login_Option_Logger $logger;
 
 	/**
 	 * The token refresh info cookie key.
 	 *
 	 * @var string
 	 */
-	private $cookie_token_refresh_key = 'hello-login-refresh';
+	private string $cookie_token_refresh_key = 'hello-login-refresh';
 
 	/**
 	 * The user redirect cookie key.
@@ -56,7 +56,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @var string
 	 */
-	public $cookie_redirect_key = 'hello-login-redirect';
+	public string $cookie_redirect_key = 'hello-login-redirect';
 
 	/**
 	 * The return error object.
