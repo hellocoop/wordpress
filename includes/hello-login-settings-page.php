@@ -384,19 +384,6 @@ class Hello_Login_Settings_Page {
 		 * - example (optional example will appear beneath description and be wrapped in <code>)
 		 */
 		$fields = array(
-			/*
-			'login_type'        => array(
-				'title'       => __( 'Login Type', 'hello-login' ),
-				'description' => __( 'Select how the client (login form) should provide login options.', 'hello-login' ),
-				'type'        => 'select',
-				'options'     => array(
-					'button' => __( 'OpenID Connect button on login form', 'hello-login' ),
-					'auto'   => __( 'Auto Login - SSO', 'hello-login' ),
-				),
-				'disabled'    => defined( 'OIDC_LOGIN_TYPE' ),
-				'section'     => 'client_settings',
-			),
-			*/
 			'scope'             => array(
 				'title'       => __( 'Scopes', 'hello-login' ),
 				'description' => __( 'Scopes to request in addition to <code>openid email name</code>. See <a href="https://www.hello.dev/documentation/hello-claims.html" target="_blank">https://www.hello.dev/documentation/hello-claims.html</a> for available scopes.', 'hello-login' ),

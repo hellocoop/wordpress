@@ -473,12 +473,6 @@ class Hello_Login_Client_Wrapper {
 		$query = parse_url( $url, PHP_URL_QUERY );
 		$url .= $query ? '&' : '?';
 
-		// Prevent redirect back to the IDP when logging out in auto mode.
-		if ( 'auto' === $this->settings->login_type && strpos( $redirect_url, 'wp-login.php?loggedout=true' ) ) {
-			// By default redirect back to the site home.
-			$redirect_url = home_url();
-		}
-
 		$token_response = $user->get( 'hello-login-last-token-response' );
 		if ( ! $token_response ) {
 			// Happens if non-openid login was used.

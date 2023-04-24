@@ -25,7 +25,6 @@
  *
  * OAuth Client Settings:
  *
- * @property string $login_type           How the client (login form) should provide login options.
  * @property string $client_id            The ID the client will be recognized as when connecting the to Identity provider server.
  * @property string $client_secret        The secret key the IDP server expects from the client.
  * @property string $scope                The list of additional scopes this client should access.
@@ -94,7 +93,6 @@ class Hello_Login_Option_Settings {
 		'endpoint_login'            => 'OIDC_ENDPOINT_LOGIN_URL',
 		'endpoint_token'            => 'OIDC_ENDPOINT_TOKEN_URL',
 		'endpoint_userinfo'         => 'OIDC_ENDPOINT_USERINFO_URL',
-		'login_type'                => 'OIDC_LOGIN_TYPE',
 		'scope'                     => 'OIDC_CLIENT_SCOPE',
 		'create_if_does_not_exist'  => 'OIDC_CREATE_IF_DOES_NOT_EXIST',
 		'enforce_privacy'           => 'OIDC_ENFORCE_PRIVACY',

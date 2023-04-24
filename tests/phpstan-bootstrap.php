@@ -24,7 +24,6 @@ defined( 'OIDC_ENDPOINT_USERINFO_URL' ) || define( 'OIDC_ENDPOINT_USERINFO_URL',
 defined( 'OIDC_ENDPOINT_TOKEN_URL' ) || define( 'OIDC_ENDPOINT_TOKEN_URL', 'https://oidc/oauth2/token' );
 defined( 'OIDC_ENDPOINT_LOGOUT_URL' ) || define( 'OIDC_ENDPOINT_LOGOUT_URL', 'https://oidc/oauth2/logout' );
 defined( 'OIDC_CLIENT_SCOPE' ) || define( 'OIDC_CLIENT_SCOPE', 'email profile openid' );
-defined( 'OIDC_LOGIN_TYPE' ) || define( 'OIDC_LOGIN_TYPE', 'button' );
 defined( 'OIDC_LINK_EXISTING_USERS' ) || define( 'OIDC_LINK_EXISTING_USERS', 0 );
 defined( 'OIDC_ENFORCE_PRIVACY' ) || define( 'OIDC_ENFORCE_PRIVACY', 0 );
 defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) || define( 'OIDC_CREATE_IF_DOES_NOT_EXIST', 1 );
