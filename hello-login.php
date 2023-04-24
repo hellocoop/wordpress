@@ -158,7 +158,6 @@ class Hello_Login {
 
 		$this->client = new Hello_Login_Client(
 			$this->settings->client_id,
-			$this->settings->client_secret,
 			Hello_Login_Util::add_default_scopes( $this->settings->scope ),
 			$this->settings->endpoint_login,
 			$this->settings->endpoint_userinfo,
@@ -456,7 +455,6 @@ class Hello_Login {
 			array(
 				// OAuth client settings.
 				'client_id'            => defined( 'OIDC_CLIENT_ID' ) ? OIDC_CLIENT_ID : '',
-				'client_secret'        => defined( 'OIDC_CLIENT_SECRET' ) ? OIDC_CLIENT_SECRET : '',
 				'scope'                => defined( 'OIDC_CLIENT_SCOPE' ) ? OIDC_CLIENT_SCOPE : '',
 				'endpoint_login'       => defined( 'OIDC_ENDPOINT_LOGIN_URL' ) ? OIDC_ENDPOINT_LOGIN_URL : 'https://wallet.hello.coop/authorize',
 				'endpoint_userinfo'    => defined( 'OIDC_ENDPOINT_USERINFO_URL' ) ? OIDC_ENDPOINT_USERINFO_URL : 'https://wallet.hello.coop/oauth/userinfo',

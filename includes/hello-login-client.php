@@ -29,15 +29,6 @@ class Hello_Login_Client {
 	private $client_id;
 
 	/**
-	 * The OIDC/oAuth client secret.
-	 *
-	 * @see Hello_Login_Option_Settings::client_secret
-	 *
-	 * @var string
-	 */
-	private $client_secret;
-
-	/**
 	 * The OIDC/oAuth scopes.
 	 *
 	 * @see Hello_Login_Option_Settings::scope
@@ -111,7 +102,6 @@ class Hello_Login_Client {
 	 * Client constructor.
 	 *
 	 * @param string                    $client_id         @see Hello_Login_Option_Settings::client_id for description.
-	 * @param string                    $client_secret     @see Hello_Login_Option_Settings::client_secret for description.
 	 * @param string                    $scope             @see Hello_Login_Option_Settings::scope for description.
 	 * @param string                    $endpoint_login    @see Hello_Login_Option_Settings::endpoint_login for description.
 	 * @param string                    $endpoint_userinfo @see Hello_Login_Option_Settings::endpoint_userinfo for description.
@@ -121,9 +111,8 @@ class Hello_Login_Client {
 	 * @param int                       $state_time_limit  @see Hello_Login_Option_Settings::state_time_limit for description.
 	 * @param Hello_Login_Option_Logger $logger            The plugin logging object instance.
 	 */
-	public function __construct( string $client_id, string $client_secret, string $scope, string $endpoint_login, string $endpoint_userinfo, string $endpoint_token, string $redirect_uri, string $acr_values, int $state_time_limit, $logger ) {
+	public function __construct( string $client_id, string $scope, string $endpoint_login, string $endpoint_userinfo, string $endpoint_token, string $redirect_uri, string $acr_values, int $state_time_limit, $logger ) {
 		$this->client_id = $client_id;
-		$this->client_secret = $client_secret;
 		$this->scope = $scope;
 		$this->endpoint_login = $endpoint_login;
 		$this->endpoint_userinfo = $endpoint_userinfo;
@@ -220,7 +209,6 @@ class Hello_Login_Client {
 			'body' => array(
 				'code'          => $code,
 				'client_id'     => $this->client_id,
-				'client_secret' => $this->client_secret,
 				'redirect_uri'  => $this->redirect_uri,
 				'grant_type'    => 'authorization_code',
 				'scope'         => $this->scope,
@@ -258,7 +246,6 @@ class Hello_Login_Client {
 			'body' => array(
 				'refresh_token' => $refresh_token,
 				'client_id'     => $this->client_id,
-				'client_secret' => $this->client_secret,
 				'grant_type'    => 'refresh_token',
 			),
 		);

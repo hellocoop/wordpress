@@ -411,15 +411,6 @@ class Hello_Login_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			/*
-			'client_secret'     => array(
-				'title'       => __( 'Client Secret Key', 'hello-login' ),
-				'description' => __( 'Arbitrary secret key the server expects from this client. Can be anything, but should be very unique.', 'hello-login' ),
-				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_CLIENT_SECRET' ),
-				'section'     => 'client_settings',
-			),
-			*/
-			/*
 			'endpoint_login'    => array(
 				'title'       => __( 'Login Endpoint URL', 'hello-login' ),
 				'description' => __( 'Identify provider authorization endpoint.', 'hello-login' ),

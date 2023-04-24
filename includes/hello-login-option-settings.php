@@ -26,7 +26,6 @@
  * OAuth Client Settings:
  *
  * @property string $client_id            The ID the client will be recognized as when connecting the to Identity provider server.
- * @property string $client_secret        The secret key the IDP server expects from the client.
  * @property string $scope                The list of additional scopes this client should access.
  * @property string $endpoint_login       The IDP authorization endpoint URL.
  * @property string $endpoint_userinfo    The IDP User information endpoint URL.
@@ -88,7 +87,6 @@ class Hello_Login_Option_Settings {
 	 */
 	private $environment_settings = array(
 		'client_id'                 => 'OIDC_CLIENT_ID',
-		'client_secret'             => 'OIDC_CLIENT_SECRET',
 		'endpoint_end_session'      => 'OIDC_ENDPOINT_LOGOUT_URL',
 		'endpoint_login'            => 'OIDC_ENDPOINT_LOGIN_URL',
 		'endpoint_token'            => 'OIDC_ENDPOINT_TOKEN_URL',
