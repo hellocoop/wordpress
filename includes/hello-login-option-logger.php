@@ -126,7 +126,7 @@ class Hello_Login_Option_Logger {
 	 * @return bool
 	 */
 	public function log( $data, $type = null ): bool {
-		if ( boolval( $this->logging_enabled ) ) {
+		if ( $this->logging_enabled ) {
 			$logs = $this->get_logs();
 			$logs[] = $this->make_message( $data, $type );
 			$logs = $this->upkeep_logs( $logs );
@@ -282,8 +282,6 @@ class Hello_Login_Option_Logger {
 			</tbody>
 		</table>
 		<?php
-		$output = ob_get_clean();
-
-		return $output;
+		return ob_get_clean();
 	}
 }

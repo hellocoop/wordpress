@@ -27,13 +27,6 @@ class Hello_Login_Settings_Page {
 	private Hello_Login_Option_Settings $settings;
 
 	/**
-	 * Instance of the client wrapper.
-	 *
-	 * @var Hello_Login_Client_Wrapper
-	 */
-	private Hello_Login_Client_Wrapper $client_wrapper;
-
-	/**
 	 * Instance of the plugin logger.
 	 *
 	 * @var Hello_Login_Option_Logger
@@ -46,7 +39,7 @@ class Hello_Login_Settings_Page {
 	 *
 	 * @var array
 	 */
-	private array $settings_fields = array();
+	private array $settings_fields;
 
 	/**
 	 * Options page slug.
@@ -66,13 +59,11 @@ class Hello_Login_Settings_Page {
 	 * Settings page class constructor.
 	 *
 	 * @param Hello_Login_Option_Settings $settings The plugin settings object.
-	 * @param Hello_Login_Client_Wrapper  $client_wrapper The client wrapper.
 	 * @param Hello_Login_Option_Logger   $logger   The plugin logging class object.
 	 */
-	public function __construct( Hello_Login_Option_Settings $settings, Hello_Login_Client_Wrapper $client_wrapper, Hello_Login_Option_Logger $logger ) {
+	public function __construct( Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
 
 		$this->settings             = $settings;
-		$this->client_wrapper       = $client_wrapper;
 		$this->logger               = $logger;
 		$this->settings_field_group = $this->settings->get_option_name() . '-group';
 
@@ -92,13 +83,12 @@ class Hello_Login_Settings_Page {
 	 * Hook the settings page into WordPress.
 	 *
 	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
-	 * @param Hello_Login_Client_Wrapper  $client_wrapper A client object instance.
 	 * @param Hello_Login_Option_Logger   $logger         A plugin logger object instance.
 	 *
 	 * @return void
 	 */
-	public static function register( Hello_Login_Option_Settings $settings, Hello_Login_Client_Wrapper $client_wrapper, Hello_Login_Option_Logger $logger ) {
-		$settings_page = new self( $settings, $client_wrapper, $logger );
+	public static function register( Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
+		$settings_page = new self( $settings, $logger );
 
 		// Add our options page to the admin menu.
 		add_action( 'admin_menu', array( $settings_page, 'admin_menu' ) );

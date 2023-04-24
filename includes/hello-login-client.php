@@ -89,7 +89,7 @@ class Hello_Login_Client {
 	 *
 	 * @var int
 	 */
-	private int $state_time_limit = 600;
+	private int $state_time_limit;
 
 	/**
 	 * The logger object instance.
@@ -111,7 +111,7 @@ class Hello_Login_Client {
 	 * @param int                       $state_time_limit  @see Hello_Login_Option_Settings::state_time_limit for description.
 	 * @param Hello_Login_Option_Logger $logger            The plugin logging object instance.
 	 */
-	public function __construct( string $client_id, string $scope, string $endpoint_login, string $endpoint_userinfo, string $endpoint_token, string $redirect_uri, string $acr_values, int $state_time_limit, $logger ) {
+	public function __construct( string $client_id, string $scope, string $endpoint_login, string $endpoint_userinfo, string $endpoint_token, string $redirect_uri, string $acr_values, int $state_time_limit, Hello_Login_Option_Logger $logger ) {
 		$this->client_id = $client_id;
 		$this->scope = $scope;
 		$this->endpoint_login = $endpoint_login;
@@ -537,7 +537,7 @@ class Hello_Login_Client {
 	 *
 	 * @return mixed
 	 */
-	public function get_subject_identity( $id_token_claim ) {
+	public function get_subject_identity( array $id_token_claim ) {
 		return $id_token_claim['sub'];
 	}
 

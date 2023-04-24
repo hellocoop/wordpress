@@ -9,8 +9,6 @@
  * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0+
  */
 
-use \WP_Error as WP_Error;
-
 /**
  * Hello_Login_Client_Wrapper class.
  *
@@ -108,7 +106,7 @@ class Hello_Login_Client_Wrapper {
 
 		// Integrated logout.
 		if ( $settings->endpoint_end_session ) {
-			add_filter( 'allowed_redirect_hosts', array( $client_wrapper, 'update_allowed_redirect_hosts' ), 99, 1 );
+			add_filter( 'allowed_redirect_hosts', array( $client_wrapper, 'update_allowed_redirect_hosts' ), 99 );
 			add_filter( 'logout_redirect', array( $client_wrapper, 'get_end_session_logout_redirect_url' ), 99, 3 );
 		}
 
@@ -124,7 +122,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		// Modify authentication-token request to include PKCE code verifier.
-		if ( true === (bool) $settings->enable_pkce ) {
+		if ( $settings->enable_pkce ) {
 			add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 2 );
 		}
 
@@ -321,7 +319,7 @@ class Hello_Login_Client_Wrapper {
 			$url_format .= '&acr_values=%7$s';
 		}
 
-		if ( true === (bool) $this->settings->enable_pkce ) {
+		if ( true === $this->settings->enable_pkce ) {
 			$pkce_data = $this->pkce_code_generator();
 			if ( false !== $pkce_data ) {
 				$url_format .= '&code_challenge=%8$s&code_challenge_method=%9$s';
@@ -509,7 +507,7 @@ class Hello_Login_Client_Wrapper {
 	 */
 	public function alter_request( array $request, string $operation ): array {
 		if ( ! empty( $this->settings->http_request_timeout ) && is_numeric( $this->settings->http_request_timeout ) ) {
-			$request['timeout'] = intval( $this->settings->http_request_timeout );
+			$request['timeout'] = $this->settings->http_request_timeout;
 		}
 
 		if ( $this->settings->no_sslverify ) {
@@ -927,11 +925,10 @@ class Hello_Login_Client_Wrapper {
 			}
 		}
 		$manager->update( $token, $session );
-		return;
 	}
 
 	/**
-	 * Get the user that has meta data matching a
+	 * Get the user that has metadata matching a
 	 *
 	 * @param string $subject_identity The IDP identity of the user.
 	 *
@@ -977,14 +974,14 @@ class Hello_Login_Client_Wrapper {
 		if ( ! empty( $this->settings->identity_key ) && isset( $user_claim[ $this->settings->identity_key ] ) ) {
 			$desired_username = $user_claim[ $this->settings->identity_key ];
 		}
-		if ( empty( $desired_username ) && isset( $user_claim['preferred_username'] ) && ! empty( $user_claim['preferred_username'] ) ) {
+		if ( empty( $desired_username ) && ! empty( $user_claim['preferred_username'] ) ) {
 			$desired_username = $user_claim['preferred_username'];
 		}
-		if ( empty( $desired_username ) && isset( $user_claim['name'] ) && ! empty( $user_claim['name'] ) ) {
+		if ( empty( $desired_username ) && ! empty( $user_claim['name'] ) ) {
 			$desired_username = $user_claim['name'];
 			$desired_username = strtolower( str_replace( ' ', '', $desired_username ) );
 		}
-		if ( empty( $desired_username ) && isset( $user_claim['email'] ) && ! empty( $user_claim['email'] ) ) {
+		if ( empty( $desired_username ) && ! empty( $user_claim['email'] ) ) {
 			$tmp = explode( '@', $user_claim['email'] );
 			$desired_username = $tmp[0];
 		}
@@ -999,7 +996,7 @@ class Hello_Login_Client_Wrapper {
 		// Use WordPress Core to sanitize the IDP username.
 		$sanitized_username = sanitize_user( $desired_username, true );
 		if ( empty( $sanitized_username ) ) {
-			// translators: %1$s is the santitized version of the username from the IDP.
+			// translators: %1$s is the sanitized version of the username from the IDP.
 			return new WP_Error( 'username-sanitization-failed', sprintf( __( 'Username %1$s could not be sanitized.', 'hello-login' ), $desired_username ), $desired_username );
 		}
 
@@ -1303,8 +1300,8 @@ class Hello_Login_Client_Wrapper {
 			'user_email' => $email,
 			'display_name' => $displayname,
 			'nickname' => $nickname,
-			'first_name' => isset( $user_claim['given_name'] ) ? $user_claim['given_name'] : '',
-			'last_name' => isset( $user_claim['family_name'] ) ? $user_claim['family_name'] : '',
+			'first_name' => $user_claim['given_name'] ?? '',
+			'last_name' => $user_claim['family_name'] ?? '',
 		);
 		$user_data = apply_filters( 'hello-login-alter-user-data', $user_data, $user_claim );
 
@@ -1387,21 +1384,21 @@ class Hello_Login_Client_Wrapper {
 				$this->logger->log( $res );
 				$this->logger->log( "Email update failed for user $uid to email {$user_claim['email']}", 'user-claims' );
 			} else {
-				$this->logger->log( "User email updated from {$user->user_email} to {$user_claim['email']}.", 'user-claims' );
+				$this->logger->log( "User email updated from $user->user_email to {$user_claim['email']}.", 'user-claims' );
 				$user->user_email = $user_claim['email'];
 			}
 		}
 	}
 
 	/**
-	 * Update an existing user with OpenID Connect meta data
+	 * Update an existing user with OpenID Connect metadata
 	 *
 	 * @param int    $uid              The WordPress User ID.
 	 * @param string $subject_identity The subject identity from the IDP.
 	 *
 	 * @return WP_Error|WP_User
 	 */
-	public function update_existing_user( $uid, $subject_identity ) {
+	public function update_existing_user( int $uid, string $subject_identity ) {
 		$uid_hello_sub = get_user_meta( $uid, 'hello-login-subject-identity', true );
 		if ( ! empty( $uid_hello_sub ) && $uid_hello_sub !== $subject_identity ) {
 			$link_error = new WP_Error( self::LINK_ERROR_CODE, __( self::LINK_ERROR_MESSAGE, 'hello-login' ) );
@@ -1412,7 +1409,7 @@ class Hello_Login_Client_Wrapper {
 			return $link_error;
 		}
 
-		// Add the OpenID Connect meta data.
+		// Add the OpenID Connect metadata.
 		update_user_meta( $uid, 'hello-login-subject-identity', strval( $subject_identity ) );
 
 		// Allow plugins / themes to take action on user update.
@@ -1432,7 +1429,7 @@ class Hello_Login_Client_Wrapper {
 	private function pkce_code_generator() {
 		try {
 			$verifier_bytes = random_bytes( 64 );
-		} catch ( \Exception $e ) {
+		} catch ( Exception $e ) {
 			$this->logger->log(
 				sprintf( 'Fail to generate PKCE code challenge : %s', $e->getMessage() ),
 				'pkce_code_generator'
