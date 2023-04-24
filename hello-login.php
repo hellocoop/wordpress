@@ -319,16 +319,6 @@ class Hello_Login {
 			// An upgrade is required.
 			self::setup_cron_jobs();
 
-			// @todo move this to another file for upgrade scripts
-			if ( isset( $settings->ep_login ) ) {
-				$settings->endpoint_login = $settings->ep_login;
-				$settings->endpoint_token = $settings->ep_token;
-				$settings->endpoint_userinfo = $settings->ep_userinfo;
-
-				unset( $settings->ep_login, $settings->ep_token, $settings->ep_userinfo );
-				$settings->save();
-			}
-
 			// Update the stored version number.
 			update_option( 'hello-login-plugin-version', self::VERSION );
 		}
