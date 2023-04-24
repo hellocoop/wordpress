@@ -47,15 +47,6 @@ class Hello_Login_Client {
 	private string $endpoint_login;
 
 	/**
-	 * The OIDC/oAuth User Information endpoint URL.
-	 *
-	 * @see Hello_Login_Option_Settings::endpoint_userinfo
-	 *
-	 * @var string
-	 */
-	private string $endpoint_userinfo;
-
-	/**
 	 * The OIDC/oAuth token validation endpoint URL.
 	 *
 	 * @see Hello_Login_Option_Settings::endpoint_token
@@ -104,18 +95,16 @@ class Hello_Login_Client {
 	 * @param string                    $client_id         @see Hello_Login_Option_Settings::client_id for description.
 	 * @param string                    $scope             @see Hello_Login_Option_Settings::scope for description.
 	 * @param string                    $endpoint_login    @see Hello_Login_Option_Settings::endpoint_login for description.
-	 * @param string                    $endpoint_userinfo @see Hello_Login_Option_Settings::endpoint_userinfo for description.
 	 * @param string                    $endpoint_token    @see Hello_Login_Option_Settings::endpoint_token for description.
 	 * @param string                    $redirect_uri      @see Hello_Login_Option_Settings::redirect_uri for description.
 	 * @param string                    $acr_values        @see Hello_Login_Option_Settings::acr_values for description.
 	 * @param int                       $state_time_limit  @see Hello_Login_Option_Settings::state_time_limit for description.
 	 * @param Hello_Login_Option_Logger $logger            The plugin logging object instance.
 	 */
-	public function __construct( string $client_id, string $scope, string $endpoint_login, string $endpoint_userinfo, string $endpoint_token, string $redirect_uri, string $acr_values, int $state_time_limit, Hello_Login_Option_Logger $logger ) {
+	public function __construct( string $client_id, string $scope, string $endpoint_login, string $endpoint_token, string $redirect_uri, string $acr_values, int $state_time_limit, Hello_Login_Option_Logger $logger ) {
 		$this->client_id = $client_id;
 		$this->scope = $scope;
 		$this->endpoint_login = $endpoint_login;
-		$this->endpoint_userinfo = $endpoint_userinfo;
 		$this->endpoint_token = $endpoint_token;
 		$this->redirect_uri = $redirect_uri;
 		$this->acr_values = $acr_values;
@@ -288,48 +277,6 @@ class Hello_Login_Client {
 	}
 
 	/**
-	 * Exchange an access_token for a user_claim from the userinfo endpoint
-	 *
-	 * @param string $access_token The access token supplied from authentication user claim.
-	 *
-	 * @return array|WP_Error
-	 */
-	public function request_userinfo( string $access_token ) {
-		// Allow modifications to the request.
-		$request = apply_filters( 'hello-login-alter-request', array(), 'get-userinfo' );
-
-		/*
-		 * Section 5.3.1 of the spec recommends sending the access token using the authorization header
-		 * a filter may or may not have already added headers - make sure they exist then add the token.
-		 */
-		if ( ! array_key_exists( 'headers', $request ) || ! is_array( $request['headers'] ) ) {
-			$request['headers'] = array();
-		}
-
-		$request['headers']['Authorization'] = 'Bearer ' . $access_token;
-
-		// Add Host header - required for when the openid-connect endpoint is behind a reverse-proxy.
-		$parsed_url = parse_url( $this->endpoint_userinfo );
-		$host = $parsed_url['host'];
-
-		if ( ! empty( $parsed_url['port'] ) ) {
-			$host .= ":{$parsed_url['port']}";
-		}
-
-		$request['headers']['Host'] = $host;
-
-		// Attempt the request including the access token in the query string for backwards compatibility.
-		$this->logger->log( $this->endpoint_userinfo, 'request_userinfo' );
-		$response = wp_remote_post( $this->endpoint_userinfo, $request );
-
-		if ( is_wp_error( $response ) ) {
-			$response->add( 'request_userinfo', __( 'Request for userinfo failed.', 'hello-login' ) );
-		}
-
-		return $response;
-	}
-
-	/**
 	 * Generate a new state, save it as a transient, and return the state hash.
 	 *
 	 * @param string $redirect_to        The redirect URL to be used after IDP authentication.
@@ -473,34 +420,14 @@ class Hello_Login_Client {
 	}
 
 	/**
-	 * Attempt to exchange the access_token for a user_claim.
-	 *
-	 * @param array $token_response The token response.
-	 *
-	 * @return array|WP_Error|null
-	 */
-	public function get_user_claim( array $token_response ) {
-		// Send a userinfo request to get user claim.
-		$user_claim_result = $this->request_userinfo( $token_response['access_token'] );
-
-		// Make sure we didn't get an error, and that the response body exists.
-		if ( is_wp_error( $user_claim_result ) || ! isset( $user_claim_result['body'] ) ) {
-			return new WP_Error( 'bad-claim', __( 'Bad user claim.', 'hello-login' ), $user_claim_result );
-		}
-
-		return json_decode( $user_claim_result['body'], true );
-	}
-
-	/**
 	 * Make sure the user_claim has all required values, and that the subject
 	 * identity matches of the id_token matches that of the user_claim.
 	 *
 	 * @param array $user_claim     The authenticated user claim.
-	 * @param array $id_token_claim The ID token claim.
 	 *
 	 * @return bool|WP_Error
 	 */
-	public function validate_user_claim( array $user_claim, array $id_token_claim ) {
+	public function validate_user_claim( array $user_claim ) {
 		// Validate the user claim.
 		if ( ! is_array( $user_claim ) ) {
 			return new WP_Error( 'invalid-user-claim', __( 'Invalid user claim.', 'hello-login' ), $user_claim );
@@ -513,11 +440,6 @@ class Hello_Login_Client {
 				$message = $user_claim['error_description'];
 			}
 			return new WP_Error( 'invalid-user-claim-' . $user_claim['error'], $message, $user_claim );
-		}
-
-		// Make sure the id_token sub equals the user_claim sub, according to spec.
-		if ( $id_token_claim['sub'] !== $user_claim['sub'] ) {
-			return new WP_Error( 'incorrect-user-claim', __( 'Incorrect user claim.', 'hello-login' ), func_get_args() );
 		}
 
 		// Allow for other plugins to alter the login success.

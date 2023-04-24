@@ -480,21 +480,7 @@ class Hello_Login_Client_Wrapper {
 			$redirect_url = site_url( $redirect_url );
 		}
 
-		$claim = $user->get( 'hello-login-last-id-token-claim' );
-
-		if ( isset( $claim['iss'] ) && 'https://accounts.google.com' == $claim['iss'] ) {
-			/*
-			 * Google revoke endpoint
-			 * 1. expects the *access_token* to be passed as "token"
-			 * 2. does not support redirection (post_logout_redirect_uri)
-			 * So just redirect to regular WP logout URL.
-			 * (we would *not* disconnect the user from any Google service even
-			 * if he was initially disconnected to them)
-			 */
-			return $redirect_url;
-		} else {
-			return $url . sprintf( 'id_token_hint=%s&post_logout_redirect_uri=%s', $token_response['id_token'], urlencode( $redirect_url ) );
-		}
+		return $url . sprintf( 'id_token_hint=%s&post_logout_redirect_uri=%s', $token_response['id_token'], urlencode( $redirect_url ) );
 	}
 
 	/**
@@ -600,35 +586,24 @@ class Hello_Login_Client_Wrapper {
 		 * The access_token must be used to prove access rights to protected
 		 * resources e.g. for the userinfo endpoint
 		 */
-		$id_token_claim = $client->get_id_token_claim( $token_response );
+		$user_claim = $client->get_id_token_claim( $token_response );
 
 		// Allow for other plugins to alter data before validation.
-		$id_token_claim = apply_filters( 'hello-login-modify-id-token-claim-before-validation', $id_token_claim );
-
-		if ( is_wp_error( $id_token_claim ) ) {
-			$this->error_redirect( $id_token_claim );
-		}
-
-		// Validate our id_token has required values.
-		$valid = $client->validate_id_token_claim( $id_token_claim );
-
-		if ( is_wp_error( $valid ) ) {
-			$this->error_redirect( $valid );
-		}
-
-		// If userinfo endpoint is set, exchange the token_response for a user_claim.
-		if ( ! empty( $this->settings->endpoint_userinfo ) && isset( $token_response['access_token'] ) ) {
-			$user_claim = $client->get_user_claim( $token_response );
-		} else {
-			$user_claim = $id_token_claim;
-		}
+		$user_claim = apply_filters( 'hello-login-modify-id-token-claim-before-validation', $user_claim );
 
 		if ( is_wp_error( $user_claim ) ) {
 			$this->error_redirect( $user_claim );
 		}
 
+		// Validate our id_token has required values.
+		$valid = $client->validate_id_token_claim( $user_claim );
+
+		if ( is_wp_error( $valid ) ) {
+			$this->error_redirect( $valid );
+		}
+
 		// Validate our user_claim has required values.
-		$valid = $client->validate_user_claim( $user_claim, $id_token_claim );
+		$valid = $client->validate_user_claim( $user_claim );
 
 		if ( is_wp_error( $valid ) ) {
 			$this->error_redirect( $valid );
@@ -639,7 +614,7 @@ class Hello_Login_Client_Wrapper {
 		 * -
 		 * Request is authenticated and authorized - start user handling
 		 */
-		$subject_identity = $client->get_subject_identity( $id_token_claim );
+		$subject_identity = $client->get_subject_identity( $user_claim );
 		$user = $this->get_user_by_identity( $subject_identity );
 
 		$link_error = new WP_Error( self::LINK_ERROR_CODE, __( self::LINK_ERROR_MESSAGE, 'hello-login' ) );
@@ -709,7 +684,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		// Login the found / created user.
-		$this->login_user( $user, $token_response, $id_token_claim, $user_claim, $subject_identity );
+		$this->login_user( $user, $token_response, $user_claim );
 
 		// Allow plugins / themes to take action once a user is logged in.
 		do_action( 'hello-login-user-logged-in', $user );
@@ -823,35 +798,24 @@ class Hello_Login_Client_Wrapper {
 		 * The access_token must be used to prove access rights to protected
 		 * resources e.g. for the userinfo endpoint
 		 */
-		$id_token_claim = $client->get_id_token_claim( $token_response );
+		$user_claim = $client->get_id_token_claim( $token_response );
 
 		// Allow for other plugins to alter data before validation.
-		$id_token_claim = apply_filters( 'hello-login-modify-id-token-claim-before-validation', $id_token_claim );
-
-		if ( is_wp_error( $id_token_claim ) ) {
-			return $id_token_claim;
-		}
-
-		// Validate our id_token has required values.
-		$valid = $client->validate_id_token_claim( $id_token_claim );
-
-		if ( is_wp_error( $valid ) ) {
-			return $valid;
-		}
-
-		// If userinfo endpoint is set, exchange the token_response for a user_claim.
-		if ( ! empty( $this->settings->endpoint_userinfo ) && isset( $token_response['access_token'] ) ) {
-			$user_claim = $client->get_user_claim( $token_response );
-		} else {
-			$user_claim = $id_token_claim;
-		}
+		$user_claim = apply_filters( 'hello-login-modify-id-token-claim-before-validation', $user_claim );
 
 		if ( is_wp_error( $user_claim ) ) {
 			return $user_claim;
 		}
 
+		// Validate our id_token has required values.
+		$valid = $client->validate_id_token_claim( $user_claim );
+
+		if ( is_wp_error( $valid ) ) {
+			return $valid;
+		}
+
 		// Validate our user_claim has required values.
-		$valid = $client->validate_user_claim( $user_claim, $id_token_claim );
+		$valid = $client->validate_user_claim( $user_claim, $user_claim );
 
 		if ( is_wp_error( $valid ) ) {
 			$this->error_redirect( $valid );
@@ -860,7 +824,6 @@ class Hello_Login_Client_Wrapper {
 
 		// Store the tokens for future reference.
 		update_user_meta( $user->ID, 'hello-login-last-token-response', $token_response );
-		update_user_meta( $user->ID, 'hello-login-last-id-token-claim', $id_token_claim );
 		update_user_meta( $user->ID, 'hello-login-last-user-claim', $user_claim );
 
 		return $user_claim;
@@ -871,16 +834,13 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @param WP_User $user             The user object.
 	 * @param array   $token_response   The token response.
-	 * @param array   $id_token_claim   The ID token claim.
 	 * @param array   $user_claim       The authenticated user claim.
-	 * @param string  $subject_identity The subject identity from the IDP.
 	 *
 	 * @return void
 	 */
-	public function login_user( WP_User $user, array $token_response, array $id_token_claim, array $user_claim, string $subject_identity ) {
+	public function login_user( WP_User $user, array $token_response, array $user_claim ) {
 		// Store the tokens for future reference.
 		update_user_meta( $user->ID, 'hello-login-last-token-response', $token_response );
-		update_user_meta( $user->ID, 'hello-login-last-id-token-claim', $id_token_claim );
 		update_user_meta( $user->ID, 'hello-login-last-user-claim', $user_claim );
 		// Allow plugins / themes to take action using current claims on existing user (e.g. update role).
 		do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
@@ -1137,31 +1097,23 @@ class Hello_Login_Client_Wrapper {
 	/**
 	 * Get a displayname.
 	 *
-	 * @param array $user_claim           The authorized user claim.
-	 * @param bool  $error_on_missing_key Whether to return and error on a missing key.
+	 * @param array $user_claim The authorized user claim.
 	 *
 	 * @return string|null|WP_Error
 	 */
-	private function get_displayname_from_claim( array $user_claim, bool $error_on_missing_key = false ) {
-		if ( ! empty( $this->settings->displayname_format ) ) {
-			return $this->format_string_with_claim( $this->settings->displayname_format, $user_claim, $error_on_missing_key );
-		}
-		return null;
+	private function get_displayname_from_claim( array $user_claim ) {
+		return $this->format_string_with_claim( $this->settings->displayname_format, $user_claim, true );
 	}
 
 	/**
 	 * Get an email.
 	 *
-	 * @param array $user_claim           The authorized user claim.
-	 * @param bool  $error_on_missing_key Whether to return and error on a missing key.
+	 * @param array $user_claim The authorized user claim.
 	 *
 	 * @return string|null|WP_Error
 	 */
-	private function get_email_from_claim( array $user_claim, bool $error_on_missing_key = false ) {
-		if ( ! empty( $this->settings->email_format ) ) {
-			return $this->format_string_with_claim( $this->settings->email_format, $user_claim, $error_on_missing_key );
-		}
-		return null;
+	private function get_email_from_claim( array $user_claim ) {
+		return $this->format_string_with_claim( $this->settings->email_format, $user_claim, true );
 	}
 
 	/**
@@ -1173,90 +1125,28 @@ class Hello_Login_Client_Wrapper {
 	 * @return WP_Error|WP_User
 	 */
 	public function create_new_user( string $subject_identity, array $user_claim ) {
-		// Default username & email to the subject identity.
-		$username       = $subject_identity;
-		$email          = $subject_identity;
-		$nickname       = $subject_identity;
-		$displayname    = $subject_identity;
-		$values_missing = false;
-
-		// Allow claim details to determine username, email, nickname and displayname.
-		$_email = $this->get_email_from_claim( $user_claim, true );
-		if ( is_wp_error( $_email ) || empty( $_email ) ) {
-			$values_missing = true;
-		} else {
-			$email = $_email;
+		$email = $this->get_email_from_claim( $user_claim );
+		if ( is_wp_error( $email ) ) {
+			return $email;
 		}
 
-		$_username = $this->get_username_from_claim( $user_claim );
-		if ( is_wp_error( $_username ) || empty( $_username ) ) {
-			$values_missing = true;
-		} else {
-			$username = $_username;
+		$username = $this->get_username_from_claim( $user_claim );
+		if ( is_wp_error( $username ) ) {
+			return $username;
 		}
 
-		$_nickname = $this->get_nickname_from_claim( $user_claim );
-		if ( empty( $_nickname ) ) {
-			$nickname = $username;
-		} else {
-			$nickname = $_nickname;
-		}
-
-		$_displayname = $this->get_displayname_from_claim( $user_claim, true );
-		if ( is_wp_error( $_displayname ) || empty( $_displayname ) ) {
-			$values_missing = true;
-		} else {
-			$displayname = $_displayname;
-		}
-
-		// Attempt another request for userinfo if some values are missing.
-		if ( $values_missing && isset( $user_claim['access_token'] ) && ! empty( $this->settings->endpoint_userinfo ) ) {
-			$user_claim_result = $this->client->request_userinfo( $user_claim['access_token'] );
-
-			// Make sure we didn't get an error.
-			if ( is_wp_error( $user_claim_result ) ) {
-				return new WP_Error( 'bad-user-claim-result', __( 'Bad user claim result.', 'hello-login' ), $user_claim_result );
-			}
-
-			$user_claim = json_decode( $user_claim_result['body'], true );
-		}
-
-		$_email = $this->get_email_from_claim( $user_claim, true );
-		if ( is_wp_error( $_email ) ) {
-			return $_email;
-		}
-		// Use the email address from the latest userinfo request if not empty.
-		if ( ! empty( $_email ) ) {
-			$email = $_email;
-		}
-
-		$_username = $this->get_username_from_claim( $user_claim );
-		if ( is_wp_error( $_username ) ) {
-			return $_username;
-		}
-		// Use the username from the latest userinfo request if not empty.
-		if ( ! empty( $_username ) ) {
-			$username = $_username;
-		}
-
-		$_nickname = $this->get_nickname_from_claim( $user_claim );
-		// Use the username as the nickname if the userinfo request nickname is empty.
-		if ( empty( $_nickname ) ) {
+		$nickname = $this->get_nickname_from_claim( $user_claim );
+		if ( empty( $nickname ) ) {
 			$nickname = $username;
 		}
 
-		$_displayname = $this->get_displayname_from_claim( $user_claim, true );
-		if ( is_wp_error( $_displayname ) ) {
-			return $_displayname;
-		}
-		// Use the nickname as the displayname if the userinfo request displayname is empty.
-		if ( empty( $_displayname ) ) {
-			$displayname = $nickname;
+		$displayname = $this->get_displayname_from_claim( $user_claim );
+		if ( is_wp_error( $displayname ) ) {
+			return $displayname;
 		}
 
 		// Before trying to create the user, first check if a matching user exists.
 		if ( $this->settings->link_existing_users ) {
-			$uid = null;
 			if ( $this->settings->identify_with_username ) {
 				$uid = username_exists( $username );
 			} else {
@@ -1316,7 +1206,7 @@ class Hello_Login_Client_Wrapper {
 		// Retrieve our new user.
 		$user = get_user_by( 'id', $uid );
 
-		// Save some meta data about this new user for the future.
+		// Save some metadata about this new user for the future.
 		add_user_meta( $user->ID, 'hello-login-subject-identity', (string) $subject_identity, true );
 
 		// Log the results.

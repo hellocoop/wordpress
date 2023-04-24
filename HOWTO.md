@@ -275,11 +275,10 @@ add_action('hello-login-redirect-user-back', function( $redirect_url, $user ) {
 }, 10, 2); 
 ```
 
-### User Meta Data
+### User Metadata
 
-This plugin stores meta data about the user for both practical and debugging purposes.
+This plugin stores metadata about the user for both practical and debugging purposes.
 
 * `hello-login-subject-identity` - The identity of the user provided by the IDP server.
-* `hello-login-last-id-token-claim` - The user's most recent `id_token` claim, decoded and stored as an array.
 * `hello-login-last-user-claim` - The user's most recent `user_claim`, stored as an array.
 * `hello-login-last-token-response` - The user's most recent `token_response`, stored as an array.

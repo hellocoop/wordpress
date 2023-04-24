@@ -28,7 +28,6 @@
  * @property string $client_id            The ID the client will be recognized as when connecting the to Identity provider server.
  * @property string $scope                The list of additional scopes this client should access.
  * @property string $endpoint_login       The IDP authorization endpoint URL.
- * @property string $endpoint_userinfo    The IDP User information endpoint URL.
  * @property string $endpoint_token       The IDP token validation endpoint URL.
  * @property string $endpoint_end_session The IDP logout endpoint URL.
  * @property string $acr_values           The Authentication contract as defined on the IDP.
@@ -90,7 +89,6 @@ class Hello_Login_Option_Settings {
 		'endpoint_end_session'      => 'OIDC_ENDPOINT_LOGOUT_URL',
 		'endpoint_login'            => 'OIDC_ENDPOINT_LOGIN_URL',
 		'endpoint_token'            => 'OIDC_ENDPOINT_TOKEN_URL',
-		'endpoint_userinfo'         => 'OIDC_ENDPOINT_USERINFO_URL',
 		'scope'                     => 'OIDC_CLIENT_SCOPE',
 		'create_if_does_not_exist'  => 'OIDC_CREATE_IF_DOES_NOT_EXIST',
 		'enforce_privacy'           => 'OIDC_ENFORCE_PRIVACY',

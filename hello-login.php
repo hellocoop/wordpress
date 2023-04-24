@@ -51,10 +51,9 @@ Notes
 
   Callable actions
 
-  User Meta
+  User Metadata
   - hello-login-subject-identity    - the identity of the user provided by the idp
-  - hello-login-last-id-token-claim - the user's most recent id_token claim, decoded
-  - hello-login-last-user-claim     - the user's most recent user_claim
+  - hello-login-last-user-claim     - the user's most recent id_token claim, decoded
   - hello-login-last-token-response - the user's most recent token response
 
   Options
@@ -153,7 +152,6 @@ class Hello_Login {
 			$this->settings->client_id,
 			Hello_Login_Util::add_default_scopes( $this->settings->scope ),
 			$this->settings->endpoint_login,
-			$this->settings->endpoint_userinfo,
 			$this->settings->endpoint_token,
 			$redirect_uri,
 			$this->settings->acr_values,
@@ -440,7 +438,6 @@ class Hello_Login {
 				'client_id'            => defined( 'OIDC_CLIENT_ID' ) ? OIDC_CLIENT_ID : '',
 				'scope'                => defined( 'OIDC_CLIENT_SCOPE' ) ? OIDC_CLIENT_SCOPE : '',
 				'endpoint_login'       => defined( 'OIDC_ENDPOINT_LOGIN_URL' ) ? OIDC_ENDPOINT_LOGIN_URL : 'https://wallet.hello.coop/authorize',
-				'endpoint_userinfo'    => defined( 'OIDC_ENDPOINT_USERINFO_URL' ) ? OIDC_ENDPOINT_USERINFO_URL : 'https://wallet.hello.coop/oauth/userinfo',
 				'endpoint_token'       => defined( 'OIDC_ENDPOINT_TOKEN_URL' ) ? OIDC_ENDPOINT_TOKEN_URL : 'https://wallet.hello.coop/oauth/token',
 				'endpoint_end_session' => defined( 'OIDC_ENDPOINT_LOGOUT_URL' ) ? OIDC_ENDPOINT_LOGOUT_URL : '',
 				'acr_values'           => defined( 'OIDC_ACR_VALUES' ) ? OIDC_ACR_VALUES : '',

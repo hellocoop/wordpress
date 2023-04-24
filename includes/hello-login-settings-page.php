@@ -409,14 +409,6 @@ class Hello_Login_Settings_Page {
 				'disabled'    => defined( 'OIDC_ENDPOINT_LOGIN_URL' ),
 				'section'     => 'client_settings',
 			),
-			'endpoint_userinfo' => array(
-				'title'       => __( 'Userinfo Endpoint URL', 'hello-login' ),
-				'description' => __( 'Identify provider User information endpoint.', 'hello-login' ),
-				'example'     => 'https://example.com/oauth2/UserInfo',
-				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_ENDPOINT_USERINFO_URL' ),
-				'section'     => 'client_settings',
-			),
 			'endpoint_token'    => array(
 				'title'       => __( 'Token Validation Endpoint URL', 'hello-login' ),
 				'description' => __( 'Identify provider token endpoint.', 'hello-login' ),
