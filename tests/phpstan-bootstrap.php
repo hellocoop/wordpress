@@ -18,10 +18,9 @@ defined( 'COOKIEPATH' ) || define( 'COOKIEPATH', '/');
 
 // Define Plugin Globals.
 defined( 'OIDC_CLIENT_ID' ) || define( 'OIDC_CLIENT_ID', bin2hex( random_bytes( 32 ) ) );
-defined( 'OIDC_ENDPOINT_LOGIN_URL' ) || define( 'OIDC_ENDPOINT_LOGIN_URL', 'https://oidc/oauth2/authorize' );
-defined( 'OIDC_ENDPOINT_TOKEN_URL' ) || define( 'OIDC_ENDPOINT_TOKEN_URL', 'https://oidc/oauth2/token' );
-defined( 'OIDC_ENDPOINT_LOGOUT_URL' ) || define( 'OIDC_ENDPOINT_LOGOUT_URL', 'https://oidc/oauth2/logout' );
-defined( 'OIDC_CLIENT_SCOPE' ) || define( 'OIDC_CLIENT_SCOPE', 'email profile openid' );
-defined( 'OIDC_LINK_EXISTING_USERS' ) || define( 'OIDC_LINK_EXISTING_USERS', 0 );
+defined( 'OIDC_ENDPOINT_LOGIN_URL' ) || define( 'OIDC_ENDPOINT_LOGIN_URL', 'https://wallet.hello.coop/authorize' );
+defined( 'OIDC_ENDPOINT_TOKEN_URL' ) || define( 'OIDC_ENDPOINT_TOKEN_URL', 'https://wallet.hello.coop/oauth/token' );
+defined( 'OIDC_CLIENT_SCOPE' ) || define( 'OIDC_CLIENT_SCOPE', '' );
+defined( 'OIDC_LINK_EXISTING_USERS' ) || define( 'OIDC_LINK_EXISTING_USERS', 1 );
 defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) || define( 'OIDC_CREATE_IF_DOES_NOT_EXIST', 1 );
-defined( 'OIDC_REDIRECT_USER_BACK' ) || define( 'OIDC_REDIRECT_USER_BACK', 0 );
+defined( 'OIDC_REDIRECT_USER_BACK' ) || define( 'OIDC_REDIRECT_USER_BACK', 1 );
