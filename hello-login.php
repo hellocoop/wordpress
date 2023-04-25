@@ -154,7 +154,6 @@ class Hello_Login {
 			$this->settings->endpoint_login,
 			$this->settings->endpoint_token,
 			$redirect_uri,
-			$this->settings->acr_values,
 			$state_time_limit,
 			$this->logger
 		);
@@ -440,7 +439,6 @@ class Hello_Login {
 				'endpoint_login'       => defined( 'OIDC_ENDPOINT_LOGIN_URL' ) ? OIDC_ENDPOINT_LOGIN_URL : 'https://wallet.hello.coop/authorize',
 				'endpoint_token'       => defined( 'OIDC_ENDPOINT_TOKEN_URL' ) ? OIDC_ENDPOINT_TOKEN_URL : 'https://wallet.hello.coop/oauth/token',
 				'endpoint_end_session' => defined( 'OIDC_ENDPOINT_LOGOUT_URL' ) ? OIDC_ENDPOINT_LOGOUT_URL : '',
-				'acr_values'           => defined( 'OIDC_ACR_VALUES' ) ? OIDC_ACR_VALUES : '',
 
 				// Non-standard settings.
 				'no_sslverify'    => 0,

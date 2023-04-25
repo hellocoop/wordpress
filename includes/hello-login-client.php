@@ -65,15 +65,6 @@ class Hello_Login_Client {
 	private string $redirect_uri;
 
 	/**
-	 * The specifically requested authentication contract at the IDP
-	 *
-	 * @see Hello_Login_Option_Settings::acr_values
-	 *
-	 * @var string
-	 */
-	private string $acr_values;
-
-	/**
 	 * The state time limit. States are only valid for 10 minutes.
 	 *
 	 * @see Hello_Login_Option_Settings::state_time_limit
@@ -97,17 +88,15 @@ class Hello_Login_Client {
 	 * @param string                    $endpoint_login    @see Hello_Login_Option_Settings::endpoint_login for description.
 	 * @param string                    $endpoint_token    @see Hello_Login_Option_Settings::endpoint_token for description.
 	 * @param string                    $redirect_uri      @see Hello_Login_Option_Settings::redirect_uri for description.
-	 * @param string                    $acr_values        @see Hello_Login_Option_Settings::acr_values for description.
 	 * @param int                       $state_time_limit  @see Hello_Login_Option_Settings::state_time_limit for description.
 	 * @param Hello_Login_Option_Logger $logger            The plugin logging object instance.
 	 */
-	public function __construct( string $client_id, string $scope, string $endpoint_login, string $endpoint_token, string $redirect_uri, string $acr_values, int $state_time_limit, Hello_Login_Option_Logger $logger ) {
+	public function __construct( string $client_id, string $scope, string $endpoint_login, string $endpoint_token, string $redirect_uri, int $state_time_limit, Hello_Login_Option_Logger $logger ) {
 		$this->client_id = $client_id;
 		$this->scope = $scope;
 		$this->endpoint_login = $endpoint_login;
 		$this->endpoint_token = $endpoint_token;
 		$this->redirect_uri = $redirect_uri;
-		$this->acr_values = $acr_values;
 		$this->state_time_limit = $state_time_limit;
 		$this->logger = $logger;
 	}
@@ -195,10 +184,6 @@ class Hello_Login_Client {
 			),
 			'headers' => array( 'Host' => $host ),
 		);
-
-		if ( ! empty( $this->acr_values ) ) {
-			$request['body'] += array( 'acr_values' => $this->acr_values );
-		}
 
 		// Allow modifications to the request.
 		$request = apply_filters( 'hello-login-alter-request', $request, 'get-authentication-token' );
@@ -407,13 +392,6 @@ class Hello_Login_Client {
 		// Validate the identification data and it's value.
 		if ( empty( $id_token_claim['sub'] ) ) {
 			return new WP_Error( 'no-subject-identity', __( 'No subject identity.', 'hello-login' ), $id_token_claim );
-		}
-
-		// Validate acr values when the option is set in the configuration.
-		if ( ! empty( $this->acr_values ) && isset( $id_token_claim['acr'] ) ) {
-			if ( $this->acr_values != $id_token_claim['acr'] ) {
-				return new WP_Error( 'no-match-acr', __( 'No matching acr values.', 'hello-login' ), $id_token_claim );
-			}
 		}
 
 		return true;

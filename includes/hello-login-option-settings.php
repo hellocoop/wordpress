@@ -30,7 +30,6 @@
  * @property string $endpoint_login       The IDP authorization endpoint URL.
  * @property string $endpoint_token       The IDP token validation endpoint URL.
  * @property string $endpoint_end_session The IDP logout endpoint URL.
- * @property string $acr_values           The Authentication contract as defined on the IDP.
  * @property string provider_hint         The provider hint.
  *
  * Non-standard Settings:
@@ -91,7 +90,6 @@ class Hello_Login_Option_Settings {
 		'link_existing_users'       => 'OIDC_LINK_EXISTING_USERS',
 		'redirect_on_logout'        => 'OIDC_REDIRECT_ON_LOGOUT',
 		'redirect_user_back'        => 'OIDC_REDIRECT_USER_BACK',
-		'acr_values'                => 'OIDC_ACR_VALUES',
 	);
 
 	/**

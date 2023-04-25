@@ -425,13 +425,6 @@ class Hello_Login_Settings_Page {
 				'disabled'    => defined( 'OIDC_ENDPOINT_LOGOUT_URL' ),
 				'section'     => 'client_settings',
 			),
-			'acr_values'    => array(
-				'title'       => __( 'ACR values', 'hello-login' ),
-				'description' => __( 'Use a specific defined authentication contract from the IDP - optional.', 'hello-login' ),
-				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_ACR_VALUES' ),
-				'section'     => 'client_settings',
-			),
 			'no_sslverify'      => array(
 				'title'       => __( 'Disable SSL Verify', 'hello-login' ),
 				// translators: %1$s HTML tags for layout/styles, %2$s closing HTML tag for styles.

@@ -274,7 +274,6 @@ class Hello_Login_Client_Wrapper {
 				'client_id' => $this->settings->client_id,
 				'redirect_uri' => $this->client->get_redirect_uri(),
 				'redirect_to' => $this->get_redirect_to(),
-				'acr_values' => $this->settings->acr_values,
 				'provider_hint' => $this->settings->provider_hint,
 			),
 			$atts,
@@ -292,15 +291,12 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		$url_format = '%1$s%2$sresponse_type=code&scope=%3$s&client_id=%4$s&state=%5$s&redirect_uri=%6$s';
-		if ( ! empty( $atts['acr_values'] ) ) {
-			$url_format .= '&acr_values=%7$s';
-		}
 
 		$pkce_data = $this->pkce_code_generator();
-		$url_format .= '&code_challenge=%8$s&code_challenge_method=%9$s';
+		$url_format .= '&code_challenge=%7$s&code_challenge_method=%8$s';
 
 		if ( ! empty( $atts['provider_hint'] ) ) {
-			$url_format .= '&provider_hint=%10$s';
+			$url_format .= '&provider_hint=%9$s';
 		}
 
 		$url = sprintf(
@@ -309,11 +305,10 @@ class Hello_Login_Client_Wrapper {
 			$separator,
 			rawurlencode( $atts['scope'] ),
 			rawurlencode( $atts['client_id'] ),
-			$this->client->new_state( $atts['redirect_to'], $pkce_data['code_verifier'] ?? '' ),
+			$this->client->new_state( $atts['redirect_to'], $pkce_data['code_verifier'] ),
 			rawurlencode( $atts['redirect_uri'] ),
-			rawurlencode( $atts['acr_values'] ),
-			rawurlencode( $pkce_data['code_challenge'] ?? '' ),
-			rawurlencode( $pkce_data['code_challenge_method'] ?? '' ),
+			rawurlencode( $pkce_data['code_challenge'] ),
+			rawurlencode( $pkce_data['code_challenge_method'] ),
 			rawurlencode( $atts['provider_hint'] ?? '' )
 		);
 
