@@ -432,13 +432,6 @@ class Hello_Login_Settings_Page {
 				'disabled'    => defined( 'OIDC_ACR_VALUES' ),
 				'section'     => 'client_settings',
 			),
-			'enable_pkce' => array(
-				'title'       => __( 'Enable PKCE support', 'hello-login' ),
-				'description' => __( 'If checked, add PKCE challenge during authentication requests.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_ENABLE_PKCE' ),
-				'section'     => 'client_settings',
-			),
 			'identity_key'     => array(
 				'title'       => __( 'Identity Key', 'hello-login' ),
 				'description' => __( 'Where in the user claim array to find the user\'s identification data. Possible standard values: preferred_username, name, or sub. If you\'re having trouble, use "sub".', 'hello-login' ),

@@ -122,9 +122,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		// Modify authentication-token request to include PKCE code verifier.
-		if ( $settings->enable_pkce ) {
-			add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 2 );
-		}
+		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 2 );
 
 		return $client_wrapper;
 	}
@@ -319,12 +317,8 @@ class Hello_Login_Client_Wrapper {
 			$url_format .= '&acr_values=%7$s';
 		}
 
-		if ( true === $this->settings->enable_pkce ) {
-			$pkce_data = $this->pkce_code_generator();
-			if ( false !== $pkce_data ) {
-				$url_format .= '&code_challenge=%8$s&code_challenge_method=%9$s';
-			}
-		}
+		$pkce_data = $this->pkce_code_generator();
+		$url_format .= '&code_challenge=%8$s&code_challenge_method=%9$s';
 
 		if ( ! empty( $atts['provider_hint'] ) ) {
 			$url_format .= '&provider_hint=%10$s';
@@ -1314,18 +1308,15 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @see : https://help.aweber.com/hc/en-us/articles/360036524474-How-do-I-use-Proof-Key-for-Code-Exchange-PKCE-
 	 *
-	 * @return array<string, mixed>|bool Code challenge array on success, false on error.
+	 * @return array<string, mixed> Code challenge array.
 	 */
-	private function pkce_code_generator() {
+	private function pkce_code_generator(): array {
 		try {
 			$verifier_bytes = random_bytes( 64 );
 		} catch ( Exception $e ) {
-			$this->logger->log(
-				sprintf( 'Fail to generate PKCE code challenge : %s', $e->getMessage() ),
-				'pkce_code_generator'
-			);
-
-			return false;
+			$msg = sprintf( 'Fail to generate PKCE code challenge : %s', $e->getMessage() );
+			$this->logger->log( $msg, 'pkce_code_generator' );
+			exit( $msg );
 		}
 
 		$verifier = rtrim( strtr( base64_encode( $verifier_bytes ), '+/', '-_' ), '=' );
