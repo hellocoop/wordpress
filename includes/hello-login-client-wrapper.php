@@ -88,12 +88,6 @@ class Hello_Login_Client_Wrapper {
 	public static function register( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ): Hello_Login_Client_Wrapper {
 		$client_wrapper  = new self( $client, $settings, $logger );
 
-		// Integrated logout.
-		if ( $settings->endpoint_end_session ) {
-			add_filter( 'allowed_redirect_hosts', array( $client_wrapper, 'update_allowed_redirect_hosts' ), 99 );
-			add_filter( 'logout_redirect', array( $client_wrapper, 'get_end_session_logout_redirect_url' ), 99, 3 );
-		}
-
 		// Alter the requests according to settings.
 		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 2 );
 
@@ -334,58 +328,6 @@ class Hello_Login_Client_Wrapper {
 			'&message=' . urlencode( $error->get_error_message() )
 		);
 		exit;
-	}
-
-	/**
-	 * Get the current error state.
-	 *
-	 * @return bool|WP_Error
-	 */
-	public function get_error() {
-		return $this->error;
-	}
-
-	/**
-	 * Add the end_session endpoint to WordPress core's whitelist of redirect hosts.
-	 *
-	 * @param array<string> $allowed The allowed redirect host names.
-	 *
-	 * @return array<string>|bool
-	 */
-	public function update_allowed_redirect_hosts( array $allowed ) {
-		$host = parse_url( $this->settings->endpoint_end_session, PHP_URL_HOST );
-		if ( ! $host ) {
-			return false;
-		}
-
-		$allowed[] = $host;
-		return $allowed;
-	}
-
-	/**
-	 * Handle the logout redirect for end_session endpoint.
-	 *
-	 * @param string  $redirect_url          The requested redirect URL.
-	 * @param string  $requested_redirect_to The user login source URL, or configured user redirect URL.
-	 * @param WP_User $user                  The logged in user object.
-	 *
-	 * @return string
-	 */
-	public function get_end_session_logout_redirect_url( string $redirect_url, string $requested_redirect_to, WP_User $user ): string {
-		$url = $this->settings->endpoint_end_session;
-		$query = parse_url( $url, PHP_URL_QUERY );
-		$url .= $query ? '&' : '?';
-
-		$token_response = $user->get( 'hello-login-last-token-response' );
-		if ( ! $token_response ) {
-			// Happens if non-openid login was used.
-			return $redirect_url;
-		} else if ( ! parse_url( $redirect_url, PHP_URL_HOST ) ) {
-			// Convert to absolute url if needed, site_url() to be friendly with non-standard (Bedrock) layout.
-			$redirect_url = site_url( $redirect_url );
-		}
-
-		return $url . sprintf( 'id_token_hint=%s&post_logout_redirect_uri=%s', $token_response['id_token'], urlencode( $redirect_url ) );
 	}
 
 	/**

@@ -417,14 +417,6 @@ class Hello_Login_Settings_Page {
 				'disabled'    => defined( 'OIDC_ENDPOINT_TOKEN_URL' ),
 				'section'     => 'client_settings',
 			),
-			'endpoint_end_session'    => array(
-				'title'       => __( 'End Session Endpoint URL', 'hello-login' ),
-				'description' => __( 'Identify provider logout endpoint.', 'hello-login' ),
-				'example'     => 'https://example.com/oauth2/logout',
-				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_ENDPOINT_LOGOUT_URL' ),
-				'section'     => 'client_settings',
-			),
 			'no_sslverify'      => array(
 				'title'       => __( 'Disable SSL Verify', 'hello-login' ),
 				// translators: %1$s HTML tags for layout/styles, %2$s closing HTML tag for styles.
