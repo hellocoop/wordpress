@@ -135,7 +135,6 @@ class Hello_Login_Client {
 
 		// Check the client request state.
 		if ( ! isset( $request['state'] ) ) {
-			do_action( 'hello-login-no-state-provided' );
 			return new WP_Error( 'missing-state', __( 'Missing state.', 'hello-login' ), $request );
 		}
 
@@ -263,21 +262,7 @@ class Hello_Login_Client {
 	 * @return bool
 	 */
 	public function check_state( string $state ): bool {
-
-		$state_found = true;
-
-		if ( ! get_option( '_transient_hello-login-state--' . $state ) ) {
-			do_action( 'hello-login-state-not-found', $state );
-			$state_found = false;
-		}
-
-		$valid = get_transient( 'hello-login-state--' . $state );
-
-		if ( ! $valid && $state_found ) {
-			do_action( 'hello-login-state-expired', $state );
-		}
-
-		return boolval( $valid );
+		return boolval( get_transient( 'hello-login-state--' . $state ) );
 	}
 
 	/**

@@ -44,8 +44,6 @@ Notes
   - hello-login-redirect-user-back              - 2 args: $redirect_url, $user. Allows interruption of redirect during login.
   - hello-login-user-logged-in                  - 1 arg: $user, fires when user is logged in.
   - hello-login-cron-daily                      - daily cron action
-  - hello-login-state-not-found                 - the given state does not exist in the database, regardless of its expiration.
-  - hello-login-state-expired                   - the given state exists, but expired before this login attempt.
 
   Callable actions
 
