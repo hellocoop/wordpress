@@ -846,8 +846,8 @@ class Hello_Login_Client_Wrapper {
 	private function get_nickname_from_claim( array $user_claim ): string {
 		$desired_nickname = '';
 		// Allow settings to take first stab at nickname.
-		if ( ! empty( $this->settings->nickname_key ) && isset( $user_claim[ $this->settings->nickname_key ] ) ) {
-			$desired_nickname = $user_claim[ $this->settings->nickname_key ];
+		if ( isset( $user_claim['nickname'] ) ) {
+			$desired_nickname = $user_claim['nickname'];
 		}
 
 		if ( empty( $desired_nickname ) && isset( $user_claim['name'] ) ) {

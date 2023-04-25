@@ -446,7 +446,6 @@ class Hello_Login {
 				'no_sslverify'    => 0,
 				'http_request_timeout' => 5,
 				'identity_key'    => 'nickname',
-				'nickname_key'    => 'nickname',
 				'email_format'       => '{email}',
 				'displayname_format' => '{name}',
 

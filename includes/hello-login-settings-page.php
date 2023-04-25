@@ -453,13 +453,6 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
-			'nickname_key'     => array(
-				'title'       => __( 'Nickname Key', 'hello-login' ),
-				'description' => __( 'Where in the user claim array to find the user\'s nickname. Possible standard values: preferred_username, name, or sub.', 'hello-login' ),
-				'example'     => 'preferred_username',
-				'type'        => 'text',
-				'section'     => 'client_settings',
-			),
 			'email_format'     => array(
 				'title'       => __( 'Email Formatting', 'hello-login' ),
 				'description' => __( 'String from which the user\'s email address is built. Specify "{email}" as long as the user claim contains an email claim.', 'hello-login' ),
