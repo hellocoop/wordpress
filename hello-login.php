@@ -440,7 +440,6 @@ class Hello_Login {
 				'endpoint_token'       => defined( 'OIDC_ENDPOINT_TOKEN_URL' ) ? OIDC_ENDPOINT_TOKEN_URL : 'https://wallet.hello.coop/oauth/token',
 
 				// Non-standard settings.
-				'no_sslverify'    => 0,
 				'http_request_timeout' => 5,
 				'email_format'       => '{email}',
 				'displayname_format' => '{name}',

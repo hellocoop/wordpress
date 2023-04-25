@@ -417,13 +417,6 @@ class Hello_Login_Settings_Page {
 				'disabled'    => defined( 'OIDC_ENDPOINT_TOKEN_URL' ),
 				'section'     => 'client_settings',
 			),
-			'no_sslverify'      => array(
-				'title'       => __( 'Disable SSL Verify', 'hello-login' ),
-				// translators: %1$s HTML tags for layout/styles, %2$s closing HTML tag for styles.
-				'description' => sprintf( __( 'Do not require SSL verification during authorization. The OAuth extension uses curl to make the request. By default CURL will generally verify the SSL certificate to see if its valid an issued by an accepted CA. This setting disabled that verification.%1$sNot recommended for production sites.%2$s', 'hello-login' ), '<br><strong>', '</strong>' ),
-				'type'        => 'checkbox',
-				'section'     => 'client_settings',
-			),
 			'http_request_timeout'      => array(
 				'title'       => __( 'HTTP Request Timeout', 'hello-login' ),
 				'description' => __( 'Set the timeout for requests made to the IDP. Default value is 5.', 'hello-login' ),

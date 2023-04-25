@@ -343,10 +343,6 @@ class Hello_Login_Client_Wrapper {
 			$request['timeout'] = $this->settings->http_request_timeout;
 		}
 
-		if ( $this->settings->no_sslverify ) {
-			$request['sslverify'] = false;
-		}
-
 		return $request;
 	}
 
