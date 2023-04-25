@@ -300,8 +300,8 @@ class Hello_Login_Client_Wrapper {
 			rawurlencode( $atts['provider_hint'] ?? '' )
 		);
 
-		$this->logger->log( apply_filters( 'hello-login-auth-url', $url ), 'make_authentication_url' );
-		return apply_filters( 'hello-login-auth-url', $url );
+		$this->logger->log( $url, 'get_authentication_url' );
+		return $url;
 	}
 
 	/**
@@ -364,9 +364,6 @@ class Hello_Login_Client_Wrapper {
 		// Get the decoded response from the authentication request result.
 		$token_response = $client->get_token_response( $token_result );
 
-		// Allow for other plugins to alter data before validation.
-		$token_response = apply_filters( 'hello-login-modify-token-response-before-validation', $token_response );
-
 		if ( is_wp_error( $token_response ) ) {
 			$this->error_redirect( $token_response );
 		}
@@ -384,9 +381,6 @@ class Hello_Login_Client_Wrapper {
 		 * resources e.g. for the userinfo endpoint
 		 */
 		$user_claim = $client->get_id_token_claim( $token_response );
-
-		// Allow for other plugins to alter data before validation.
-		$user_claim = apply_filters( 'hello-login-modify-id-token-claim-before-validation', $user_claim );
 
 		if ( is_wp_error( $user_claim ) ) {
 			$this->error_redirect( $user_claim );
@@ -572,53 +566,6 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Refresh user claim.
-	 *
-	 * @param WP_User $user             The user object.
-	 * @param array   $token_response   The token response.
-	 *
-	 * @return WP_Error|array
-	 */
-	public function refresh_user_claim( WP_User $user, array $token_response ) {
-		$client = $this->client;
-
-		/**
-		 * The id_token is used to identify the authenticated user, e.g. for SSO.
-		 * The access_token must be used to prove access rights to protected
-		 * resources e.g. for the userinfo endpoint
-		 */
-		$user_claim = $client->get_id_token_claim( $token_response );
-
-		// Allow for other plugins to alter data before validation.
-		$user_claim = apply_filters( 'hello-login-modify-id-token-claim-before-validation', $user_claim );
-
-		if ( is_wp_error( $user_claim ) ) {
-			return $user_claim;
-		}
-
-		// Validate our id_token has required values.
-		$valid = $client->validate_id_token_claim( $user_claim );
-
-		if ( is_wp_error( $valid ) ) {
-			return $valid;
-		}
-
-		// Validate our user_claim has required values.
-		$valid = $client->validate_user_claim( $user_claim, $user_claim );
-
-		if ( is_wp_error( $valid ) ) {
-			$this->error_redirect( $valid );
-			return $valid;
-		}
-
-		// Store the tokens for future reference.
-		update_user_meta( $user->ID, 'hello-login-last-token-response', $token_response );
-		update_user_meta( $user->ID, 'hello-login-last-user-claim', $user_claim );
-
-		return $user_claim;
 	}
 
 	/**
