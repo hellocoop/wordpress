@@ -21,7 +21,6 @@ Much of the documentation can be found on the Settings > Hellō Login dashboard 
     - [Composer](#composer)
 - [Hooks](#hooks)
     - [Filters](#filters)
-        - [hello-login-alter-request](#hello-login-alter-request)
         - [hello-login-user-login-test](#hello-login-user-login-test)
         - [hello-login-user-creation-test](#hello-login-user-creation-test)
         - [hello-login-alter-user-data](#hello-login-alter-user-data)
@@ -59,29 +58,6 @@ WordPress filters API - [`add_filter()`](https://developer.wordpress.org/referen
 [`apply_filters()`](https://developer.wordpress.org/reference/functions/apply_filters/).
 
 Most often you'll only need to use `add_filter()` to hook into this plugin's code.
-
-#### `hello-login-alter-request`
-
-Hooks directly into client before requests are sent to the Hellō Wallet.
-
-Provides 2 arguments: the request array being sent to the server, and the operation currently being executed by this 
-plugin.
-
-Possible operations:
-
-- get-authentication-token
-- refresh-token
-- get-userinfo
-
-```
-add_filter('hello-login-alter-request', function( $request, $operation ) {
-    if ( $operation == 'get-authentication-token' ) {
-        $request['some_key'] = 'modified value';
-    }
-    
-    return $request;
-}, 10, 2);
-```
 
 #### `hello-login-user-login-test`
 

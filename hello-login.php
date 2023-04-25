@@ -33,7 +33,6 @@ Notes
   Spec Doc - http://openid.net/specs/openid-connect-basic-1_0-32.html
 
   Filters
-  - hello-login-alter-request                           - 3 args: request array, plugin settings, specific request op
   - hello-login-settings-fields                         - modify the fields provided on the settings page
   - hello-login-user-login-test                         - (bool) should the user be logged in based on their claim
   - hello-login-user-creation-test                      - (bool) should the user be created based on their claim
@@ -155,13 +154,18 @@ class Hello_Login {
 			$state_time_limit = $this->settings->state_time_limit;
 		}
 
+		$http_request_timeout = 5;
+		if ( $this->settings->http_request_timeout ) {
+			$http_request_timeout = $this->settings->http_request_timeout;
+		}
+
 		$client = new Hello_Login_Client(
 			$this->settings->client_id,
 			Hello_Login_Util::add_default_scopes( $this->settings->scope ),
-			$this->settings->endpoint_login,
 			$this->settings->endpoint_token,
 			$redirect_uri,
 			$state_time_limit,
+			$http_request_timeout,
 			$this->logger
 		);
 

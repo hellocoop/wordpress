@@ -88,14 +88,8 @@ class Hello_Login_Client_Wrapper {
 	public static function register( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ): Hello_Login_Client_Wrapper {
 		$client_wrapper  = new self( $client, $settings, $logger );
 
-		// Alter the requests according to settings.
-		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_request' ), 10, 2 );
-
 		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
 		add_action( 'parse_request', array( $client_wrapper, 'redirect_uri_parse_request' ) );
-
-		// Modify authentication-token request to include PKCE code verifier.
-		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 2 );
 
 		return $client_wrapper;
 	}
@@ -331,46 +325,6 @@ class Hello_Login_Client_Wrapper {
 	}
 
 	/**
-	 * Modify outgoing requests according to settings.
-	 *
-	 * @param array  $request   The outgoing request array.
-	 * @param string $operation The request operation name.
-	 *
-	 * @return array
-	 */
-	public function alter_request( array $request, string $operation ): array {
-		if ( ! empty( $this->settings->http_request_timeout ) && is_numeric( $this->settings->http_request_timeout ) ) {
-			$request['timeout'] = $this->settings->http_request_timeout;
-		}
-
-		return $request;
-	}
-
-	/**
-	 * Include PKCE code verifier in authentication token request.
-	 *
-	 * @param array  $request   The outgoing request array.
-	 * @param string $operation The request operation name.
-	 *
-	 * @return array
-	 */
-	public function alter_authentication_token_request( array $request, string $operation ): array {
-		if ( 'get-authentication-token' !== $operation ) {
-			return $request;
-		}
-
-		$code_verifier = '';
-		if ( ! empty( $_GET['state'] ) ) {
-			$state_object  = get_transient( 'hello-login-state--' . sanitize_text_field( wp_unslash( $_GET['state'] ) ) );
-			$code_verifier = $state_object[ sanitize_text_field( wp_unslash( $_GET['state'] ) ) ]['code_verifier'] ?? '';
-		}
-
-		$request['body']['code_verifier'] = $code_verifier;
-
-		return $request;
-	}
-
-	/**
 	 * Control the authentication and subsequent authorization of the user when
 	 * returning from the IDP.
 	 *
@@ -401,7 +355,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		// Attempting to exchange an authorization code for an authentication token.
-		$token_result = $client->request_authentication_token( $code );
+		$token_result = $client->exchange_authorization_code( $code, $state );
 
 		if ( is_wp_error( $token_result ) ) {
 			$this->error_redirect( $token_result );

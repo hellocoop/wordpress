@@ -38,15 +38,6 @@ class Hello_Login_Client {
 	private string $scope;
 
 	/**
-	 * The OIDC/oAuth authorization endpoint URL.
-	 *
-	 * @see Hello_Login_Option_Settings::endpoint_login
-	 *
-	 * @var string
-	 */
-	private string $endpoint_login;
-
-	/**
 	 * The OIDC/oAuth token validation endpoint URL.
 	 *
 	 * @see Hello_Login_Option_Settings::endpoint_token
@@ -74,6 +65,15 @@ class Hello_Login_Client {
 	private int $state_time_limit;
 
 	/**
+	 * The timeout for HTTP requests.
+	 *
+	 * @see Hello_Login_Option_Settings::http_request_timeout
+	 *
+	 * @var int
+	 */
+	private int $http_request_timeout;
+
+	/**
 	 * The logger object instance.
 	 *
 	 * @var Hello_Login_Option_Logger
@@ -83,21 +83,21 @@ class Hello_Login_Client {
 	/**
 	 * Client constructor.
 	 *
-	 * @param string                    $client_id         @see Hello_Login_Option_Settings::client_id for description.
-	 * @param string                    $scope             @see Hello_Login_Option_Settings::scope for description.
-	 * @param string                    $endpoint_login    @see Hello_Login_Option_Settings::endpoint_login for description.
-	 * @param string                    $endpoint_token    @see Hello_Login_Option_Settings::endpoint_token for description.
-	 * @param string                    $redirect_uri      @see Hello_Login_Option_Settings::redirect_uri for description.
-	 * @param int                       $state_time_limit  @see Hello_Login_Option_Settings::state_time_limit for description.
-	 * @param Hello_Login_Option_Logger $logger            The plugin logging object instance.
+	 * @param string                    $client_id            @see Hello_Login_Option_Settings::client_id for description.
+	 * @param string                    $scope                @see Hello_Login_Option_Settings::scope for description.
+	 * @param string                    $endpoint_token       @see Hello_Login_Option_Settings::endpoint_token for description.
+	 * @param string                    $redirect_uri         @see Hello_Login_Option_Settings::redirect_uri for description.
+	 * @param int                       $state_time_limit     @see Hello_Login_Option_Settings::state_time_limit for description.
+	 * @param int                       $http_request_timeout @see Hello_Login_Option_Settings::http_request_timeout for description.
+	 * @param Hello_Login_Option_Logger $logger               The plugin logging object instance.
 	 */
-	public function __construct( string $client_id, string $scope, string $endpoint_login, string $endpoint_token, string $redirect_uri, int $state_time_limit, Hello_Login_Option_Logger $logger ) {
+	public function __construct( string $client_id, string $scope, string $endpoint_token, string $redirect_uri, int $state_time_limit, int $http_request_timeout, Hello_Login_Option_Logger $logger ) {
 		$this->client_id = $client_id;
 		$this->scope = $scope;
-		$this->endpoint_login = $endpoint_login;
 		$this->endpoint_token = $endpoint_token;
 		$this->redirect_uri = $redirect_uri;
 		$this->state_time_limit = $state_time_limit;
+		$this->http_request_timeout = $http_request_timeout;
 		$this->logger = $logger;
 	}
 
@@ -164,15 +164,18 @@ class Hello_Login_Client {
 	/**
 	 * Using the authorization_code, request an authentication token from the IDP.
 	 *
-	 * @param string|WP_Error $code The authorization code.
+	 * @param string $code The authorization code.
+	 * @param string $state
 	 *
 	 * @return array|WP_Error
 	 */
-	public function request_authentication_token( $code ) {
-
+	public function exchange_authorization_code( string $code, string $state ) {
 		// Add Host header - required for when the openid-connect endpoint is behind a reverse-proxy.
 		$parsed_url = parse_url( $this->endpoint_token );
 		$host = $parsed_url['host'];
+
+		$state_object  = get_transient( 'hello-login-state--' . $state );
+		$code_verifier = $state_object[ $state ]['code_verifier'] ?? '';
 
 		$request = array(
 			'body' => array(
@@ -181,49 +184,18 @@ class Hello_Login_Client {
 				'redirect_uri'  => $this->redirect_uri,
 				'grant_type'    => 'authorization_code',
 				'scope'         => $this->scope,
+				'code_verifier' => $code_verifier,
 			),
 			'headers' => array( 'Host' => $host ),
+			'timeout' => $this->http_request_timeout,
 		);
-
-		// Allow modifications to the request.
-		$request = apply_filters( 'hello-login-alter-request', $request, 'get-authentication-token' );
 
 		// Call the server and ask for a token.
-		$this->logger->log( $this->endpoint_token, 'request_authentication_token' );
+		$this->logger->log( $this->endpoint_token, 'exchange_authorization_code' );
 		$response = wp_remote_post( $this->endpoint_token, $request );
 
 		if ( is_wp_error( $response ) ) {
-			$response->add( 'request_authentication_token', __( 'Request for authentication token failed.', 'hello-login' ) );
-		}
-
-		return $response;
-	}
-
-	/**
-	 * Using the refresh token, request new tokens from the idp
-	 *
-	 * @param string $refresh_token The refresh token previously obtained from token response.
-	 *
-	 * @return array|WP_Error
-	 */
-	public function request_new_tokens( string $refresh_token ) {
-		$request = array(
-			'body' => array(
-				'refresh_token' => $refresh_token,
-				'client_id'     => $this->client_id,
-				'grant_type'    => 'refresh_token',
-			),
-		);
-
-		// Allow modifications to the request.
-		$request = apply_filters( 'hello-login-alter-request', $request, 'refresh-token' );
-
-		// Call the server and ask for new tokens.
-		$this->logger->log( $this->endpoint_token, 'request_new_tokens' );
-		$response = wp_remote_post( $this->endpoint_token, $request );
-
-		if ( is_wp_error( $response ) ) {
-			$response->add( 'refresh_token', __( 'Refresh token failed.', 'hello-login' ) );
+			$response->add( 'exchange_authorization_code', __( 'Request for authentication token failed.', 'hello-login' ) );
 		}
 
 		return $response;
@@ -311,16 +283,16 @@ class Hello_Login_Client {
 	/**
 	 * Get the authorization state from the request
 	 *
-	 * @param array<string>|WP_Error $request The authentication request results.
+	 * @param array<string> $request The authentication request results.
 	 *
 	 * @return string|WP_Error
 	 */
-	public function get_authentication_state( $request ) {
+	public function get_authentication_state( array $request ) {
 		if ( ! isset( $request['state'] ) ) {
 			return new WP_Error( 'missing-authentication-state', __( 'Missing authentication state.', 'hello-login' ), $request );
 		}
 
-		return $request['state'];
+		return sanitize_text_field( wp_unslash( $request['state'] ) );
 	}
 
 	/**
