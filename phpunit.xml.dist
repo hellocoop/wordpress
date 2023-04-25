@@ -2,18 +2,12 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" backupGlobals="false" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage processUncoveredFiles="true">
     <include>
-      <directory suffix=".php">src/</directory>
+      <directory suffix=".php">./</directory>
     </include>
-    <exclude>
-      <directory suffix=".php">src/views</directory>
-    </exclude>
     <report>
       <clover outputFile="clover.xml"/>
     </report>
   </coverage>
-  <php>
-    <env name="XDEBUG_MODE" value="coverage"/>
-  </php>
   <testsuites>
     <testsuite name="Includes">
       <directory suffix="_test.php">./tests/phpunit/</directory>
