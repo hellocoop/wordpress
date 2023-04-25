@@ -30,8 +30,6 @@
 
 /*
 Notes
-  Spec Doc - http://openid.net/specs/openid-connect-basic-1_0-32.html
-
   Filters
   - hello-login-user-login-test                         - (bool) should the user be logged in based on their claim
   - hello-login-user-creation-test                      - (bool) should the user be created based on their claim
@@ -45,12 +43,9 @@ Notes
   - hello-login-user-logged-in                  - 1 arg: $user, fires when user is logged in.
   - hello-login-cron-daily                      - daily cron action
 
-  Callable actions
-
   User Metadata
   - hello-login-subject-identity    - the identity of the user provided by the idp
   - hello-login-last-user-claim     - the user's most recent id_token claim, decoded
-  - hello-login-last-token-response - the user's most recent token response
 
   Options
   - hello_login_settings - plugin settings

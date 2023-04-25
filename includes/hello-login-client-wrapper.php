@@ -578,8 +578,6 @@ class Hello_Login_Client_Wrapper {
 	 * @return void
 	 */
 	public function login_user( WP_User $user, array $token_response, array $user_claim ) {
-		// Store the tokens for future reference.
-		update_user_meta( $user->ID, 'hello-login-last-token-response', $token_response );
 		update_user_meta( $user->ID, 'hello-login-last-user-claim', $user_claim );
 		// Allow plugins / themes to take action using current claims on existing user (e.g. update role).
 		do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
