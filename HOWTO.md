@@ -29,6 +29,7 @@ Much of the documentation can be found on the Settings > Hellō Login dashboard 
         - [hello-login-user-update](#hello-login-user-update)
         - [hello-login-update-user-using-current-claim](#hello-login-update-user-using-current-claim)
         - [hello-login-redirect-user-back](#hello-login-redirect-user-back)
+        - [hello-login-user-logged-in](#hello-login-user-logged-in)
 
 
 ## Installation
@@ -64,7 +65,7 @@ Determine whether or not the user should be logged into WordPress.
 
 Provides 2 arguments: the boolean result of the test (default `TRUE`), and the `$user_claim` array from the server.
 
-```
+```php
 add_filter('hello-login-user-login-test', function( $result, $user_claim ) {
     // Don't let Terry login.
     if ( $user_claim['email'] == 'terry@example.com' ) {
@@ -82,7 +83,7 @@ do not currently exist within WordPress.
 
 Provides 2 arguments: the boolean result of the test (default `TRUE`), and the `$user_claim` array from the server.
 
-```
+```php
 add_filter('hello-login-user-creation-test', function( $result, $user_claim ) {
     // Don't let anyone from example.com create an account.
     $email_array = explode( '@', $user_claim['email'] );
@@ -101,7 +102,7 @@ Modify a new user's data immediately before the user is created.
 Provides 2 arguments: the `$user_data` array that will be sent to `wp_insert_user()`, and the `$user_claim` from the 
 server.
 
-```
+```php
 add_filter('hello-login-alter-user-data', function( $user_data, $user_claim ) {
     // Don't register any user with their real email address. Create a fake internal address.
     if ( !empty( $user_data['user_email'] ) ) {
@@ -128,7 +129,7 @@ React to a new user being created by this plugin.
 
 Provides 2 arguments: the `\WP_User` object that was created, and the `$user_claim` from the IDP server.
 
-``` 
+```php
 add_action('hello-login-user-create', function( $user, $user_claim ) {
     // Send the user an email when their account is first created.
     wp_mail( 
@@ -146,7 +147,7 @@ a user in WordPress, as opposed to a new WordPress user being created.
 
 Provides 1 argument: the user's WordPress user ID.
 
-``` 
+```php
 add_action('hello-login-user-update', function( $uid ) {
     // Keep track of the number of times the user has logged into the site.
     $login_count = get_user_meta( $uid, 'my-user-login-count', TRUE);
@@ -161,7 +162,7 @@ React to an existing user logging in (after authentication and authorization).
 
 Provides 2 arguments: the `WP_User` object, and the `$user_claim` provided by the IDP server.
 
-```
+```php
 add_action('hello-login-update-user-using-current-claim', function( $user, $user_claim) {
     // Based on some data in the user_claim, modify the user.
     if ( !empty( $user_claim['wp_user_role'] ) ) {
@@ -180,7 +181,7 @@ Hellō Login. It will fire for both new and existing users.
 
 Provides 2 arguments: the url where the user will be redirected, and the `WP_User` object.
 
-```
+```php
 add_action('hello-login-redirect-user-back', function( $redirect_url, $user ) {
     // Take over the redirection complete. Send users somewhere special based on their capabilities.
     if ( $user->has_cap( 'edit_users' ) ) {
@@ -188,6 +189,21 @@ add_action('hello-login-redirect-user-back', function( $redirect_url, $user ) {
         exit();
     }
 }, 10, 2); 
+```
+
+#### `hello-login-user-logged-in`
+
+React to a user being logged in.
+
+Provides 1 argument: the `WP_User` object.
+
+```php
+add_action('hello-login-user-logged-in', function( $user ) {
+    // Keep track of the number of times the user has logged into the site.
+    $login_count = get_user_meta( $user->ID, 'my-user-login-count', TRUE);
+    $login_count += 1;
+    add_user_meta( $user->ID, 'my-user-login-count', $login_count, TRUE);
+});
 ```
 
 ### User Metadata
