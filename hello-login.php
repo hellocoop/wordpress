@@ -441,7 +441,6 @@ class Hello_Login {
 
 				// Non-standard settings.
 				'http_request_timeout' => 5,
-				'email_format'       => '{email}',
 				'displayname_format' => '{name}',
 
 				// Plugin settings.

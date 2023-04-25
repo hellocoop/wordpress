@@ -424,13 +424,6 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
-			'email_format'     => array(
-				'title'       => __( 'Email Formatting', 'hello-login' ),
-				'description' => __( 'String from which the user\'s email address is built. Specify "{email}" as long as the user claim contains an email claim.', 'hello-login' ),
-				'example'     => '{email}',
-				'type'        => 'text',
-				'section'     => 'client_settings',
-			),
 			'displayname_format'     => array(
 				'title'       => __( 'Display Name Formatting', 'hello-login' ),
 				'description' => __( 'String from which the user\'s display name is built.', 'hello-login' ),

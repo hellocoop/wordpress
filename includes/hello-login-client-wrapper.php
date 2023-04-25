@@ -919,7 +919,7 @@ class Hello_Login_Client_Wrapper {
 	 * @return string|null|WP_Error
 	 */
 	private function get_email_from_claim( array $user_claim ) {
-		return $this->format_string_with_claim( $this->settings->email_format, $user_claim, true );
+		return $this->format_string_with_claim( '{email}', $user_claim, true );
 	}
 
 	/**
