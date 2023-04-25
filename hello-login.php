@@ -256,35 +256,6 @@ class Hello_Login {
 	}
 
 	/**
-	 * Check if privacy enforcement is enabled, and redirect users that aren't
-	 * logged in.
-	 *
-	 * @return void
-	 */
-	public function enforce_privacy_redirect() {
-		if ( $this->settings->enforce_privacy && ! is_user_logged_in() ) {
-			// The client endpoint relies on the wp-admin ajax endpoint.
-			if ( ! defined( 'DOING_AJAX' ) || ! constant( 'DOING_AJAX' ) || ! isset( $_GET['action'] ) || 'hello-login-callback' != $_GET['action'] ) {
-				auth_redirect();
-			}
-		}
-	}
-
-	/**
-	 * Enforce privacy settings for rss feeds.
-	 *
-	 * @param string $content The content.
-	 *
-	 * @return mixed
-	 */
-	public function enforce_privacy_feeds( $content ) {
-		if ( $this->settings->enforce_privacy && ! is_user_logged_in() ) {
-			$content = __( 'Private site', 'hello-login' );
-		}
-		return $content;
-	}
-
-	/**
 	 * Append the Hellō Login signature to the user-agent string when the target URL is a Hellō API endpoint.
 	 *
 	 * @param string $user_agent The default WordPress user-agent string.
@@ -457,7 +428,6 @@ class Hello_Login {
 				'displayname_format' => '{name}',
 
 				// Plugin settings.
-				'enforce_privacy' => defined( 'OIDC_ENFORCE_PRIVACY' ) ? OIDC_ENFORCE_PRIVACY : 0,
 				'link_existing_users' => defined( 'OIDC_LINK_EXISTING_USERS' ) ? OIDC_LINK_EXISTING_USERS : 1,
 				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? OIDC_CREATE_IF_DOES_NOT_EXIST : 1,
 				'redirect_user_back' => defined( 'OIDC_REDIRECT_USER_BACK' ) ? OIDC_REDIRECT_USER_BACK : 1,
@@ -473,12 +443,6 @@ class Hello_Login {
 		$plugin = new self( $settings, $logger );
 
 		add_action( 'init', array( $plugin, 'init' ) );
-
-		// Privacy hooks.
-		add_action( 'template_redirect', array( $plugin, 'enforce_privacy_redirect' ), 0 );
-		add_filter( 'the_content_feed', array( $plugin, 'enforce_privacy_feeds' ), 999 );
-		add_filter( 'the_excerpt_rss', array( $plugin, 'enforce_privacy_feeds' ), 999 );
-		add_filter( 'comment_text_rss', array( $plugin, 'enforce_privacy_feeds' ), 999 );
 
 		// User-Agent hook.
 		add_filter( 'http_headers_useragent', array( $plugin, 'user_agent_hook' ), 0, 2 );

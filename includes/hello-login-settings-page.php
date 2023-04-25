@@ -468,13 +468,6 @@ class Hello_Login_Settings_Page {
 		);
 
 		if ( isset( $_GET['debug'] ) ) {
-			$fields['enforce_privacy'] = array(
-				'title'       => __( 'Enforce Privacy', 'hello-login' ),
-				'description' => __( 'Require users be logged in to see the site.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
-				'section'     => 'authorization_settings',
-			);
 			$fields['redirect_user_back'] = array(
 				'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
 				'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'hello-login' ),
