@@ -79,6 +79,13 @@ class Hello_Login {
 	protected static Hello_Login $_instance;
 
 	/**
+	 * Singleton to signal that the class was bootstrapped.
+	 *
+	 * @var bool
+	 */
+	private static bool $_bootstrapped = false;
+
+	/**
 	 * Plugin version.
 	 *
 	 * @var string
@@ -422,6 +429,12 @@ class Hello_Login {
 	 * @return void
 	 */
 	public static function bootstrap() {
+		if ( Hello_Login::$_bootstrapped ) {
+			return;
+		}
+
+		Hello_Login::$_bootstrapped = true;
+
 		/**
 		 * This is a documented valid call for spl_autoload_register.
 		 *
@@ -470,22 +483,9 @@ class Hello_Login {
 		// User-Agent hook.
 		add_filter( 'http_headers_useragent', array( $plugin, 'user_agent_hook' ), 0, 2 );
 	}
-
-	/**
-	 * Create (if needed) and return a singleton of self.
-	 *
-	 * @return Hello_Login
-	 */
-	public static function instance(): Hello_Login {
-		if ( null === self::$_instance ) {
-			self::bootstrap();
-		}
-		return self::$_instance;
-	}
-
 }
 
-Hello_Login::instance();
+Hello_Login::bootstrap();
 
 register_activation_hook( __FILE__, array( 'Hello_Login', 'activation' ) );
 add_action( 'activated_plugin', array( 'Hello_Login', 'activation_redirect' ) );
