@@ -7,6 +7,9 @@
 	convertNoticesToExceptions="true"
 	convertWarningsToExceptions="true"
 	>
+	<php>
+		<env name="XDEBUG_MODE" value="coverage" />
+	</php>
 	<testsuites>
 		<testsuite name="Includes">
 			<directory suffix="_test.php">./tests/phpunit/</directory>
