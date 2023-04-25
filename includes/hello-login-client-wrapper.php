@@ -1020,11 +1020,8 @@ class Hello_Login_Client_Wrapper {
 
 		// Before trying to create the user, first check if a matching user exists.
 		if ( $this->settings->link_existing_users ) {
-			if ( $this->settings->identify_with_username ) {
-				$uid = username_exists( $username );
-			} else {
-				$uid = email_exists( $email );
-			}
+			$uid = email_exists( $email );
+
 			if ( ! empty( $uid ) ) {
 				$user = $this->update_existing_user( $uid, $subject_identity );
 

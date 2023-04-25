@@ -474,12 +474,6 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'section'     => 'client_settings',
 			),
-			'identify_with_username'     => array(
-				'title'       => __( 'Identify with User Name', 'hello-login' ),
-				'description' => __( 'If checked, the user\'s identity will be determined by the user name instead of the email address.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'section'     => 'client_settings',
-			),
 			'state_time_limit'     => array(
 				'title'       => __( 'State time limit', 'hello-login' ),
 				'description' => __( 'State valid time in seconds. Defaults to 180', 'hello-login' ),

@@ -449,7 +449,6 @@ class Hello_Login {
 				'nickname_key'    => 'nickname',
 				'email_format'       => '{email}',
 				'displayname_format' => '{name}',
-				'identify_with_username' => false,
 
 				// Plugin settings.
 				'enforce_privacy' => defined( 'OIDC_ENFORCE_PRIVACY' ) ? OIDC_ENFORCE_PRIVACY : 0,
