@@ -75,13 +75,13 @@ class Hello_Login_Option_Settings {
 	 * @var array<string,string>
 	 */
 	private array $environment_settings = array(
-		'client_id'                 => 'OIDC_CLIENT_ID',
-		'endpoint_login'            => 'OIDC_ENDPOINT_LOGIN_URL',
-		'endpoint_token'            => 'OIDC_ENDPOINT_TOKEN_URL',
-		'scope'                     => 'OIDC_CLIENT_SCOPE',
-		'create_if_does_not_exist'  => 'OIDC_CREATE_IF_DOES_NOT_EXIST',
-		'link_existing_users'       => 'OIDC_LINK_EXISTING_USERS',
-		'redirect_user_back'        => 'OIDC_REDIRECT_USER_BACK',
+		'client_id'                 => 'HELLO_LOGIN_CLIENT_ID',
+		'endpoint_login'            => 'HELLO_LOGIN_ENDPOINT_LOGIN_URL',
+		'endpoint_token'            => 'HELLO_LOGIN_ENDPOINT_TOKEN_URL',
+		'scope'                     => 'HELLO_LOGIN_CLIENT_SCOPE',
+		'create_if_does_not_exist'  => 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST',
+		'link_existing_users'       => 'HELLO_LOGIN_LINK_EXISTING_USERS',
+		'redirect_user_back'        => 'HELLO_LOGIN_REDIRECT_USER_BACK',
 	);
 
 	/**

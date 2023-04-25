@@ -378,14 +378,14 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Scopes', 'hello-login' ),
 				'description' => __( 'Scopes to request in addition to <code>openid email name</code>. See <a href="https://www.hello.dev/documentation/hello-claims.html" target="_blank">https://www.hello.dev/documentation/hello-claims.html</a> for available scopes.', 'hello-login' ),
 				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_CLIENT_SCOPE' ),
+				'disabled'    => defined( 'HELLO_LOGIN_CLIENT_SCOPE' ),
 				'section'     => 'client_settings',
 			),
 			'client_id'         => array(
 				'title'       => __( 'Client ID', 'hello-login' ),
 				'description' => __( 'The client identifier provided by Hellō and set by Quickstart.', 'hello-login' ),
 				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_CLIENT_ID' ),
+				'disabled'    => defined( 'HELLO_LOGIN_CLIENT_ID' ),
 				'section'     => 'client_settings',
 			),
 			'redirect_uri'         => array(
@@ -406,7 +406,7 @@ class Hello_Login_Settings_Page {
 				'description' => __( 'Identify provider authorization endpoint.', 'hello-login' ),
 				'example'     => 'https://example.com/oauth2/authorize',
 				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_ENDPOINT_LOGIN_URL' ),
+				'disabled'    => defined( 'HELLO_LOGIN_ENDPOINT_LOGIN_URL' ),
 				'section'     => 'client_settings',
 			),
 			'endpoint_token'    => array(
@@ -414,7 +414,7 @@ class Hello_Login_Settings_Page {
 				'description' => __( 'Identify provider token endpoint.', 'hello-login' ),
 				'example'     => 'https://example.com/oauth2/token',
 				'type'        => 'text',
-				'disabled'    => defined( 'OIDC_ENDPOINT_TOKEN_URL' ),
+				'disabled'    => defined( 'HELLO_LOGIN_ENDPOINT_TOKEN_URL' ),
 				'section'     => 'client_settings',
 			),
 			'http_request_timeout'      => array(
@@ -456,14 +456,14 @@ class Hello_Login_Settings_Page {
 			'title'       => __( 'Link Existing Users via Email', 'hello-login' ),
 			'description' => __( 'If a newly-authenticated Hellō user does not have an account, and a WordPress account already exists with the same email, link the user to that Wordpress account.', 'hello-login' ),
 			'type'        => 'checkbox',
-			'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
+			'disabled'    => defined( 'HELLO_LOGIN_LINK_EXISTING_USERS' ),
 			'section'     => 'user_settings',
 		);
 		$fields['create_if_does_not_exist'] = array(
 			'title'       => __( 'Allow anyone to register with Hellō', 'hello-login' ),
 			'description' => __( 'Create a new user if they do not have an account. Authentication will fail if the user does not have an account and this is disabled.', 'hello-login' ),
 			'type'        => 'checkbox',
-			'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
+			'disabled'    => defined( 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST' ),
 			'section'     => 'user_settings',
 		);
 
@@ -472,7 +472,7 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
 				'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'hello-login' ),
 				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_REDIRECT_USER_BACK' ),
+				'disabled'    => defined( 'HELLO_LOGIN_REDIRECT_USER_BACK' ),
 				'section'     => 'user_settings',
 			);
 		}

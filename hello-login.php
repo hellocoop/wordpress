@@ -418,19 +418,19 @@ class Hello_Login {
 			// Default settings values.
 			array(
 				// OAuth client settings.
-				'client_id'            => defined( 'OIDC_CLIENT_ID' ) ? OIDC_CLIENT_ID : '',
-				'scope'                => defined( 'OIDC_CLIENT_SCOPE' ) ? OIDC_CLIENT_SCOPE : '',
-				'endpoint_login'       => defined( 'OIDC_ENDPOINT_LOGIN_URL' ) ? OIDC_ENDPOINT_LOGIN_URL : 'https://wallet.hello.coop/authorize',
-				'endpoint_token'       => defined( 'OIDC_ENDPOINT_TOKEN_URL' ) ? OIDC_ENDPOINT_TOKEN_URL : 'https://wallet.hello.coop/oauth/token',
+				'client_id'            => defined( 'HELLO_LOGIN_CLIENT_ID' ) ? HELLO_LOGIN_CLIENT_ID : '',
+				'scope'                => defined( 'HELLO_LOGIN_CLIENT_SCOPE' ) ? HELLO_LOGIN_CLIENT_SCOPE : '',
+				'endpoint_login'       => defined( 'HELLO_LOGIN_ENDPOINT_LOGIN_URL' ) ? HELLO_LOGIN_ENDPOINT_LOGIN_URL : 'https://wallet.hello.coop/authorize',
+				'endpoint_token'       => defined( 'HELLO_LOGIN_ENDPOINT_TOKEN_URL' ) ? HELLO_LOGIN_ENDPOINT_TOKEN_URL : 'https://wallet.hello.coop/oauth/token',
 
 				// Non-standard settings.
 				'http_request_timeout' => 5,
 				'displayname_format' => '{name}',
 
 				// Plugin settings.
-				'link_existing_users' => defined( 'OIDC_LINK_EXISTING_USERS' ) ? OIDC_LINK_EXISTING_USERS : 1,
-				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? OIDC_CREATE_IF_DOES_NOT_EXIST : 1,
-				'redirect_user_back' => defined( 'OIDC_REDIRECT_USER_BACK' ) ? OIDC_REDIRECT_USER_BACK : 1,
+				'link_existing_users' => defined( 'HELLO_LOGIN_LINK_EXISTING_USERS' ) ? HELLO_LOGIN_LINK_EXISTING_USERS : 1,
+				'create_if_does_not_exist' => defined( 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST' ) ? HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST : 1,
+				'redirect_user_back' => defined( 'HELLO_LOGIN_REDIRECT_USER_BACK' ) ? HELLO_LOGIN_REDIRECT_USER_BACK : 1,
 				'enable_logging'  => 0,
 				'log_limit'       => 1000,
 				'link_not_now'    => 0,
