@@ -448,7 +448,6 @@ class Hello_Login {
 				'link_existing_users' => defined( 'OIDC_LINK_EXISTING_USERS' ) ? OIDC_LINK_EXISTING_USERS : 1,
 				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? OIDC_CREATE_IF_DOES_NOT_EXIST : 1,
 				'redirect_user_back' => defined( 'OIDC_REDIRECT_USER_BACK' ) ? OIDC_REDIRECT_USER_BACK : 1,
-				'redirect_on_logout' => defined( 'OIDC_REDIRECT_ON_LOGOUT' ) ? OIDC_REDIRECT_ON_LOGOUT : 1,
 				'enable_logging'  => 0,
 				'log_limit'       => 1000,
 				'link_not_now'    => 0,

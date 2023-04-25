@@ -453,49 +453,41 @@ class Hello_Login_Settings_Page {
 		);
 
 		$fields['link_existing_users'] = array(
-				'title'       => __( 'Link Existing Users via Email', 'hello-login' ),
-				'description' => __( 'If a newly-authenticated Hellō user does not have an account, and a WordPress account already exists with the same email, link the user to that Wordpress account.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
-				'section'     => 'user_settings',
+			'title'       => __( 'Link Existing Users via Email', 'hello-login' ),
+			'description' => __( 'If a newly-authenticated Hellō user does not have an account, and a WordPress account already exists with the same email, link the user to that Wordpress account.', 'hello-login' ),
+			'type'        => 'checkbox',
+			'disabled'    => defined( 'OIDC_LINK_EXISTING_USERS' ),
+			'section'     => 'user_settings',
 		);
 		$fields['create_if_does_not_exist'] = array(
-				'title'       => __( 'Allow anyone to register with Hellō', 'hello-login' ),
-				'description' => __( 'Create a new user if they do not have an account. Authentication will fail if the user does not have an account and this is disabled.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
-				'section'     => 'user_settings',
+			'title'       => __( 'Allow anyone to register with Hellō', 'hello-login' ),
+			'description' => __( 'Create a new user if they do not have an account. Authentication will fail if the user does not have an account and this is disabled.', 'hello-login' ),
+			'type'        => 'checkbox',
+			'disabled'    => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ),
+			'section'     => 'user_settings',
 		);
 
 		if ( isset( $_GET['debug'] ) ) {
 			$fields['enforce_privacy'] = array(
-					'title'       => __( 'Enforce Privacy', 'hello-login' ),
-					'description' => __( 'Require users be logged in to see the site.', 'hello-login' ),
-					'type'        => 'checkbox',
-					'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
-					'section'     => 'authorization_settings',
+				'title'       => __( 'Enforce Privacy', 'hello-login' ),
+				'description' => __( 'Require users be logged in to see the site.', 'hello-login' ),
+				'type'        => 'checkbox',
+				'disabled'    => defined( 'OIDC_ENFORCE_PRIVACY' ),
+				'section'     => 'authorization_settings',
 			);
 			$fields['redirect_user_back'] = array(
-					'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
-					'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'hello-login' ),
-					'type'        => 'checkbox',
-					'disabled'    => defined( 'OIDC_REDIRECT_USER_BACK' ),
-					'section'     => 'user_settings',
-			);
-
-			$fields['redirect_on_logout'] = array(
-					'title' => __('Redirect to the login screen when session is expired', 'hello-login'),
-					'description' => __('When enabled, this will automatically redirect the user back to the WordPress login page if their access token has expired.', 'hello-login'),
-					'type' => 'checkbox',
-					'disabled' => defined('OIDC_REDIRECT_ON_LOGOUT'),
-					'section' => 'user_settings',
+				'title'       => __( 'Redirect Back to Origin Page', 'hello-login' ),
+				'description' => __( 'After a successful authentication, this will redirect the user back to the page on which they clicked the Hellō login button. This will cause the login process to proceed in a traditional WordPress fashion. For example, users logging in through the default wp-login.php page would end up on the WordPress Dashboard and users logging in through the WooCommerce "My Account" page would end up on their account page.', 'hello-login' ),
+				'type'        => 'checkbox',
+				'disabled'    => defined( 'OIDC_REDIRECT_USER_BACK' ),
+				'section'     => 'user_settings',
 			);
 		}
 
 		$fields['link_not_now'] = array(
-				'title' => 'Link Not Now',
-				'type' => 'checkbox',
-				'section' => 'hidden_settings',
+			'title' => 'Link Not Now',
+			'type' => 'checkbox',
+			'section' => 'hidden_settings',
 		);
 
 		return apply_filters( 'hello-login-settings-fields', $fields );
