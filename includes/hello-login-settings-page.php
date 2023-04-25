@@ -432,13 +432,6 @@ class Hello_Login_Settings_Page {
 				'disabled'    => defined( 'OIDC_ACR_VALUES' ),
 				'section'     => 'client_settings',
 			),
-			'identity_key'     => array(
-				'title'       => __( 'Identity Key', 'hello-login' ),
-				'description' => __( 'Where in the user claim array to find the user\'s identification data. Possible standard values: preferred_username, name, or sub. If you\'re having trouble, use "sub".', 'hello-login' ),
-				'example'     => 'preferred_username',
-				'type'        => 'text',
-				'section'     => 'client_settings',
-			),
 			'no_sslverify'      => array(
 				'title'       => __( 'Disable SSL Verify', 'hello-login' ),
 				// translators: %1$s HTML tags for layout/styles, %2$s closing HTML tag for styles.

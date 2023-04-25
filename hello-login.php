@@ -445,7 +445,6 @@ class Hello_Login {
 				// Non-standard settings.
 				'no_sslverify'    => 0,
 				'http_request_timeout' => 5,
-				'identity_key'    => 'nickname',
 				'email_format'       => '{email}',
 				'displayname_format' => '{name}',
 

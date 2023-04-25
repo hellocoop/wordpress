@@ -37,7 +37,6 @@
  *
  * @property bool   $no_sslverify           The flag to enable/disable SSL verification during authorization.
  * @property int    $http_request_timeout   The timeout for requests made to the IDP. Default value is 5.
- * @property string $identity_key           The key in the user claim array to find the user's identification data.
  * @property string $email_format           The key(s) in the user claim array to formulate the user's email address.
  * @property string $displayname_format     The key(s) in the user claim array to formulate the user's display name.
  * @property int    $state_time_limit       The valid time limit of the state, in seconds. Defaults to 180 seconds.

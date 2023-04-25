@@ -804,8 +804,8 @@ class Hello_Login_Client_Wrapper {
 		$desired_username = '';
 
 		// Allow settings to take first stab at username.
-		if ( ! empty( $this->settings->identity_key ) && isset( $user_claim[ $this->settings->identity_key ] ) ) {
-			$desired_username = $user_claim[ $this->settings->identity_key ];
+		if ( ! empty( $user_claim['nickname'] ) ) {
+			$desired_username = $user_claim['nickname'];
 		}
 		if ( empty( $desired_username ) && ! empty( $user_claim['preferred_username'] ) ) {
 			$desired_username = $user_claim['preferred_username'];
