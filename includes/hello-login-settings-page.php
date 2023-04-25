@@ -481,6 +481,8 @@ class Hello_Login_Settings_Page {
 			'type' => 'checkbox',
 			'section' => 'hidden_settings',
 		);
+
+		return $fields;
 	}
 
 	/**
