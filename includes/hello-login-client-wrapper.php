@@ -41,22 +41,6 @@ class Hello_Login_Client_Wrapper {
 	private Hello_Login_Option_Logger $logger;
 
 	/**
-	 * The token refresh info cookie key.
-	 *
-	 * @var string
-	 */
-	private string $cookie_token_refresh_key = 'hello-login-refresh';
-
-	/**
-	 * The user redirect cookie key.
-	 *
-	 * @deprecated Redirection should be done via state transient and not cookies.
-	 *
-	 * @var string
-	 */
-	public string $cookie_redirect_key = 'hello-login-redirect';
-
-	/**
 	 * The return error object.
 	 *
 	 * @example WP_Error if there was a problem, or false if no error
@@ -115,11 +99,6 @@ class Hello_Login_Client_Wrapper {
 
 		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
 		add_action( 'parse_request', array( $client_wrapper, 'redirect_uri_parse_request' ) );
-
-		// Verify token for any logged in user.
-		if ( is_user_logged_in() ) {
-			add_action( 'wp_loaded', array( $client_wrapper, 'ensure_tokens_still_fresh' ) );
-		}
 
 		// Modify authentication-token request to include PKCE code verifier.
 		add_filter( 'hello-login-alter-request', array( $client_wrapper, 'alter_authentication_token_request' ), 15, 2 );
@@ -340,69 +319,6 @@ class Hello_Login_Client_Wrapper {
 
 		$this->logger->log( apply_filters( 'hello-login-auth-url', $url ), 'make_authentication_url' );
 		return apply_filters( 'hello-login-auth-url', $url );
-	}
-
-	/**
-	 * Handle retrieval and validation of refresh_token.
-	 *
-	 * @return void
-	 */
-	public function ensure_tokens_still_fresh() {
-		if ( ! is_user_logged_in() ) {
-			return;
-		}
-
-		$user_id = wp_get_current_user()->ID;
-		$manager = WP_Session_Tokens::get_instance( $user_id );
-		$token = wp_get_session_token();
-		$session = $manager->get( $token );
-
-		if ( ! isset( $session[ $this->cookie_token_refresh_key ] ) ) {
-			// Not an OpenID-based session.
-			return;
-		}
-
-		$current_time = time();
-		$refresh_token_info = $session[ $this->cookie_token_refresh_key ];
-
-		$next_access_token_refresh_time = $refresh_token_info['next_access_token_refresh_time'];
-
-		if ( $current_time < $next_access_token_refresh_time ) {
-			return;
-		}
-
-		$refresh_token = $refresh_token_info['refresh_token'];
-		$refresh_expires = $refresh_token_info['refresh_expires'];
-
-		if ( ! $refresh_token || ( $refresh_expires && $current_time > $refresh_expires ) ) {
-			if ( isset( $_SERVER['REQUEST_URI'] ) ) {
-				do_action( 'hello-login-session-expired', wp_get_current_user(), esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
-				wp_logout();
-
-				if ( $this->settings->redirect_on_logout ) {
-					$this->error_redirect( new WP_Error( 'access-token-expired', __( 'Session expired. Please login again.', 'hello-login' ) ) );
-				}
-
-				return;
-			}
-		}
-
-		$token_result = $this->client->request_new_tokens( $refresh_token );
-
-		if ( is_wp_error( $token_result ) ) {
-			wp_logout();
-			$this->error_redirect( $token_result );
-		}
-
-		$token_response = $this->client->get_token_response( $token_result );
-
-		if ( is_wp_error( $token_response ) ) {
-			wp_logout();
-			$this->error_redirect( $token_response );
-		}
-
-		update_user_meta( $user_id, 'hello-login-last-token-response', $token_response );
-		$this->save_refresh_token( $manager, $token, $token_response );
 	}
 
 	/**
@@ -695,11 +611,6 @@ class Hello_Login_Client_Wrapper {
 			$redirect_url = $state_object[ $state ]['redirect_to'];
 		}
 
-		// Provide backwards compatibility for customization using the deprecated cookie method.
-		if ( ! empty( $_COOKIE[ $this->cookie_redirect_key ] ) ) {
-			$redirect_url = esc_url_raw( wp_unslash( $_COOKIE[ $this->cookie_redirect_key ] ) );
-		}
-
 		// Only do redirect-user-back action hook when the plugin is configured for it.
 		if ( $this->settings->redirect_user_back ) {
 			do_action( 'hello-login-redirect-user-back', $redirect_url, $user );
@@ -844,41 +755,9 @@ class Hello_Login_Client_Wrapper {
 		$manager = WP_Session_Tokens::get_instance( $user->ID );
 		$token = $manager->create( $expiration );
 
-		// Save the refresh token in the session.
-		$this->save_refresh_token( $manager, $token, $token_response );
-
 		// you did great, have a cookie!
 		wp_set_auth_cookie( $user->ID, false, '', $token );
 		do_action( 'wp_login', $user->user_login, $user );
-	}
-
-	/**
-	 * Save refresh token to WP session tokens
-	 *
-	 * @param WP_Session_Tokens   $manager        A user session tokens manager.
-	 * @param string              $token          The current users session token.
-	 * @param array|WP_Error|null $token_response The authentication token response.
-	 */
-	public function save_refresh_token( WP_Session_Tokens $manager, string $token, $token_response ) {
-		if ( ! $this->settings->token_refresh_enable ) {
-			return;
-		}
-		$session = $manager->get( $token );
-		$now = time();
-		$session[ $this->cookie_token_refresh_key ] = array(
-			'next_access_token_refresh_time' => $token_response['expires_in'] + $now,
-			'refresh_token' => $token_response['refresh_token'] ?? false,
-			'refresh_expires' => false,
-		);
-		if ( isset( $token_response['refresh_expires_in'] ) ) {
-			$refresh_expires_in = $token_response['refresh_expires_in'];
-			if ( $refresh_expires_in > 0 ) {
-				// Leave enough time for the actual refresh request to go through.
-				$refresh_expires = $now + $refresh_expires_in - 5;
-				$session[ $this->cookie_token_refresh_key ]['refresh_expires'] = $refresh_expires;
-			}
-		}
-		$manager->update( $token, $session );
 	}
 
 	/**

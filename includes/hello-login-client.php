@@ -249,7 +249,7 @@ class Hello_Login_Client {
 	 *
 	 * @param array|WP_Error $token_result The token response.
 	 *
-	 * @return array|WP_Error|null
+	 * @return array|WP_Error
 	 */
 	public function get_token_response( $token_result ) {
 		if ( ! isset( $token_result['body'] ) ) {
@@ -259,7 +259,7 @@ class Hello_Login_Client {
 		// Extract the token response from token.
 		$token_response = json_decode( $token_result['body'], true );
 
-		// Check that the token response body was able to be parsed.
+		// Check that the token response body was parsed.
 		if ( is_null( $token_response ) ) {
 			return new WP_Error( 'invalid-token', __( 'Invalid token.', 'hello-login' ), $token_result );
 		}

@@ -486,12 +486,6 @@ class Hello_Login_Settings_Page {
 				'type'        => 'number',
 				'section'     => 'client_settings',
 			),
-			'token_refresh_enable'   => array(
-				'title'       => __( 'Enable Refresh Token', 'hello-login' ),
-				'description' => __( 'If checked, support refresh tokens used to obtain access tokens from supported IDPs.', 'hello-login' ),
-				'type'        => 'checkbox',
-				'section'     => 'client_settings',
-			),
 			*/
 			'enable_logging'    => array(
 				'title'       => __( 'Enable Logging', 'hello-login' ),

@@ -453,7 +453,6 @@ class Hello_Login {
 
 				// Plugin settings.
 				'enforce_privacy' => defined( 'OIDC_ENFORCE_PRIVACY' ) ? OIDC_ENFORCE_PRIVACY : 0,
-				'token_refresh_enable' => 0,
 				'link_existing_users' => defined( 'OIDC_LINK_EXISTING_USERS' ) ? OIDC_LINK_EXISTING_USERS : 1,
 				'create_if_does_not_exist' => defined( 'OIDC_CREATE_IF_DOES_NOT_EXIST' ) ? OIDC_CREATE_IF_DOES_NOT_EXIST : 1,
 				'redirect_user_back' => defined( 'OIDC_REDIRECT_USER_BACK' ) ? OIDC_REDIRECT_USER_BACK : 1,
