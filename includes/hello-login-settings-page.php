@@ -363,7 +363,6 @@ class Hello_Login_Settings_Page {
 	 * @return array
 	 */
 	private function get_settings_fields(): array {
-
 		/**
 		 * Simple settings fields have:
 		 *
@@ -482,9 +481,6 @@ class Hello_Login_Settings_Page {
 			'type' => 'checkbox',
 			'section' => 'hidden_settings',
 		);
-
-		return apply_filters( 'hello-login-settings-fields', $fields );
-
 	}
 
 	/**

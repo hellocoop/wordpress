@@ -33,7 +33,6 @@ Notes
   Spec Doc - http://openid.net/specs/openid-connect-basic-1_0-32.html
 
   Filters
-  - hello-login-settings-fields                         - modify the fields provided on the settings page
   - hello-login-user-login-test                         - (bool) should the user be logged in based on their claim
   - hello-login-user-creation-test                      - (bool) should the user be created based on their claim
   - hello-login-alter-user-data                         - modify user data before a new user is created

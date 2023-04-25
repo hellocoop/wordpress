@@ -24,7 +24,6 @@ Much of the documentation can be found on the Settings > Hellō Login dashboard 
         - [hello-login-user-login-test](#hello-login-user-login-test)
         - [hello-login-user-creation-test](#hello-login-user-creation-test)
         - [hello-login-alter-user-data](#hello-login-alter-user-data)
-        - [hello-login-settings-fields](#hello-login-settings-fields)
     - [Actions](#actions)
         - [hello-login-user-create](#hello-login-user-create)
         - [hello-login-user-update](#hello-login-user-update)
@@ -114,66 +113,6 @@ add_filter('hello-login-alter-user-data', function( $user_data, $user_claim ) {
     return $user_data;
 }, 10, 2);
 ```
-
-#### `hello-login-settings-fields`
-
-For extending the plugin with a new setting field (found on Dashboard > Settings > Hellō Login) that the site 
-administrator can modify. Also useful to alter the existing settings fields.
-
-See `/includes/hello-login-settings-page.php` for how fields are constructed.
-
-New settings fields will be automatically saved into the wp_option for this plugin's settings, and will be available in 
-the `\Hello_Login_Option_Settings` object this plugin uses. 
-
-**Note:** It can be difficult to get a copy of the settings from within other hooks. The easiest way to make use of 
-settings in your custom hooks is to call 
-`$settings = get_option('hello_login_settings', array());`.
-
-Provides 1 argument: the existing fields array.
-
-```
-add_filter('hello-login-settings-fields', function( $fields ) {
-
-    // Modify an existing field's title.
-    $fields['endpoint_userinfo']['title'] = __('User information endpoint url');
-    
-    // Add a new field that is a simple checkbox.
-    $fields['block_terry'] = array(
-        'title' => __('Block Terry'),
-        'description' => __('Prevent Terry from logging in'),
-        'type' => 'checkbox',
-        'section' => 'authorization_settings',
-    );
-    
-    // A select field that provides options.
-    
-    $fields['deal_with_terry'] = array(
-        'title' => __('Manage Terry'),
-        'description' => __('How to deal with Terry when he tries to log in.'),
-        'type' => 'select',
-        'options' => array(
-            'allow' => __('Allow login'),
-            'block' => __('Block'),
-            'redirect' => __('Redirect'),
-        ),
-        'section' => 'authorization_settings',
-    );
-    
-    return $fields;
-});
-```
-"Sections" are where your setting appears on the admin settings page. Keys for settings sections:
-
-- client_settings
-- user_settings
-- authorization_settings
-- log_settings
-
-Field types:
-
-- text
-- checkbox
-- select (requires an array of "options")
 
 ### Actions
 
