@@ -27,7 +27,7 @@ module.exports = function (grunt) {
 				options: {
 					stdout: true
 				},
-				command: '<%= composerBin %>/phpstan analyze --xdebug'
+				command: '<%= composerBin %>/phpstan analyze'
 			},
 
 			phpunit: {
