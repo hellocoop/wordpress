@@ -20,13 +20,6 @@
 class Hello_Login_Login_Form {
 
 	/**
-	 * Plugin logger.
-	 *
-	 * @var Hello_Login_Option_Logger
-	 */
-	private Hello_Login_Option_Logger $logger;
-
-	/**
 	 * Plugin settings object.
 	 *
 	 * @var Hello_Login_Option_Settings
@@ -43,12 +36,10 @@ class Hello_Login_Login_Form {
 	/**
 	 * The class constructor.
 	 *
-	 * @param Hello_Login_Option_Logger   $logger         Plugin logs.
 	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 */
-	public function __construct( $logger, $settings, $client_wrapper ) {
-		$this->logger = $logger;
+	public function __construct( $settings, $client_wrapper ) {
 		$this->settings = $settings;
 		$this->client_wrapper = $client_wrapper;
 	}
@@ -56,14 +47,13 @@ class Hello_Login_Login_Form {
 	/**
 	 * Create an instance of the Hello_Login_Login_Form class.
 	 *
-	 * @param Hello_Login_Option_Logger   $logger   The plugin logging class object.
 	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 *
 	 * @return void
 	 */
-	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Client_Wrapper $client_wrapper ) {
-		$login_form = new self( $logger, $settings, $client_wrapper );
+	public static function register( Hello_Login_Option_Settings $settings, Hello_Login_Client_Wrapper $client_wrapper ) {
+		$login_form = new self( $settings, $client_wrapper );
 
 		$on_logged_out = isset( $_GET['loggedout'] ) && 'true' == $_GET['loggedout'];
 

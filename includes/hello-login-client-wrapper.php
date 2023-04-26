@@ -288,7 +288,7 @@ class Hello_Login_Client_Wrapper {
 			rawurlencode( $atts['redirect_uri'] ),
 			rawurlencode( $pkce_data['code_challenge'] ),
 			rawurlencode( $pkce_data['code_challenge_method'] ),
-			rawurlencode( $atts['provider_hint'] ?? '' )
+			rawurlencode( $atts['provider_hint'] )
 		);
 
 		$this->logger->log( $url, 'get_authentication_url' );
@@ -787,7 +787,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @param array $user_claim The authorized user claim.
 	 *
-	 * @return string|null|WP_Error
+	 * @return string|WP_Error
 	 */
 	private function get_displayname_from_claim( array $user_claim ) {
 		return $this->format_string_with_claim( $this->settings->displayname_format, $user_claim, true );
@@ -798,7 +798,7 @@ class Hello_Login_Client_Wrapper {
 	 *
 	 * @param array $user_claim The authorized user claim.
 	 *
-	 * @return string|null|WP_Error
+	 * @return string|WP_Error
 	 */
 	private function get_email_from_claim( array $user_claim ) {
 		return $this->format_string_with_claim( '{email}', $user_claim, true );

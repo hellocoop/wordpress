@@ -29,7 +29,7 @@
  * @property string $scope                The list of additional scopes this client should access.
  * @property string $endpoint_login       The IDP authorization endpoint URL.
  * @property string $endpoint_token       The IDP token validation endpoint URL.
- * @property string provider_hint         The provider hint.
+ * @property string $provider_hint         The provider hint.
  *
  * Non-standard Settings:
  *
@@ -45,6 +45,7 @@
  * @property bool $redirect_user_back       The flag to indicate whether to redirect the user back to the page on which they started.
  * @property bool $enable_logging           The flag to enable/disable logging.
  * @property int  $log_limit                The maximum number of log entries to keep.
+ * @property int  $link_not_now             On settings page do not prompt to link account.
  */
 class Hello_Login_Option_Settings {
 
