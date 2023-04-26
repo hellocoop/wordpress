@@ -334,7 +334,7 @@ class Hello_Login {
 	 * @return void
 	 */
 	public static function activation_redirect( $plugin ) {
-		if( $plugin == plugin_basename( __FILE__ ) ) {
+		if ( plugin_basename( __FILE__ ) == $plugin ) {
 			wp_redirect( admin_url( '/options-general.php?page=hello-login-settings' ) );
 			exit();
 		}
@@ -355,9 +355,9 @@ class Hello_Login {
 	 * @return void
 	 */
 	public static function uninstall() {
-		delete_option(self::OPTION_NAME);
-		delete_option(self::LOGS_OPTION_NAME);
-		delete_option('hello_login_permalinks_flushed');
+		delete_option( self::OPTION_NAME );
+		delete_option( self::LOGS_OPTION_NAME );
+		delete_option( 'hello_login_permalinks_flushed' );
 	}
 
 	/**
@@ -396,11 +396,11 @@ class Hello_Login {
 	 * @return void
 	 */
 	public static function bootstrap() {
-		if ( Hello_Login::$_bootstrapped ) {
+		if ( self::$_bootstrapped ) {
 			return;
 		}
 
-		Hello_Login::$_bootstrapped = true;
+		self::$_bootstrapped = true;
 
 		/**
 		 * This is a documented valid call for spl_autoload_register.

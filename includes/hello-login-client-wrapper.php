@@ -41,15 +41,6 @@ class Hello_Login_Client_Wrapper {
 	private Hello_Login_Option_Logger $logger;
 
 	/**
-	 * The return error object.
-	 *
-	 * @example WP_Error if there was a problem, or false if no error
-	 *
-	 * @var bool|WP_Error
-	 */
-	private $error = false;
-
-	/**
 	 * User linking error code.
 	 *
 	 * @var string
@@ -388,13 +379,6 @@ class Hello_Login_Client_Wrapper {
 
 		// Validate our id_token has required values.
 		$valid = $client->validate_id_token_claim( $user_claim );
-
-		if ( is_wp_error( $valid ) ) {
-			$this->error_redirect( $valid );
-		}
-
-		// Validate our user_claim has required values.
-		$valid = $client->validate_user_claim( $user_claim );
 
 		if ( is_wp_error( $valid ) ) {
 			$this->error_redirect( $valid );

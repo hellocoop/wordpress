@@ -322,7 +322,7 @@ class Hello_Login_Client {
 		}
 
 		// Extract the id_token's claims from the token.
-		return json_decode(
+		$id_token = json_decode(
 			base64_decode(
 				str_replace( // Because token is encoded in base64 URL (and not just base64).
 					array( '-', '_' ),
@@ -332,6 +332,12 @@ class Hello_Login_Client {
 			),
 			true
 		);
+
+		if ( ! is_array( $id_token ) ) {
+			return new WP_Error( 'invalid-id-claim', __( 'Invalid Id Token', 'hello-login' ), $id_token );
+		}
+
+		return $id_token;
 	}
 
 	/**
@@ -342,43 +348,23 @@ class Hello_Login_Client {
 	 * @return bool|WP_Error
 	 */
 	public function validate_id_token_claim( array $id_token_claim ) {
-		if ( ! is_array( $id_token_claim ) ) {
-			return new WP_Error( 'bad-id-token-claim', __( 'Bad ID token claim.', 'hello-login' ), $id_token_claim );
-		}
-
 		// Validate the identification data and it's value.
 		if ( empty( $id_token_claim['sub'] ) ) {
 			return new WP_Error( 'no-subject-identity', __( 'No subject identity.', 'hello-login' ), $id_token_claim );
 		}
 
-		return true;
-	}
-
-	/**
-	 * Make sure the user_claim has all required values, and that the subject
-	 * identity matches of the id_token matches that of the user_claim.
-	 *
-	 * @param array $user_claim     The authenticated user claim.
-	 *
-	 * @return bool|WP_Error
-	 */
-	public function validate_user_claim( array $user_claim ) {
-		// Validate the user claim.
-		if ( ! is_array( $user_claim ) ) {
-			return new WP_Error( 'invalid-user-claim', __( 'Invalid user claim.', 'hello-login' ), $user_claim );
-		}
-
 		// Allow for errors from the IDP.
-		if ( isset( $user_claim['error'] ) ) {
-			$message = __( 'Error from the IDP.', 'hello-login' );
-			if ( ! empty( $user_claim['error_description'] ) ) {
-				$message = $user_claim['error_description'];
+		if ( isset( $id_token_claim['error'] ) ) {
+			if ( empty( $id_token_claim['error_description'] ) ) {
+				$message = __( 'Error from the IDP.', 'hello-login' );
+			} else {
+				$message = $id_token_claim['error_description'];
 			}
-			return new WP_Error( 'invalid-user-claim-' . $user_claim['error'], $message, $user_claim );
+			return new WP_Error( 'invalid-id-token-claim-' . $id_token_claim['error'], $message, $id_token_claim );
 		}
 
 		// Allow for other plugins to alter the login success.
-		$login_user = apply_filters( 'hello-login-user-login-test', true, $user_claim );
+		$login_user = apply_filters( 'hello-login-user-login-test', true, $id_token_claim );
 
 		if ( ! $login_user ) {
 			return new WP_Error( 'unauthorized', __( 'Unauthorized access.', 'hello-login' ), $login_user );
