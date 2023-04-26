@@ -192,7 +192,7 @@ class Hello_Login {
 	 * @param WP_User $profileuser The user whose profile is being edited.
 	 * @return void
 	 */
-	public function hello_login_user_profile_self( $profileuser ) {
+	public function hello_login_user_profile_self( WP_User $profileuser ) {
 		$link_url = create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_edit_user_link( $profileuser->ID ) ) );
 		$update_email_url = create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_edit_user_link( $profileuser->ID ) ), 'update_email' );
 		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
@@ -231,7 +231,7 @@ class Hello_Login {
 	 * @param WP_User $profileuser The user whose profile is being edited.
 	 * @return void
 	 */
-	public function hello_login_user_profile_other( $profileuser ) {
+	public function hello_login_user_profile_other( WP_User $profileuser ) {
 		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
 		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink&user_id=' . $profileuser->ID ), 'unlink' . $profileuser->ID );
 		?>
@@ -277,7 +277,6 @@ class Hello_Login {
 	 */
 	public function upgrade() {
 		$last_version = get_option( 'hello-login-plugin-version', 0 );
-		$settings = $this->settings;
 
 		if ( version_compare( self::VERSION, $last_version, '>' ) ) {
 			// An upgrade is required.
@@ -333,7 +332,7 @@ class Hello_Login {
 	 *
 	 * @return void
 	 */
-	public static function activation_redirect( $plugin ) {
+	public static function activation_redirect( string $plugin ) {
 		if ( plugin_basename( __FILE__ ) == $plugin ) {
 			wp_redirect( admin_url( '/options-general.php?page=hello-login-settings' ) );
 			exit();

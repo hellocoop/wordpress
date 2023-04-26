@@ -25,7 +25,7 @@
  *
  * OAuth Client Settings:
  *
- * @property string $client_id            The ID the client will be recognized as when connecting the to Identity provider server.
+ * @property string $client_id            The ID the client will be recognized as when connecting to the Identity provider.
  * @property string $scope                The list of additional scopes this client should access.
  * @property string $endpoint_login       The IDP authorization endpoint URL.
  * @property string $endpoint_token       The IDP token validation endpoint URL.
@@ -40,7 +40,7 @@
  * Plugin Settings:
  *
  * @property bool $token_refresh_enable     The flag whether to support refresh tokens by IDPs.
- * @property bool $link_existing_users      The flag to indicate whether to link to existing WordPress-only accounts or greturn an error.
+ * @property bool $link_existing_users      The flag to indicate whether to link to existing WordPress-only accounts or return an error.
  * @property bool $create_if_does_not_exist The flag to indicate whether to create new users or not.
  * @property bool $redirect_user_back       The flag to indicate whether to redirect the user back to the page on which they started.
  * @property bool $enable_logging           The flag to enable/disable logging.

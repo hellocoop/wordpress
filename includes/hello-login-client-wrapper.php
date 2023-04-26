@@ -200,7 +200,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		if ( is_admin() ) {
-			return admin_url( sprintf( basename( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) );
+			return admin_url( sprintf( basename( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) ) ) );
 		}
 
 		// Default redirect to the homepage.
@@ -214,7 +214,7 @@ class Hello_Login_Client_Wrapper {
 		// Capture the current URL if set to redirect back to origin page.
 		if ( $this->settings->redirect_user_back ) {
 			if ( ! empty( $wp->request ) ) {
-				if ( ! empty( $wp->did_permalink ) && boolval( $wp->did_permalink ) === true ) {
+				if ( ! empty( $wp->did_permalink ) && true === $wp->did_permalink ) {
 					$redirect_url = home_url( add_query_arg( $_GET, trailingslashit( $wp->request ) ) );
 				} else {
 					$redirect_url = home_url( add_query_arg( null, null ) );
@@ -459,13 +459,13 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		// Login the found / created user.
-		$this->login_user( $user, $token_response, $user_claim );
+		$this->login_user( $user, $user_claim );
 
 		// Allow plugins / themes to take action once a user is logged in.
 		do_action( 'hello-login-user-logged-in', $user );
 
 		// Log our success.
-		$this->logger->log( "Successful login for: {$user->user_login} ({$user->ID})", 'login-success' );
+		$this->logger->log( "Successful login for: $user->user_login ($user->ID)", 'login-success' );
 
 		// Default redirect to the homepage.
 		$redirect_url = home_url();
@@ -556,12 +556,11 @@ class Hello_Login_Client_Wrapper {
 	 * Record user meta data, and provide an authorization cookie.
 	 *
 	 * @param WP_User $user             The user object.
-	 * @param array   $token_response   The token response.
 	 * @param array   $user_claim       The authenticated user claim.
 	 *
 	 * @return void
 	 */
-	public function login_user( WP_User $user, array $token_response, array $user_claim ) {
+	public function login_user( WP_User $user, array $user_claim ) {
 		update_user_meta( $user->ID, 'hello-login-last-user-claim', $user_claim );
 		// Allow plugins / themes to take action using current claims on existing user (e.g. update role).
 		do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
@@ -933,7 +932,7 @@ class Hello_Login_Client_Wrapper {
 		$uid = $user->ID;
 
 		if ( isset( $user_claim['given_name'] ) && empty( get_user_meta( $uid, 'first_name', true ) ) ) {
-			if ( update_user_meta( $uid, 'first_name', $user_claim['given_name'], '' ) ) {
+			if ( update_user_meta( $uid, 'first_name', $user_claim['given_name'] ) ) {
 				$this->logger->log( 'User first name saved: ' . $user_claim['given_name'], 'user-claims' );
 			} else {
 				$this->logger->log( 'Failed saving user first name.', 'user-claims' );
@@ -941,7 +940,7 @@ class Hello_Login_Client_Wrapper {
 		}
 
 		if ( isset( $user_claim['family_name'] ) && empty( get_user_meta( $uid, 'last_name', true ) ) ) {
-			if ( update_user_meta( $uid, 'last_name', $user_claim['family_name'], '' ) ) {
+			if ( update_user_meta( $uid, 'last_name', $user_claim['family_name'] ) ) {
 				$this->logger->log( 'User last name saved: ' . $user_claim['family_name'], 'user-claims' );
 			} else {
 				$this->logger->log( 'Failed saving user last name.', 'user-claims' );
