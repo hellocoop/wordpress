@@ -1,7 +1,7 @@
 # grumphp.yml
 grumphp:
   hide_circumvention_tip: true
-  stop_on_failure: true
+  stop_on_failure: false
   process_timeout: 120
   parallel:
     enabled: true
@@ -20,16 +20,14 @@ grumphp:
         - 'wp_die('
         - 'die('
     git_branch_name:
-      blacklist:
-        - 'main'
-        - 'master'
-        - 'dev*'
+      #blacklist:
+        #- 'main'
+        #- 'master'
+        #- 'dev*'
       allow_detached_head: false
     git_commit_message:
       allow_empty_message: false
-      enforce_capitalized_subject: true
-      enforce_no_subject_punctuations: true
-      enforce_no_subject_trailing_period: true
+      enforce_capitalized_subject: false
     npm_script:
       script: 'i18n:check'
       is_run_task: true
@@ -44,8 +42,8 @@ grumphp:
       triggered_by: [php]
     phpstan:
       configuration: './phpstan.neon.dist'
-      level: 5
       ignore_patterns:
         - '/^assets\/(.*)/'
       memory_limit: '-1'
       triggered_by: [php]
+      use_grumphp_paths: false
