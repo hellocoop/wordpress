@@ -6,7 +6,3 @@ parameters:
   paths:
     - hello-login.php
     - includes/
-  ignoreErrors:
-    # Uses func_get_args()
-    #- '#^Function apply_filters(_ref_array)? invoked with [34567] parameters, 2 required\.$#'
-    - '#^Function [^ ]+ invoked with [1234] parameters?, 0 required\.$#'
