@@ -82,7 +82,7 @@ class Hello_Login_Invites {
 				<table class="form-table">
 					<tbody>
 					<tr class="form-field">
-						<th scope="row"><label for="invite_role">Role </label></th>
+						<th scope="row"><label for="invite-user-role">Role </label></th>
 						<td>
 							<select name="role" id="invite-user-role">
 								<?php wp_dropdown_roles( get_option( 'default_role' ) ); ?>
@@ -114,6 +114,19 @@ class Hello_Login_Invites {
 	 * @return void
 	 */
 	public function handle_event() {
+		$content_type = '';
+		if ( isset( $_SERVER['CONTENT_TYPE'] ) ) {
+			$content_type = explode( ';', sanitize_text_field( wp_unslash( $_SERVER['CONTENT_TYPE'] ) ), 2 )[0];
+		}
+		if ( 'application/json' !== $content_type ) {
+			http_response_code( 400 );
+			exit();
+		}
 
+		$body = http_get_request_body();
+
+		$event = json_decode( $body );
+
+		$this->logger->log( $event, 'invites' );
 	}
 }
