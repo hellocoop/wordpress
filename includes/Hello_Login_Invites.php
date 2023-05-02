@@ -72,7 +72,7 @@ class Hello_Login_Invites {
 			return;
 		}
 		$return_uri = admin_url( 'user-new.php' );
-		$initiated_login_uri = site_url( '?hello-login=event' );
+		$initiated_login_uri = site_url( '?hello-login=start' );
 		$event_uri = site_url( '?hello-login=event' );
 		?>
 		<div class="wrap">
