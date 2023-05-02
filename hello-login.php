@@ -378,17 +378,23 @@ class Hello_Login {
 
 		$filename = $class . '.php';
 
-		// Internal files are all lowercase and use dashes in filenames.
-		if ( false === strpos( $filename, '\\' ) ) {
-			$filename = strtolower( str_replace( '_', '-', $filename ) );
-		} else {
-			$filename  = str_replace( '\\', DIRECTORY_SEPARATOR, $filename );
-		}
-
 		$filepath = dirname( __FILE__ ) . '/includes/' . $filename;
 
 		if ( file_exists( $filepath ) ) {
 			require_once $filepath;
+		} else {
+			// Some internal files are all lowercase and use dashes in filenames.
+			if ( false === strpos( $filename, '\\' ) ) {
+				$filename = strtolower( str_replace( '_', '-', $filename ) );
+			} else {
+				$filename = str_replace( '\\', DIRECTORY_SEPARATOR, $filename );
+			}
+
+			$filepath = dirname( __FILE__ ) . '/includes/' . $filename;
+
+			if ( file_exists( $filepath ) ) {
+				require_once $filepath;
+			}
 		}
 	}
 
