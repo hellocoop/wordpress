@@ -77,38 +77,7 @@ class Hello_Login_Client_Wrapper {
 	 * @return Hello_Login_Client_Wrapper
 	 */
 	public static function register( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ): Hello_Login_Client_Wrapper {
-		$client_wrapper  = new self( $client, $settings, $logger );
-
-		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
-		add_action( 'parse_request', array( $client_wrapper, 'redirect_uri_parse_request' ) );
-
-		return $client_wrapper;
-	}
-
-	/**
-	 * Implements WordPress parse_request action.
-	 *
-	 * @param WP $wp The WordPress environment instance.
-	 */
-	public function redirect_uri_parse_request( WP $wp ) {
-		if ( isset( $wp->query_vars['hello-login'] ) ) {
-			if ( 'callback' === $wp->query_vars['hello-login'] ) {
-				$this->authentication_request_callback();
-				exit;
-			}
-			if ( 'unlink' === $wp->query_vars['hello-login'] ) {
-				$this->unlink_hello();
-				exit;
-			}
-			if ( 'quickstart' === $wp->query_vars['hello-login'] ) {
-				$this->quickstart_callback();
-				exit;
-			}
-			if ( 'start' === $wp->query_vars['hello-login'] ) {
-				$this->start_auth();
-				exit;
-			}
-		}
+		return new self( $client, $settings, $logger );
 	}
 
 	/**

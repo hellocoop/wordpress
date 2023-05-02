@@ -49,12 +49,16 @@ class Hello_Login_Invites {
 	 * @param Hello_Login_Option_Logger   $logger   The plugin logger instance.
 	 * @param Hello_Login_Option_Settings $settings The plugin settings instance.
 	 *
-	 * @return void
+	 * @return Hello_Login_Invites
 	 */
-	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings ) {
+	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings ): Hello_Login_Invites {
 		$invites  = new self( $logger, $settings );
 
-		add_action( 'in_admin_header', array( $invites, 'hello_login_in_admin_header_invite' ) );
+		if ( is_admin() && 'user-new.php' == $GLOBALS['pagenow'] ) {
+			add_action( 'in_admin_header', array( $invites, 'hello_login_in_admin_header_invite' ) );
+		}
+
+		return $invites;
 	}
 
 	/**
@@ -102,5 +106,14 @@ class Hello_Login_Invites {
 			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Handle the event endpoint.
+	 *
+	 * @return void
+	 */
+	public function handle_event() {
+
 	}
 }

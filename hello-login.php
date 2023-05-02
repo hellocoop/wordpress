@@ -119,6 +119,13 @@ class Hello_Login {
 	public Hello_Login_Client_Wrapper $client_wrapper;
 
 	/**
+	 * Hello invites.
+	 *
+	 * @var Hello_Login_Invites
+	 */
+	public Hello_Login_Invites $invites;
+
+	/**
 	 * Setup the plugin
 	 *
 	 * @param Hello_Login_Option_Settings $settings The settings object.
@@ -180,11 +187,40 @@ class Hello_Login {
 			Hello_Login_Settings_Page::register( $this->settings, $this->logger );
 		}
 
+		$this->invites = Hello_Login_Invites::register( $this->logger, $this->settings );
+
 		if ( ! empty( $this->settings->client_id ) ) {
 			add_action( 'show_user_profile', array( $this, 'hello_login_user_profile_self' ) );
 			add_action( 'edit_user_profile', array( $this, 'hello_login_user_profile_other' ) );
-			if ( is_admin() && 'user-new.php' == $GLOBALS['pagenow'] ) {
-				Hello_Login_Invites::register( $this->logger, $this->settings );
+		}
+
+		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
+		add_action( 'parse_request', array( $this, 'route_hello_login_request' ) );
+	}
+
+	/**
+	 * Implements WordPress parse_request action.
+	 *
+	 * @param WP $wp The WordPress environment instance.
+	 */
+	public function route_hello_login_request( WP $wp ) {
+		if ( isset( $wp->query_vars['hello-login'] ) ) {
+			switch ( $wp->query_vars['hello-login'] ) {
+				case 'callback':
+					$this->client_wrapper->authentication_request_callback();
+					exit;
+				case 'unlink':
+					$this->client_wrapper->unlink_hello();
+					exit;
+				case 'quickstart':
+					$this->client_wrapper->quickstart_callback();
+					exit;
+				case 'start':
+					$this->client_wrapper->start_auth();
+					exit;
+				case 'event':
+					$this->invites->handle_event();
+					exit;
 			}
 		}
 	}
