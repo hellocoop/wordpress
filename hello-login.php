@@ -183,6 +183,9 @@ class Hello_Login {
 		if ( ! empty( $this->settings->client_id ) ) {
 			add_action( 'show_user_profile', array( $this, 'hello_login_user_profile_self' ) );
 			add_action( 'edit_user_profile', array( $this, 'hello_login_user_profile_other' ) );
+			if ( is_admin() && 'user-new.php' == $GLOBALS['pagenow'] ) {
+				add_action('in_admin_header', array($this, 'hello_login_in_admin_header_invite'));
+			}
 		}
 	}
 
@@ -248,6 +251,53 @@ class Hello_Login {
 				</td>
 			</tr>
 		</table>
+		<?php
+	}
+
+	/**
+	 * Add Hellō user invites to the top of add new user form.
+	 *
+	 * @return void
+	 */
+	public function hello_login_in_admin_header_invite() {
+		$inviter_id = get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true );
+		if ( empty( $inviter_id ) ) {
+			return;
+		}
+		$return_uri = admin_url( 'user-new.php' );
+		$initiated_login_uri = site_url( '?hello-login=event' );
+		$event_uri = site_url( '?hello-login=event' );
+		?>
+		<div class="wrap">
+			<h1 id="invite-new-user">Invite New User</h1>
+			<p>Invite new users to this site.</p>
+			<form action="https://wallet.hello.coop/invite" method="get">
+				<table class="form-table">
+					<tbody>
+					<tr class="form-field">
+						<th scope="row"><label for="invite_role">Role </label></th>
+						<td>
+							<select name="role" id="invite-user-role">
+								<?php wp_dropdown_roles( get_option( 'default_role' ) ); ?>
+							</select>
+							<input type="hidden" name="inviter" value="<?php print esc_attr( $inviter_id ); ?>" />
+							<input type="hidden" name="return_uri" value="<?php print esc_attr( $return_uri ); ?>" />
+							<input type="hidden" name="initiated_login_uri" value="<?php print esc_attr( $initiated_login_uri ); ?>" />
+							<input type="hidden" name="client_id" value="<?php print esc_attr( $this->settings->client_id ); ?>" />
+							<input type="hidden" name="prompt" value="Subscriber to <?php print esc_attr( get_bloginfo( 'name' ) ); ?>" />
+							<input type="hidden" name="event_uri" value="<?php print esc_attr( $event_uri ); ?>" />
+						</td>
+					</tr>
+					<tr class="form-field">
+						<th scope="row"></th>
+						<td>
+							<button type="submit" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Invite with Hellō">Invite with Hellō</button>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
 		<?php
 	}
 
