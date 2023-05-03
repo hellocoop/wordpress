@@ -114,19 +114,85 @@ class Hello_Login_Invites {
 	 * @return void
 	 */
 	public function handle_event() {
+		$request_method = '';
+		if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {
+			$request_method = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) );
+		}
+		if ( 'POST' !== $request_method ) {
+			$this->logger->log( "POST method expected, got: $request_method", 'invites' );
+			http_response_code( 405 );
+			exit();
+		}
+
+		if ( ! isset( $_SERVER['CONTENT_LENGTH'] ) ) {
+			$this->logger->log( 'Content length missing', 'invites' );
+			http_response_code( 411 );
+			exit();
+		}
+
+		$content_length = intval( sanitize_text_field( wp_unslash( $_SERVER['CONTENT_LENGTH'] ) ) );
+		if ( $content_length > 1024 * 1024 ) {
+			$this->logger->log( "Content length too large: $content_length", 'invites' );
+			http_response_code( 413 );
+			exit();
+		}
+
 		$content_type = '';
 		if ( isset( $_SERVER['CONTENT_TYPE'] ) ) {
 			$content_type = explode( ';', sanitize_text_field( wp_unslash( $_SERVER['CONTENT_TYPE'] ) ), 2 )[0];
 		}
 		if ( 'application/json' !== $content_type ) {
+			$this->logger->log( "Invalid content type: $content_type", 'invites' );
 			http_response_code( 400 );
 			exit();
 		}
 
-		$body = http_get_request_body();
+		$body = file_get_contents( 'php://input' );
 
-		$event = json_decode( $body );
+		$event = $this->decode_event( $body );
+
+		if ( is_wp_error( $event ) ) {
+			http_response_code( 400 );
+			exit();
+		}
 
 		$this->logger->log( $event, 'invites' );
+	}
+
+	/**
+	 * Decode the JWT corresponding to and event.
+	 *
+	 * @param string $event_jwt
+	 *
+	 * @return array|WP_Error
+	 */
+	public function decode_event( string $event_jwt ) {
+		$jwt_parts = explode( '.', $event_jwt );
+
+		if ( 3 != count( $jwt_parts ) ) {
+			$this->logger->log( "Invalid event, not 3 parts: $event_jwt", 'decode_event' );
+
+			return new WP_Error( 'invalid_event' );
+		}
+
+		$payload_b64 = $jwt_parts[1];
+		$payload_b64 = str_replace( '_', '/', str_replace( '-', '+', $payload_b64 ) );
+
+		$payload_json = base64_decode( $payload_b64, true );
+		if ( false === $payload_json ) {
+			$this->logger->log( "Invalid event, base64 decode of payload failed: $payload_b64", 'decode_event' );
+
+			return new WP_Error( 'invalid_event' );
+		}
+
+		$payload_array = json_decode( $payload_json, true );
+
+		if ( 'array' !== gettype( $payload_array ) ) {
+			$this->logger->log( "Invalid event, JSON decode of payload failed: $payload_json", 'decode_event' );
+
+			return new WP_Error( 'invalid_event' );
+		}
+
+		return $payload_array;
 	}
 }
