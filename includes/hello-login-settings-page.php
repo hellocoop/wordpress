@@ -400,22 +400,6 @@ class Hello_Login_Settings_Page {
 				'section'     => 'client_settings',
 			),
 			/*
-			'endpoint_login'    => array(
-				'title'       => __( 'Login Endpoint URL', 'hello-login' ),
-				'description' => __( 'Identify provider authorization endpoint.', 'hello-login' ),
-				'example'     => 'https://example.com/oauth2/authorize',
-				'type'        => 'text',
-				'disabled'    => defined( 'HELLO_LOGIN_ENDPOINT_LOGIN_URL' ),
-				'section'     => 'client_settings',
-			),
-			'endpoint_token'    => array(
-				'title'       => __( 'Token Validation Endpoint URL', 'hello-login' ),
-				'description' => __( 'Identify provider token endpoint.', 'hello-login' ),
-				'example'     => 'https://example.com/oauth2/token',
-				'type'        => 'text',
-				'disabled'    => defined( 'HELLO_LOGIN_ENDPOINT_TOKEN_URL' ),
-				'section'     => 'client_settings',
-			),
 			'http_request_timeout'      => array(
 				'title'       => __( 'HTTP Request Timeout', 'hello-login' ),
 				'description' => __( 'Set the timeout for requests made to the IDP. Default value is 5.', 'hello-login' ),

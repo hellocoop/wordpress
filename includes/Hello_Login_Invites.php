@@ -78,7 +78,7 @@ class Hello_Login_Invites {
 		<div class="wrap">
 			<h1 id="invite-new-user">Invite New User</h1>
 			<p>Invite new users to this site.</p>
-			<form action="https://wallet.hello.coop/invite" method="get">
+			<form action="<?php print esc_attr( $this->settings->endpoint_invite ); ?>" method="get">
 				<table class="form-table">
 					<tbody>
 					<tr class="form-field">
@@ -167,6 +167,9 @@ class Hello_Login_Invites {
 	 * @return array|WP_Error
 	 */
 	public function decode_event( string $event_jwt ) {
+		// TODO: use the introspection endpoint when available
+		//       $this->settings->endpoint_introspection
+		//       https://www.hello.dev/documentation/Integrating-hello.html#_5-1-introspection
 		$jwt_parts = explode( '.', $event_jwt );
 
 		if ( 3 != count( $jwt_parts ) ) {

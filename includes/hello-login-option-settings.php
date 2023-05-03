@@ -10,26 +10,22 @@
  */
 
 /**
- * OpenId_Connect_Generic_Option_Settings class.
+ * Hello_Login_Option_Settings class.
  *
  * WordPress options handling.
  *
  * @package Hello_Login
  * @category  Settings
  *
- * Legacy Settings:
- *
- * @property string $ep_login    The login endpoint.
- * @property string $ep_token    The token endpoint.
- * @property string $ep_userinfo The userinfo endpoint.
- *
  * OAuth Client Settings:
  *
  * @property string $client_id            The ID the client will be recognized as when connecting to the Identity provider.
  * @property string $scope                The list of additional scopes this client should access.
- * @property string $endpoint_login       The IDP authorization endpoint URL.
- * @property string $endpoint_token       The IDP token validation endpoint URL.
- * @property string $provider_hint         The provider hint.
+ * @property string $endpoint_login       The Hellō authorization endpoint URL.
+ * @property string $endpoint_token       The Hellō token endpoint URL.
+ * @property string $endpoint_invite      The Hellō invite endpoint URL.
+ * @property string $endpoint_introspect  The Hellō introspect endpoint URL.
+ * @property string $provider_hint        The provider hint.
  *
  * Non-standard Settings:
  *
@@ -79,6 +75,8 @@ class Hello_Login_Option_Settings {
 		'client_id'                 => 'HELLO_LOGIN_CLIENT_ID',
 		'endpoint_login'            => 'HELLO_LOGIN_ENDPOINT_LOGIN_URL',
 		'endpoint_token'            => 'HELLO_LOGIN_ENDPOINT_TOKEN_URL',
+		'endpoint_invite'           => 'HELLO_LOGIN_ENDPOINT_INVITE_URL',
+		'endpoint_introspect'       => 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL',
 		'scope'                     => 'HELLO_LOGIN_CLIENT_SCOPE',
 		'create_if_does_not_exist'  => 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST',
 		'link_existing_users'       => 'HELLO_LOGIN_LINK_EXISTING_USERS',
