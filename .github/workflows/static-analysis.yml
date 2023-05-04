@@ -13,7 +13,7 @@ env:
   PHP_VERSION: '7.4'
   WP_MULTISITE: 0
   COMPOSER_VERSION: '2.2'
-  ACTION_VERSION: 2
+  ACTION_VERSION: 3
 
 jobs:
   check_static_analysis:
@@ -24,7 +24,14 @@ jobs:
     steps:
     - name: Checkout Code
       # https://github.com/marketplace/actions/checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Setup PHP & Composer Environment
+      # https://github.com/marketplace/actions/setup-php-action
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ env.PHP_VERSION }}
+        tools: "composer:${{ env.COMPOSER_VERSION }}"
 
     - name: Get Composer Cache Directory
       id: composer-cache
@@ -42,16 +49,6 @@ jobs:
         key: ${{ runner.os }}-build-${{ env.composer-cache-name }}-v${{ env.ACTION_VERSION }}-${{ hashFiles('**/composer.lock') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.composer-cache-name }}-v${{ env.ACTION_VERSION }}-
-
-    - name: Setup PHP & Composer Environment
-      # https://github.com/marketplace/actions/setup-php-action
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ env.PHP_VERSION }}
-        tools: "composer:${{ env.COMPOSER_VERSION }}"
-
-    - name: Environment Check
-      run: php -v && composer --version
 
     - name: Install Composer Dependencies
       run: composer install
