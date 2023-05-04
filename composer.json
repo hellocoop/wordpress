@@ -67,15 +67,7 @@
 	},
 	"autoload": {
 		"classmap": [
-			"hello-login.php",
-			"includes/hello-login-client.php",
-			"includes/hello-login-client-wrapper.php",
-			"includes/hello-login-login-form.php",
-			"includes/hello-login-option-logger.php",
-			"includes/hello-login-option-settings.php",
-			"includes/hello-login-settings-page.php",
-			"includes/hello-login-util.php",
-			"includes/Hello_Login_Invites.php"
+			"includes/"
 		]
 	},
 	"scripts": {
