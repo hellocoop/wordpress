@@ -10,13 +10,32 @@
  */
 
 /**
- * Hello_Login_Invites class.
- *
  * Hello Invites logic and handler.
  *
  * @package Hello_Login
  */
 class Hello_Login_Invites {
+
+	/**
+	 * Event URI for the invite creation.
+	 *
+	 * @var string
+	 */
+	const INVITE_CREATED_EVENT_URI = 'https://hello.coop/invite/created';
+
+	/**
+	 * Event URI for the invite creation.
+	 *
+	 * @var string
+	 */
+	const INVITE_DECLINED_EVENT_URI = 'https://hello.coop/invite/declined';
+
+	/**
+	 * Event URI for the invite creation.
+	 *
+	 * @var string
+	 */
+	const INVITE_RETRACTED_EVENT_URI = 'https://hello.coop/invite/retracted';
 
 	/**
 	 * Plugin logger.
@@ -33,14 +52,23 @@ class Hello_Login_Invites {
 	private Hello_Login_Option_Settings $settings;
 
 	/**
+	 * Users service.
+	 *
+	 * @var Hello_Login_Users $users
+	 */
+	private Hello_Login_Users $users;
+
+	/**
 	 * The class constructor.
 	 *
-	 * @param Hello_Login_Option_Logger   $logger   Plugin logs.
-	 * @param Hello_Login_Option_Settings $settings A plugin settings object instance.
+	 * @param Hello_Login_Option_Logger   $logger   The plugin logger instance.
+	 * @param Hello_Login_Option_Settings $settings The plugin settings object instance.
+	 * @param Hello_Login_Users           $users    The users service.
 	 */
-	public function __construct( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings ) {
+	public function __construct( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Users $users ) {
 		$this->logger = $logger;
 		$this->settings = $settings;
+		$this->users = $users;
 	}
 
 	/**
@@ -48,11 +76,12 @@ class Hello_Login_Invites {
 	 *
 	 * @param Hello_Login_Option_Logger   $logger   The plugin logger instance.
 	 * @param Hello_Login_Option_Settings $settings The plugin settings instance.
+	 * @param Hello_Login_Users           $users    The users service.
 	 *
 	 * @return Hello_Login_Invites
 	 */
-	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings ): Hello_Login_Invites {
-		$invites  = new self( $logger, $settings );
+	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Users $users ): Hello_Login_Invites {
+		$invites  = new self( $logger, $settings, $users );
 
 		if ( is_admin() && 'user-new.php' == $GLOBALS['pagenow'] ) {
 			add_action( 'in_admin_header', array( $invites, 'hello_login_in_admin_header_invite' ) );
@@ -67,7 +96,7 @@ class Hello_Login_Invites {
 	 * @return void
 	 */
 	public function hello_login_in_admin_header_invite() {
-		$inviter_id = get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true );
+		$inviter_id = Hello_Login_Users::get_hello_sub();
 		if ( empty( $inviter_id ) ) {
 			return;
 		}
@@ -114,6 +143,45 @@ class Hello_Login_Invites {
 	 * @return void
 	 */
 	public function handle_event() {
+		$this->validate_request();
+
+		$body = file_get_contents( 'php://input' );
+
+		$event = $this->decode_event( $body );
+
+		if ( is_wp_error( $event ) ) {
+			http_response_code( 400 );
+			exit();
+		}
+
+		$this->logger->log( $event, 'invites' );
+
+		$sub = $event['sub'];
+		$email = $event['email'];
+
+		foreach ( $event['events'] as $type => $sub_event ) {
+			switch ( $type ) {
+				case self::INVITE_CREATED_EVENT_URI:
+					$this->handle_created( $sub, $email, $sub_event );
+					break;
+				case self::INVITE_RETRACTED_EVENT_URI:
+					$this->handle_retracted( $sub, $email, $sub_event );
+					break;
+				case self::INVITE_DECLINED_EVENT_URI:
+					$this->handle_declined( $sub, $email, $sub_event );
+					break;
+				default:
+					$this->logger->log( "Unknown event type: $type", 'invites' );
+			}
+		}
+	}
+
+	/**
+	 * Validate HTTP request.
+	 *
+	 * @return void
+	 */
+	protected function validate_request() {
 		$request_method = '';
 		if ( isset( $_SERVER['REQUEST_METHOD'] ) ) {
 			$request_method = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) );
@@ -146,17 +214,62 @@ class Hello_Login_Invites {
 			http_response_code( 400 );
 			exit();
 		}
+	}
 
-		$body = file_get_contents( 'php://input' );
+	/**
+	 * Handle an incoming invite created event.
+	 *
+	 * @param string $sub
+	 * @param string $email
+	 * @param array  $sub_event
+	 *
+	 * @return void
+	 */
+	protected function handle_created( string $sub, string $email, array $sub_event ) {
+		$user = $this->users->get_user_by_identity( $sub );
 
-		$event = $this->decode_event( $body );
-
-		if ( is_wp_error( $event ) ) {
-			http_response_code( 400 );
-			exit();
+		if ( ! empty( $user ) ) {
+			// TODO update role.
+			return;
 		}
 
-		$this->logger->log( $event, 'invites' );
+		$user_data = array(
+			'user_login' => $email,
+			'user_email' => $email,
+		);
+
+		$user = $this->users->create_new_user( $sub, $user_data, true );
+
+		if ( is_wp_error( $user ) ) {
+			$this->logger->log( 'User creation failed', 'invites' );
+			http_response_code( 400 );
+		}
+	}
+
+	/**
+	 * Handle an incoming invite retracted event.
+	 *
+	 * @param string $sub
+	 * @param string $email
+	 * @param array  $sub_event
+	 *
+	 * @return void
+	 */
+	protected function handle_retracted( string $sub, string $email, array $sub_event ) {
+		// TODO
+	}
+
+	/**
+	 * Handle an incoming invite declined event.
+	 *
+	 * @param string $sub
+	 * @param string $email
+	 * @param array  $sub_event
+	 *
+	 * @return void
+	 */
+	protected function handle_declined( string $sub, string $email, array $sub_event ) {
+		// TODO
 	}
 
 	/**

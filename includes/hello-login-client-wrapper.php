@@ -27,6 +27,13 @@ class Hello_Login_Client_Wrapper {
 	private Hello_Login_Client $client;
 
 	/**
+	 * Users service.
+	 *
+	 * @var Hello_Login_Users $users
+	 */
+	private Hello_Login_Users $users;
+
+	/**
 	 * The settings object instance.
 	 *
 	 * @var Hello_Login_Option_Settings
@@ -41,30 +48,18 @@ class Hello_Login_Client_Wrapper {
 	private Hello_Login_Option_Logger $logger;
 
 	/**
-	 * User linking error code.
-	 *
-	 * @var string
-	 */
-	const LINK_ERROR_CODE = 'user_link_error';
-
-	/**
-	 * User linking error message.
-	 *
-	 * @var string
-	 */
-	const LINK_ERROR_MESSAGE = 'User already linked to a different Hellō account.';
-
-	/**
 	 * Inject necessary objects and services into the client.
 	 *
 	 * @param Hello_Login_Client          $client   A plugin client object instance.
 	 * @param Hello_Login_Option_Settings $settings A plugin settings object instance.
 	 * @param Hello_Login_Option_Logger   $logger   A plugin logger object instance.
+	 * @param Hello_Login_Users           $users    A users service instance.
 	 */
-	public function __construct( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
+	public function __construct( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger, Hello_Login_Users $users ) {
 		$this->client = $client;
 		$this->settings = $settings;
 		$this->logger = $logger;
+		$this->users = $users;
 	}
 
 	/**
@@ -73,11 +68,12 @@ class Hello_Login_Client_Wrapper {
 	 * @param Hello_Login_Client          $client   The plugin client instance.
 	 * @param Hello_Login_Option_Settings $settings The plugin settings instance.
 	 * @param Hello_Login_Option_Logger   $logger   The plugin logger instance.
+	 * @param Hello_Login_Users           $users    The users service.
 	 *
 	 * @return Hello_Login_Client_Wrapper
 	 */
-	public static function register( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ): Hello_Login_Client_Wrapper {
-		return new self( $client, $settings, $logger );
+	public static function register( Hello_Login_Client $client, Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger, Hello_Login_Users $users ): Hello_Login_Client_Wrapper {
+		return new self( $client, $settings, $logger, $users );
 	}
 
 	/**
@@ -359,9 +355,9 @@ class Hello_Login_Client_Wrapper {
 		 * Request is authenticated and authorized - start user handling
 		 */
 		$subject_identity = $client->get_subject_identity( $user_claim );
-		$user = $this->get_user_by_identity( $subject_identity );
+		$user = $this->users->get_user_by_identity( $subject_identity );
 
-		$link_error = new WP_Error( self::LINK_ERROR_CODE, __( self::LINK_ERROR_MESSAGE, 'hello-login' ) );
+		$link_error = new WP_Error( 'user_link_error', __( 'User already linked to a different Hellō account.', 'hello-login' ) );
 		$link_error->add_data( $subject_identity );
 		$message_id = '';
 
@@ -371,7 +367,7 @@ class Hello_Login_Client_Wrapper {
 				// Current user session, no user found based on 'sub'.
 
 				// Check if current user is already linked to a different Hellō account.
-				$current_user_hello_sub = get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true );
+				$current_user_hello_sub = Hello_Login_Users::get_hello_sub();
 				if ( ! empty( $current_user_hello_sub ) && $current_user_hello_sub !== $subject_identity ) {
 					$link_error->add_data( $current_user_hello_sub );
 					$link_error->add_data( get_current_user_id() );
@@ -380,11 +376,11 @@ class Hello_Login_Client_Wrapper {
 
 				// Link accounts.
 				$user = wp_get_current_user();
-				add_user_meta( $user->ID, 'hello-login-subject-identity', (string) $subject_identity, true );
+				Hello_Login_Users::add_hello_sub( $user, $subject_identity );
 
-				$this->save_extra_claims( $user->ID, $user_claim );
+				$this->users->save_extra_claims( $user->ID, $user_claim );
 
-				$this->update_user_claims( $user, $user_claim );
+				$this->users->update_user_claims( $user, $user_claim );
 
 				$message_id = 'link_success';
 			} else {
@@ -398,9 +394,9 @@ class Hello_Login_Client_Wrapper {
 						$this->error_redirect( $user );
 					}
 
-					$this->save_extra_claims( $user->ID, $user_claim );
+					$this->users->save_extra_claims( $user->ID, $user_claim );
 
-					$this->update_user_claims( $user, $user_claim );
+					$this->users->update_user_claims( $user, $user_claim );
 				} else {
 					$this->error_redirect( new WP_Error( 'identity-not-map-existing-user', __( 'User identity is not linked to an existing WordPress user.', 'hello-login' ), $user_claim ) );
 				}
@@ -409,15 +405,15 @@ class Hello_Login_Client_Wrapper {
 			// Pre-existing Hellō mapped user was found.
 
 			if ( is_user_logged_in() && get_current_user_id() !== $user->ID ) {
-				$link_error->add_data( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) );
+				$link_error->add_data( Hello_Login_Users::get_hello_sub() );
 				$link_error->add_data( get_current_user_id() );
 				$link_error->add_data( $user->ID );
 				$this->error_redirect( $link_error );
 			}
 
-			$this->save_extra_claims( $user->ID, $user_claim );
+			$this->users->save_extra_claims( $user->ID, $user_claim );
 
-			$this->update_user_claims( $user, $user_claim );
+			$this->users->update_user_claims( $user, $user_claim );
 		}
 
 		// Validate the found / created user.
@@ -480,13 +476,13 @@ class Hello_Login_Client_Wrapper {
 				$message_id = 'unlink_no_session';
 			} else {
 				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' . $target_user_id ) ) {
-					$hello_user_id = get_user_meta( $target_user_id, 'hello-login-subject-identity', true );
+					$hello_user_id = Hello_Login_Users::get_hello_sub( $target_user_id );
 
 					if ( empty( $hello_user_id ) ) {
 						$this->logger->log( 'User not linked', 'unlink_hello' );
 						$message_id = 'unlink_not_linked';
 					} else {
-						delete_user_meta( $target_user_id, 'hello-login-subject-identity' );
+						Hello_Login_Users::delete_hello_sub( $target_user_id );
 						$this->logger->log( "WordPress user $target_user_id unlinked from Hellō user $hello_user_id.", 'unlink_hello' );
 					}
 				} else {
@@ -542,37 +538,6 @@ class Hello_Login_Client_Wrapper {
 		// you did great, have a cookie!
 		wp_set_auth_cookie( $user->ID, false, '', $token );
 		do_action( 'wp_login', $user->user_login, $user );
-	}
-
-	/**
-	 * Get the user that has metadata matching a
-	 *
-	 * @param string $subject_identity The IDP identity of the user.
-	 *
-	 * @return false|WP_User
-	 */
-	public function get_user_by_identity( string $subject_identity ) {
-		// Look for user by their hello-login-subject-identity value.
-		$user_query = new WP_User_Query(
-			array(
-				'meta_query' => array(
-					array(
-						'key'   => 'hello-login-subject-identity',
-						'value' => $subject_identity,
-					),
-				),
-				// Override the default blog_id (get_current_blog_id) to find users on different sites of a multisite install.
-				'blog_id' => 0,
-			)
-		);
-
-		// If we found existing users, grab the first one returned.
-		if ( $user_query->get_total() > 0 ) {
-			$users = $user_query->get_results();
-			return $users[0];
-		}
-
-		return false;
 	}
 
 	/**
@@ -797,170 +762,22 @@ class Hello_Login_Client_Wrapper {
 			$nickname = $username;
 		}
 
-		$displayname = $this->get_displayname_from_claim( $user_claim );
-		if ( is_wp_error( $displayname ) ) {
-			return $displayname;
-		}
-
-		// Before trying to create the user, first check if a matching user exists.
-		if ( $this->settings->link_existing_users ) {
-			$uid = email_exists( $email );
-
-			if ( ! empty( $uid ) ) {
-				$user = $this->update_existing_user( $uid, $subject_identity );
-
-				if ( is_wp_error( $user ) ) {
-					return $user;
-				}
-
-				do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
-				return $user;
-			}
-		}
-
-		/**
-		 * Allow other plugins / themes to determine authorization of new accounts
-		 * based on the returned user claim.
-		 */
-		$create_user = apply_filters( 'hello-login-user-creation-test', $this->settings->create_if_does_not_exist, $user_claim );
-
-		if ( ! $create_user ) {
-			return new WP_Error( 'cannot-authorize', __( 'Can not authorize.', 'hello-login' ), $create_user );
-		}
-
-		// Copy the username for incrementing.
-		$_username = $username;
-		// Ensure prevention of linking usernames & collisions by incrementing the username if it exists.
-		// @example Original user gets "name", second user gets "name2", etc.
-		$count = 1;
-		while ( username_exists( $username ) ) {
-			$count ++;
-			$username = $_username . $count;
+		$display_name = $this->get_displayname_from_claim( $user_claim );
+		if ( is_wp_error( $display_name ) ) {
+			return $display_name;
 		}
 
 		$user_data = array(
 			'user_login' => $username,
 			'user_pass' => wp_generate_password( 32, true, true ),
 			'user_email' => $email,
-			'display_name' => $displayname,
+			'display_name' => $display_name,
 			'nickname' => $nickname,
 			'first_name' => $user_claim['given_name'] ?? '',
 			'last_name' => $user_claim['family_name'] ?? '',
 		);
-		$user_data = apply_filters( 'hello-login-alter-user-data', $user_data, $user_claim );
 
-		// Create the new user.
-		$uid = wp_insert_user( $user_data );
-
-		// Make sure we didn't fail in creating the user.
-		if ( is_wp_error( $uid ) ) {
-			return new WP_Error( 'failed-user-creation', __( 'Failed user creation.', 'hello-login' ), $uid );
-		}
-
-		// Retrieve our new user.
-		$user = get_user_by( 'id', $uid );
-
-		// Save some metadata about this new user for the future.
-		add_user_meta( $user->ID, 'hello-login-subject-identity', (string) $subject_identity, true );
-
-		// Log the results.
-		$this->logger->log( "New user created: {$user->user_login} ($uid)", 'success' );
-
-		// Allow plugins / themes to take action on new user creation.
-		do_action( 'hello-login-user-create', $user, $user_claim );
-
-		return $user;
-	}
-
-	/**
-	 * Save extra user claims as user metadata.
-	 *
-	 * @param int   $uid The WordPress User ID.
-	 * @param array $user_claim The user claim.
-	 * @return void
-	 */
-	public function save_extra_claims( int $uid, array $user_claim ) {
-		foreach ( $user_claim as $key => $value ) {
-			if ( ! in_array( $key, array( 'iss', 'sub', 'aud', 'exp', 'iat', 'jti', 'auth_time', 'nonce', 'acr', 'amr', 'azp' ) ) ) {
-				if ( update_user_meta( $uid, 'hello-login-claim-' . $key, $value ) ) {
-					$this->logger->log( 'User claim saved as meta: hello-login-claim-' . $key . ' = ' . $value, 'user-claims' );
-				}
-			}
-		}
-	}
-
-	/**
-	 * Update user claims as user metadata.
-	 *
-	 * @param WP_User $user The WordPress User.
-	 * @param array   $user_claim The user claim.
-	 *
-	 * @return void
-	 */
-	public function update_user_claims( WP_User $user, array $user_claim ) {
-		$uid = $user->ID;
-
-		if ( isset( $user_claim['given_name'] ) && empty( get_user_meta( $uid, 'first_name', true ) ) ) {
-			if ( update_user_meta( $uid, 'first_name', $user_claim['given_name'] ) ) {
-				$this->logger->log( 'User first name saved: ' . $user_claim['given_name'], 'user-claims' );
-			} else {
-				$this->logger->log( 'Failed saving user first name.', 'user-claims' );
-			}
-		}
-
-		if ( isset( $user_claim['family_name'] ) && empty( get_user_meta( $uid, 'last_name', true ) ) ) {
-			if ( update_user_meta( $uid, 'last_name', $user_claim['family_name'] ) ) {
-				$this->logger->log( 'User last name saved: ' . $user_claim['family_name'], 'user-claims' );
-			} else {
-				$this->logger->log( 'Failed saving user last name.', 'user-claims' );
-			}
-		}
-
-		if ( isset( $user_claim['email'] ) && $user_claim['email'] != $user->user_email ) {
-			$res = wp_update_user(
-				array(
-					'ID' => $uid,
-					'user_email' => $user_claim['email'],
-				)
-			);
-
-			if ( is_wp_error( $res ) ) {
-				$this->logger->log( $res );
-				$this->logger->log( "Email update failed for user $uid to email {$user_claim['email']}", 'user-claims' );
-			} else {
-				$this->logger->log( "User email updated from $user->user_email to {$user_claim['email']}.", 'user-claims' );
-				$user->user_email = $user_claim['email'];
-			}
-		}
-	}
-
-	/**
-	 * Update an existing user with OpenID Connect metadata
-	 *
-	 * @param int    $uid              The WordPress User ID.
-	 * @param string $subject_identity The subject identity from the IDP.
-	 *
-	 * @return WP_Error|WP_User
-	 */
-	public function update_existing_user( int $uid, string $subject_identity ) {
-		$uid_hello_sub = get_user_meta( $uid, 'hello-login-subject-identity', true );
-		if ( ! empty( $uid_hello_sub ) && $uid_hello_sub !== $subject_identity ) {
-			$link_error = new WP_Error( self::LINK_ERROR_CODE, __( self::LINK_ERROR_MESSAGE, 'hello-login' ) );
-			$link_error->add_data( $subject_identity );
-			$link_error->add_data( $uid_hello_sub );
-			$link_error->add_data( $uid );
-
-			return $link_error;
-		}
-
-		// Add the OpenID Connect metadata.
-		update_user_meta( $uid, 'hello-login-subject-identity', strval( $subject_identity ) );
-
-		// Allow plugins / themes to take action on user update.
-		do_action( 'hello-login-user-update', $uid );
-
-		// Return our updated user.
-		return get_user_by( 'id', $uid );
+		return $this->users->create_new_user( $subject_identity, $user_data );
 	}
 
 	/**
@@ -976,7 +793,7 @@ class Hello_Login_Client_Wrapper {
 		} catch ( Exception $e ) {
 			$msg = sprintf( 'Fail to generate PKCE code challenge : %s', $e->getMessage() );
 			$this->logger->log( $msg, 'pkce_code_generator' );
-			exit( $msg );
+			exit( esc_html( $msg ) );
 		}
 
 		$verifier = rtrim( strtr( base64_encode( $verifier_bytes ), '+/', '-_' ), '=' );

@@ -378,9 +378,9 @@ class Hello_Login_Client {
 	 *
 	 * @param array $id_token_claim The ID token claim.
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	public function get_subject_identity( array $id_token_claim ) {
+	public function get_subject_identity( array $id_token_claim ): string {
 		return $id_token_claim['sub'];
 	}
 

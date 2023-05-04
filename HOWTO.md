@@ -99,11 +99,10 @@ add_filter('hello-login-user-creation-test', function( $result, $user_claim ) {
 
 Modify a new user's data immediately before the user is created.
 
-Provides 2 arguments: the `$user_data` array that will be sent to `wp_insert_user()`, and the `$user_claim` from the 
-server.
+Provides 1 argument: the `$user_data` array that will be sent to `wp_insert_user()`.
 
 ```php
-add_filter('hello-login-alter-user-data', function( $user_data, $user_claim ) {
+add_filter('hello-login-alter-user-data', function( $user_data ) {
     // Don't register any user with their real email address. Create a fake internal address.
     if ( !empty( $user_data['user_email'] ) ) {
         $email_array = explode( '@', $user_data['user_email'] );
@@ -127,10 +126,10 @@ You'll probably only ever want to use `add_action` when hooking into this plugin
 
 React to a new user being created by this plugin.
 
-Provides 2 arguments: the `\WP_User` object that was created, and the `$user_claim` from the IDP server.
+Provides 1 argument: the `\WP_User` object that was created.
 
 ```php
-add_action('hello-login-user-create', function( $user, $user_claim ) {
+add_action('hello-login-user-create', function( $user ) {
     // Send the user an email when their account is first created.
     wp_mail( 
         $user->user_email,

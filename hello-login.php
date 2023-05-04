@@ -36,11 +36,11 @@ Notes
   - hello-login-alter-user-data                         - modify user data before a new user is created
 
   Actions
-  - hello-login-user-create                     - 2 args: fires when a new user is created by this plugin
+  - hello-login-user-create                     - 1 arg: user, fires when a new user is created by this plugin
   - hello-login-user-update                     - 1 arg: user ID, fires when user is updated by this plugin
   - hello-login-update-user-using-current-claim - 2 args: fires every time an existing user logs in and the claims are updated.
-  - hello-login-redirect-user-back              - 2 args: $redirect_url, $user. Allows interruption of redirect during login.
-  - hello-login-user-logged-in                  - 1 arg: $user, fires when user is logged in.
+  - hello-login-redirect-user-back              - 2 args: redirect_url, $user. Allows interruption of redirect during login.
+  - hello-login-user-logged-in                  - 1 arg: user, fires when user is logged in.
   - hello-login-cron-daily                      - daily cron action
 
   User Metadata
@@ -168,7 +168,9 @@ class Hello_Login {
 			$this->logger
 		);
 
-		$this->client_wrapper = Hello_Login_Client_Wrapper::register( $client, $this->settings, $this->logger );
+		$users = new Hello_Login_Users( $this->logger, $this->settings );
+
+		$this->client_wrapper = Hello_Login_Client_Wrapper::register( $client, $this->settings, $this->logger, $users );
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			return;
 		}
@@ -187,7 +189,7 @@ class Hello_Login {
 			Hello_Login_Settings_Page::register( $this->settings, $this->logger );
 		}
 
-		$this->invites = Hello_Login_Invites::register( $this->logger, $this->settings );
+		$this->invites = Hello_Login_Invites::register( $this->logger, $this->settings, $users );
 
 		if ( ! empty( $this->settings->client_id ) ) {
 			add_action( 'show_user_profile', array( $this, 'hello_login_user_profile_self' ) );
@@ -234,7 +236,7 @@ class Hello_Login {
 	public function hello_login_user_profile_self( WP_User $profileuser ) {
 		$link_url = create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_edit_user_link( $profileuser->ID ) ) );
 		$update_email_url = create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_edit_user_link( $profileuser->ID ) ), 'update_email' );
-		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
+		$hello_user_id = Hello_Login_Users::get_hello_sub( $profileuser->ID );
 		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink' ), 'unlink' . $profileuser->ID );
 		?>
 		<h2>Hellō</h2>
@@ -271,7 +273,7 @@ class Hello_Login {
 	 * @return void
 	 */
 	public function hello_login_user_profile_other( WP_User $profileuser ) {
-		$hello_user_id = get_user_meta( $profileuser->ID, 'hello-login-subject-identity', true );
+		$hello_user_id = Hello_Login_Users::get_hello_sub( $profileuser );
 		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink&user_id=' . $profileuser->ID ), 'unlink' . $profileuser->ID );
 		?>
 		<h2>Hellō</h2>

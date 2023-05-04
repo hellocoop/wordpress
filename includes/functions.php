@@ -41,7 +41,7 @@ function create_auth_request_start_url( string $redirect_to_path, string $scope_
  */
 function hello_login_is_user_linked(): bool {
 	if ( is_user_logged_in() ) {
-		$hello_user_id = get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true );
+		$hello_user_id = Hello_Login_Users::get_hello_sub();
 
 		return ! empty( $hello_user_id );
 	}

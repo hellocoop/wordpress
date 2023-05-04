@@ -564,7 +564,7 @@ class Hello_Login_Settings_Page {
 			<?php } ?>
 
 			<?php if ( $configured || $debug ) { ?>
-				<?php if ( empty( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ) && ! $link_not_now && ! is_multisite() ) { ?>
+				<?php if ( empty( Hello_Login_Users::get_hello_sub() ) && ! $link_not_now && ! is_multisite() ) { ?>
 					<h2>You are logged into this account with a username and password. Link this account with Hellō to login with Hellō in the future.</h2>
 					<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link this account with Hellō" onclick="parent.location='<?php print esc_js( $start_url ); ?>'"></button>
 					<a href="<?php print esc_attr( $settings_page_not_now_url ); ?>" class="hello-link-not-now">Not Now</a>
@@ -587,7 +587,7 @@ class Hello_Login_Settings_Page {
 			<?php if ( $debug ) { ?>
 				<h4>Debug</h4>
 
-				<p>Hellō user id: <code><?php print esc_html( get_user_meta( get_current_user_id(), 'hello-login-subject-identity', true ) ); ?></code></p>
+				<p>Hellō user id: <code><?php print esc_html( Hello_Login_Users::get_hello_sub() ); ?></code></p>
 
 				<p>Settings:</p>
 				<pre>
