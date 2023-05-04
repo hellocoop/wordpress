@@ -53,6 +53,7 @@ jobs:
       with:
         php-version: "${{ env.PHP_VERSION }}"
         tools: "composer:${{ env.COMPOSER_VERSION }}"
+        extensions: pecl_http
 
     - name: Environment Check
       run: php -v && composer --version
