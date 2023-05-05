@@ -263,6 +263,32 @@ class Hello_Login_Invites {
 	 * @return void
 	 */
 	protected function handle_created( string $sub, string $email, array $sub_event ) {
+		$role = $sub_event['role'];
+
+		if ( is_null( get_role( $role ) ) ) {
+			$this->logger->log( "role not found: $role", 'invites' );
+			http_response_code( 404 );
+		}
+
+		$inviter_sub = $sub_event['inviter']['sub'];
+
+		$inviter = $this->users->get_user_by_identity( $inviter_sub );
+
+		if ( empty( $inviter ) ) {
+			$this->logger->log( "inviter not found: $inviter_sub", 'invites' );
+			http_response_code( 404 );
+		}
+
+		if ( ! user_can( $inviter, 'create_users' ) ) {
+			$this->logger->log( "inviter with no create_user: $inviter_sub", 'invites' );
+			http_response_code( 403 );
+		}
+
+		if ( ! user_can( $inviter, 'promote_users' ) && 'subscriber' != $role ) {
+			$this->logger->log( "inviter cannot promote users: $inviter_sub, role: $role", 'invites' );
+			http_response_code( 403 );
+		}
+
 		$user = $this->users->get_user_by_identity( $sub );
 
 		if ( ! empty( $user ) ) {
