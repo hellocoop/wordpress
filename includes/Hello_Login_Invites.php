@@ -90,6 +90,11 @@ class Hello_Login_Invites {
 		return $invites;
 	}
 
+	/**
+	 * Check current user permissions to decide if they can invite users.
+	 *
+	 * @return bool
+	 */
 	public static function can_invite(): bool {
 		return current_user_can( 'create_users' );
 	}
@@ -292,13 +297,16 @@ class Hello_Login_Invites {
 		$user = $this->users->get_user_by_identity( $sub );
 
 		if ( ! empty( $user ) ) {
-			// TODO update role.
+			if ( ! in_array( $role, $user->roles ) ) {
+				$user->set_role( $role );
+			}
 			return;
 		}
 
 		$user_data = array(
 			'user_login' => $email,
 			'user_email' => $email,
+			'role'       => $role,
 		);
 
 		$user = $this->users->create_new_user( $sub, $user_data, true );
