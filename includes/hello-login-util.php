@@ -116,4 +116,19 @@ class Hello_Login_Util {
 		}
 
 		return implode( ' ', $scope_arr );
-	}}
+	}
+
+	/**
+	 * Get the Hellō issuer string based on the auth endpoint URL.
+	 *
+	 * @param string $endpoint_login The auth endpoint URL.
+	 *
+	 * @return string The issuer string.
+	 */
+	public static function hello_issuer( string $endpoint_login ): string {
+		$p = parse_url( $endpoint_login );
+		$issuer_host = str_replace( 'wallet.', 'issuer.', $p['host'] );
+
+		return "{$p['scheme']}://{$issuer_host}";
+	}
+}

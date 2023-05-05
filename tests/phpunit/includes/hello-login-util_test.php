@@ -86,4 +86,20 @@ class Hello_Login_Util_Test extends TestCase {
 			[ "openid name email", " openid name openid email name" ],
 		];
 	}
+
+	/**
+	 * @dataProvider hello_issuer_provider
+	 */
+	public function test_hello_issuer( string $endpoint_url, string $issuer): void {
+		$this->assertSame( $issuer, Hello_Login_Util::hello_issuer( $endpoint_url ) );
+	}
+
+	public function hello_issuer_provider(): array {
+		return [
+			[ 'https://wallet.hello.coop/authorize', 'https://issuer.hello.coop' ],
+			[ 'http://wallet.hello.coop/authorize', 'http://issuer.hello.coop' ],
+			[ 'https://wallet.hello.coop/', 'https://issuer.hello.coop' ],
+			[ 'https://wallet.hello.coop', 'https://issuer.hello.coop' ],
+		];
+	}
 }

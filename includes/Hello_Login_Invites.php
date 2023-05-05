@@ -196,6 +196,8 @@ class Hello_Login_Invites {
 			exit();
 		}
 
+		$this->validate_event( $event );
+
 		$this->logger->log( $event, 'invites' );
 
 		$sub = $event['sub'];
@@ -273,6 +275,7 @@ class Hello_Login_Invites {
 		if ( is_null( get_role( $role ) ) ) {
 			$this->logger->log( "role not found: $role", 'invites' );
 			http_response_code( 404 );
+			exit();
 		}
 
 		$inviter_sub = $sub_event['inviter']['sub'];
@@ -282,6 +285,7 @@ class Hello_Login_Invites {
 		if ( empty( $inviter ) ) {
 			$this->logger->log( "inviter not found: $inviter_sub", 'invites' );
 			http_response_code( 404 );
+			exit();
 		}
 
 		if ( ! user_can( $inviter, 'create_users' ) ) {
@@ -292,6 +296,7 @@ class Hello_Login_Invites {
 		if ( ! user_can( $inviter, 'promote_users' ) && 'subscriber' != $role ) {
 			$this->logger->log( "inviter cannot promote users: $inviter_sub, role: $role", 'invites' );
 			http_response_code( 403 );
+			exit();
 		}
 
 		$user = $this->users->get_user_by_identity( $sub );
@@ -314,6 +319,7 @@ class Hello_Login_Invites {
 		if ( is_wp_error( $user ) ) {
 			$this->logger->log( 'User creation failed', 'invites' );
 			http_response_code( 400 );
+			exit();
 		}
 	}
 
@@ -381,5 +387,32 @@ class Hello_Login_Invites {
 		}
 
 		return $payload_array;
+	}
+
+	/**
+	 * General validation for invite events.
+	 *
+	 * @param array $event The invite event.
+	 *
+	 * @return void
+	 */
+	public function validate_event( array $event ) {
+		$iss = $event['iss'];
+		$aud = $event['aud'];
+
+		if ( Hello_Login_Util::hello_issuer( $this->settings->endpoint_login ) !== $iss ) {
+			$this->logger->log( "Invalid issuer: $iss", 'invites' );
+			http_response_code( 400 );
+			exit();
+		}
+
+		if ( $this->settings->client_id !== $aud ) {
+			$this->logger->log( "Invalid audience: $aud", 'invites' );
+			http_response_code( 400 );
+			exit();
+		}
+
+		// A transient could be saved and checked, based on $event['jti'], to prevent duplicate submissions. Since all
+		// events cqn be repeated with no side effects, this is not implemented for now.
 	}
 }
