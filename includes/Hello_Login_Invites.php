@@ -83,11 +83,15 @@ class Hello_Login_Invites {
 	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Users $users ): Hello_Login_Invites {
 		$invites  = new self( $logger, $settings, $users );
 
-		if ( is_admin() && 'user-new.php' == $GLOBALS['pagenow'] ) {
+		if ( self::can_invite() && 'user-new.php' == $GLOBALS['pagenow'] ) {
 			add_action( 'in_admin_header', array( $invites, 'hello_login_in_admin_header_invite' ) );
 		}
 
 		return $invites;
+	}
+
+	public static function can_invite(): bool {
+		return current_user_can( 'create_users' );
 	}
 
 	/**
@@ -114,7 +118,7 @@ class Hello_Login_Invites {
 						<th scope="row"><label for="invite-user-role">Role </label></th>
 						<td>
 							<select name="role" id="invite-user-role">
-								<?php wp_dropdown_roles( get_option( 'default_role' ) ); ?>
+								<?php self::hello_invite_dropdown_roles(); ?>
 							</select>
 							<input type="hidden" name="inviter" value="<?php print esc_attr( $inviter_id ); ?>" />
 							<input type="hidden" name="return_uri" value="<?php print esc_attr( $return_uri ); ?>" />
@@ -135,6 +139,39 @@ class Hello_Login_Invites {
 			</form>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Generate and output the HTML option list of roles available for the Hellō invitation.
+	 *
+	 * @return void
+	 */
+	public static function hello_invite_dropdown_roles() {
+		$options_html = '';
+		$selected = get_option( 'default_role' );
+		$roles = array_reverse( get_editable_roles() );
+
+		if ( ! current_user_can( 'promote_users' ) ) {
+			$roles = array_filter(
+				$roles,
+				function ( $role ) {
+					return 'subscriber' == $role;
+				},
+				ARRAY_FILTER_USE_KEY
+			);
+		}
+
+		foreach ( $roles as $role => $details ) {
+			$name = translate_user_role( $details['name'] );
+			// Preselect specified role.
+			if ( $selected === $role ) {
+				$options_html .= "\n\t<option selected='selected' value='" . esc_attr( $role ) . "'>$name</option>";
+			} else {
+				$options_html .= "\n\t<option value='" . esc_attr( $role ) . "'>$name</option>";
+			}
+		}
+
+		echo $options_html;
 	}
 
 	/**
