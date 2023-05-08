@@ -210,4 +210,4 @@ add_action('hello-login-user-logged-in', function( $user ) {
 This plugin stores metadata about the user for both practical and debugging purposes.
 
 * `hello-login-subject-identity` - The identity of the user provided by the IDP server.
-* `hello-login-last-user-claim` - The user's most recent `user_claim`, stored as an array.
+* `hello-login-last-token` - The user's most recent Id Token or other JWT, stored as a string.

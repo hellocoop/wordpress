@@ -423,6 +423,8 @@ class Hello_Login_Client_Wrapper {
 			$this->error_redirect( $valid );
 		}
 
+		update_user_meta( $user->ID, 'hello-login-last-token', $token_response['id_token'] );
+
 		// Login the found / created user.
 		$this->login_user( $user, $user_claim );
 
@@ -526,7 +528,6 @@ class Hello_Login_Client_Wrapper {
 	 * @return void
 	 */
 	public function login_user( WP_User $user, array $user_claim ) {
-		update_user_meta( $user->ID, 'hello-login-last-user-claim', $user_claim );
 		// Allow plugins / themes to take action using current claims on existing user (e.g. update role).
 		do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
 

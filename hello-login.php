@@ -45,7 +45,7 @@ Notes
 
   User Metadata
   - hello-login-subject-identity    - the identity of the user provided by the idp
-  - hello-login-last-user-claim     - the user's most recent id_token claim, decoded
+  - hello-login-last-token          - the user's most recent Id Token or other JWP, encoded
 
   Options
   - hello_login_settings - plugin settings

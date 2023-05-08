@@ -206,7 +206,7 @@ class Hello_Login_Invites {
 		foreach ( $event['events'] as $type => $sub_event ) {
 			switch ( $type ) {
 				case self::INVITE_CREATED_EVENT_URI:
-					$this->handle_created( $sub, $email, $sub_event );
+					$this->handle_created( $sub, $email, $sub_event, $body );
 					break;
 				case self::INVITE_RETRACTED_EVENT_URI:
 					$this->handle_retracted( $sub, $email, $sub_event );
@@ -263,13 +263,14 @@ class Hello_Login_Invites {
 	/**
 	 * Handle an incoming invite created event.
 	 *
-	 * @param string $sub
-	 * @param string $email
-	 * @param array  $sub_event
+	 * @param string $sub           The Hellō subject identifier corresponding to the invited email address.
+	 * @param string $email         The invited email address.
+	 * @param array  $sub_event     The nested invite created event.
+	 * @param string $encoded_event The raw encoded event.
 	 *
 	 * @return void
 	 */
-	protected function handle_created( string $sub, string $email, array $sub_event ) {
+	protected function handle_created( string $sub, string $email, array $sub_event, string $encoded_event ) {
 		$role = $sub_event['role'];
 
 		if ( is_null( get_role( $role ) ) ) {
@@ -321,6 +322,8 @@ class Hello_Login_Invites {
 			http_response_code( 400 );
 			exit();
 		}
+
+		update_user_meta( $user->ID, 'hello-login-last-token', $encoded_event );
 	}
 
 	/**
