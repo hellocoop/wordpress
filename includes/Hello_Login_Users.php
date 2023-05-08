@@ -30,6 +30,20 @@ class Hello_Login_Users {
 	const LAST_LOGIN_META = 'hello-login-last-login';
 
 	/**
+	 * The user meta key used to store the last JWT token, in encoded format.
+	 *
+	 * @var string
+	 */
+	const LAST_TOKEN_META = 'hello-login-last-token';
+
+	/**
+	 * The user meta key used to store the last JWT token, in encoded format.
+	 *
+	 * @var string
+	 */
+	const INVITE_CREATED_META = 'hello-login-invite_created';
+
+	/**
 	 * Plugin logger.
 	 *
 	 * @var Hello_Login_Option_Logger
@@ -113,6 +127,30 @@ class Hello_Login_Users {
 	 */
 	public static function update_last_login_time( WP_User $user, int $login_time ) {
 		return update_user_meta( $user->ID, self::LAST_LOGIN_META, $login_time );
+	}
+
+	/**
+	 * Update the user's last encoded JWT token.
+	 *
+	 * @param WP_User $user        The user.
+	 * @param string  $encoded_jwt The last JWT token used for the user.
+	 *
+	 * @return bool|int
+	 */
+	public static function update_last_token( WP_User $user, string $encoded_jwt ) {
+		return update_user_meta( $user->ID, self::LAST_TOKEN_META, $encoded_jwt );
+	}
+
+	/**
+	 * Update the user's invite created event. The event is encoded as a JSON string.
+	 *
+	 * @param WP_User $user        The user.
+	 * @param array   $event       The decoded "invite created" JWT event.
+	 *
+	 * @return bool|int
+	 */
+	public static function update_invite_created( WP_User $user, array $event ) {
+		return update_user_meta( $user->ID, self::INVITE_CREATED_META, json_encode( $event ) );
 	}
 
 	/**

@@ -304,10 +304,10 @@ class Hello_Login_Invites {
 			if ( ! in_array( $role, $user->roles ) ) {
 				$user->set_role( $role );
 
-				update_user_meta( $user->ID, 'hello-login-invite_created', json_encode( $event ) );
+				Hello_Login_Users::update_invite_created( $user, $event );
 			}
 
-			update_user_meta( $user->ID, 'hello-login-last-token', $encoded_event );
+			Hello_Login_Users::update_last_token( $user, $encoded_event );
 
 			return;
 		}
@@ -326,8 +326,8 @@ class Hello_Login_Invites {
 			exit();
 		}
 
-		update_user_meta( $user->ID, 'hello-login-last-token', $encoded_event );
-		update_user_meta( $user->ID, 'hello-login-invite_created', json_encode( $event ) );
+		Hello_Login_Users::update_last_token( $user, $encoded_event );
+		Hello_Login_Users::update_invite_created( $user, $event );
 	}
 
 	/**

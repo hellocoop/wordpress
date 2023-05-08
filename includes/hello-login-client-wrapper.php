@@ -423,7 +423,7 @@ class Hello_Login_Client_Wrapper {
 			$this->error_redirect( $valid );
 		}
 
-		update_user_meta( $user->ID, 'hello-login-last-token', $token_response['id_token'] );
+		Hello_Login_Users::update_last_token( $user, $token_response['id_token'] );
 
 		// Login the found / created user.
 		$this->login_user( $user, $user_claim );
