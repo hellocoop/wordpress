@@ -23,6 +23,13 @@ class Hello_Login_Users {
 	const SUBJECT_META = 'hello-login-subject-identity';
 
 	/**
+	 * The user meta key used to store the last login time.
+	 *
+	 * @var string
+	 */
+	const LAST_LOGIN_META = 'hello-login-last-login';
+
+	/**
 	 * Plugin logger.
 	 *
 	 * @var Hello_Login_Option_Logger
@@ -65,9 +72,10 @@ class Hello_Login_Users {
 	}
 
 	/**
-	 * Get the Hellō subject identifier for the given user.
+	 * Set the Hellō subject identifier for the given user.
 	 *
-	 * @param int|WP_User $user The user id of the user, if NULL then use current user.
+	 * @param int|WP_User $user The user or user id.
+	 * @param string      $sub  Hellō subject identifier.
 	 *
 	 * @return int|false
 	 */
@@ -80,9 +88,10 @@ class Hello_Login_Users {
 	}
 
 	/**
-	 * Get the Hellō subject identifier for the given user.
+	 * Update the Hellō subject identifier for the given user.
 	 *
-	 * @param int|WP_User|null $user The user id of the user, if NULL then use current user.
+	 * @param int|WP_User $user The user or user id.
+	 * @param string      $sub  Hellō subject identifier.
 	 *
 	 * @return int|bool
 	 */
@@ -91,7 +100,19 @@ class Hello_Login_Users {
 			$user = $user->ID;
 		}
 
-		return update_user_meta( $user, self::SUBJECT_META, $sub, true );
+		return update_user_meta( $user, self::SUBJECT_META, $sub );
+	}
+
+	/**
+	 * Update the user's last login time.
+	 *
+	 * @param WP_User $user       The user.
+	 * @param int     $login_time The time of the login. Unix timestamp in seconds.
+	 *
+	 * @return bool|int
+	 */
+	public static function update_last_login_time( WP_User $user, int $login_time ) {
+		return update_user_meta( $user->ID, self::LAST_LOGIN_META, $login_time );
 	}
 
 	/**

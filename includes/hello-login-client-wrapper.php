@@ -532,12 +532,14 @@ class Hello_Login_Client_Wrapper {
 		do_action( 'hello-login-update-user-using-current-claim', $user, $user_claim );
 
 		// Create the WP session, so we know its token.
-		$expiration = time() + apply_filters( 'auth_cookie_expiration', 2 * DAY_IN_SECONDS, $user->ID, false );
-		$manager = WP_Session_Tokens::get_instance( $user->ID );
-		$token = $manager->create( $expiration );
+		$login_time = time();
+		$expiration = $login_time + apply_filters( 'auth_cookie_expiration', 2 * DAY_IN_SECONDS, $user->ID, false );
+		$manager    = WP_Session_Tokens::get_instance( $user->ID );
+		$token      = $manager->create( $expiration );
 
 		// you did great, have a cookie!
 		wp_set_auth_cookie( $user->ID, false, '', $token );
+		Hello_Login_Users::update_last_login_time( $user, $login_time );
 		do_action( 'wp_login', $user->user_login, $user );
 	}
 
