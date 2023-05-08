@@ -46,6 +46,7 @@ Notes
   User Metadata
   - hello-login-subject-identity    - the identity of the user provided by the idp
   - hello-login-last-token          - the user's most recent Id Token or other JWP, encoded
+  - hello-login-invite_created      - the Hellō invite event payload as a JSON string based on which the user account was created, linked or promoted.
 
   Options
   - hello_login_settings - plugin settings

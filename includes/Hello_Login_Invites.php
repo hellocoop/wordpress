@@ -200,19 +200,16 @@ class Hello_Login_Invites {
 
 		$this->logger->log( $event, 'invites' );
 
-		$sub = $event['sub'];
-		$email = $event['email'];
-
 		foreach ( $event['events'] as $type => $sub_event ) {
 			switch ( $type ) {
 				case self::INVITE_CREATED_EVENT_URI:
-					$this->handle_created( $sub, $email, $sub_event, $body );
+					$this->handle_created( $event, $sub_event, $body );
 					break;
 				case self::INVITE_RETRACTED_EVENT_URI:
-					$this->handle_retracted( $sub, $email, $sub_event );
+					$this->handle_retracted( $event, $sub_event );
 					break;
 				case self::INVITE_DECLINED_EVENT_URI:
-					$this->handle_declined( $sub, $email, $sub_event );
+					$this->handle_declined( $event, $sub_event );
 					break;
 				default:
 					$this->logger->log( "Unknown event type: $type", 'invites' );
@@ -263,14 +260,15 @@ class Hello_Login_Invites {
 	/**
 	 * Handle an incoming invite created event.
 	 *
-	 * @param string $sub           The Hellō subject identifier corresponding to the invited email address.
-	 * @param string $email         The invited email address.
+	 * @param array  $event         The full invite created event.
 	 * @param array  $sub_event     The nested invite created event.
 	 * @param string $encoded_event The raw encoded event.
 	 *
 	 * @return void
 	 */
-	protected function handle_created( string $sub, string $email, array $sub_event, string $encoded_event ) {
+	protected function handle_created( array $event, array $sub_event, string $encoded_event ) {
+		$sub = $event['sub'];
+		$email = $event['email'];
 		$role = $sub_event['role'];
 
 		if ( is_null( get_role( $role ) ) ) {
@@ -305,7 +303,12 @@ class Hello_Login_Invites {
 		if ( ! empty( $user ) ) {
 			if ( ! in_array( $role, $user->roles ) ) {
 				$user->set_role( $role );
+
+				update_user_meta( $user->ID, 'hello-login-invite_created', json_encode( $event ) );
 			}
+
+			update_user_meta( $user->ID, 'hello-login-last-token', $encoded_event );
+
 			return;
 		}
 
@@ -324,31 +327,30 @@ class Hello_Login_Invites {
 		}
 
 		update_user_meta( $user->ID, 'hello-login-last-token', $encoded_event );
+		update_user_meta( $user->ID, 'hello-login-invite_created', json_encode( $event ) );
 	}
 
 	/**
 	 * Handle an incoming invite retracted event.
 	 *
-	 * @param string $sub
-	 * @param string $email
-	 * @param array  $sub_event
+	 * @param array  $event         The full invite created event.
+	 * @param array  $sub_event     The nested invite created event.
 	 *
 	 * @return void
 	 */
-	protected function handle_retracted( string $sub, string $email, array $sub_event ) {
+	protected function handle_retracted( array $event, array $sub_event ) {
 		// TODO
 	}
 
 	/**
 	 * Handle an incoming invite declined event.
 	 *
-	 * @param string $sub
-	 * @param string $email
-	 * @param array  $sub_event
+	 * @param array  $event         The full invite created event.
+	 * @param array  $sub_event     The nested invite created event.
 	 *
 	 * @return void
 	 */
-	protected function handle_declined( string $sub, string $email, array $sub_event ) {
+	protected function handle_declined( array $event, array $sub_event ) {
 		// TODO
 	}
 

@@ -211,3 +211,4 @@ This plugin stores metadata about the user for both practical and debugging purp
 
 * `hello-login-subject-identity` - The identity of the user provided by the IDP server.
 * `hello-login-last-token` - The user's most recent Id Token or other JWT, stored as a string.
+* `hello-login-invite_created` - The Hellō invite event payload as a JSON string based on which the user account was created, linked or promoted. 
