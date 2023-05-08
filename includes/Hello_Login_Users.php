@@ -159,7 +159,7 @@ class Hello_Login_Users {
 		$user_data['user_pass'] = wp_generate_password( 32, true, true );
 
 		// Before trying to create the user, first check if a matching user exists.
-		if ( $this->settings->link_existing_users ) {
+		if ( $force_linking || $this->settings->link_existing_users ) {
 			$uid = email_exists( $user_data['user_email'] );
 
 			if ( ! empty( $uid ) ) {
