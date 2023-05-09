@@ -44,6 +44,13 @@ class Hello_Login_Users {
 	const INVITE_CREATED_META = 'hello-login-invite_created';
 
 	/**
+	 * The user meta key used to store a flag to mark unused invited users.
+	 *
+	 * @var string
+	 */
+	const INVITED_UNUSED_META = 'hello-login-invite_unused';
+
+	/**
 	 * Plugin logger.
 	 *
 	 * @var Hello_Login_Option_Logger
@@ -126,6 +133,8 @@ class Hello_Login_Users {
 	 * @return bool|int
 	 */
 	public static function update_last_login_time( WP_User $user, int $login_time ) {
+		delete_user_meta( $user->ID, self::INVITED_UNUSED_META );
+
 		return update_user_meta( $user->ID, self::LAST_LOGIN_META, $login_time );
 	}
 
@@ -203,6 +212,28 @@ class Hello_Login_Users {
 		}
 
 		return false;
+	}
+
+	/**
+	 * Mark user as being invited and unused.
+	 *
+	 * @param WP_User $user The user.
+	 *
+	 * @return bool|int
+	 */
+	public static function set_invited_unused( WP_User $user ) {
+		return update_user_meta( $user->ID, self::INVITED_UNUSED_META, true );
+	}
+
+	/**
+	 * Check if a user is an invited user that never logged in.
+	 *
+	 * @param WP_User $user The user.
+	 *
+	 * @return bool
+	 */
+	public static function is_invited_unused( WP_User $user ): bool {
+		return true === get_user_meta( $user->ID, self::INVITED_UNUSED_META, true );
 	}
 
 	/**

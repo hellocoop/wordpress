@@ -206,10 +206,10 @@ class Hello_Login_Invites {
 					$this->handle_created( $event, $sub_event, $body );
 					break;
 				case self::INVITE_RETRACTED_EVENT_URI:
-					$this->handle_retracted( $event, $sub_event );
+					$this->handle_retracted( $event );
 					break;
 				case self::INVITE_DECLINED_EVENT_URI:
-					$this->handle_declined( $event, $sub_event );
+					$this->handle_declined( $event );
 					break;
 				default:
 					$this->logger->log( "Unknown event type: $type", 'invites' );
@@ -312,6 +312,8 @@ class Hello_Login_Invites {
 			return;
 		}
 
+		$new_user = false === email_exists( $email );
+
 		$user_data = array(
 			'user_login' => $email,
 			'user_email' => $email,
@@ -328,30 +330,59 @@ class Hello_Login_Invites {
 
 		Hello_Login_Users::update_last_token( $user, $encoded_event );
 		Hello_Login_Users::update_invite_created( $user, $event );
+		if ( $new_user ) {
+			Hello_Login_Users::set_invited_unused( $user );
+		}
 	}
 
 	/**
 	 * Handle an incoming invite retracted event.
 	 *
 	 * @param array  $event         The full invite created event.
-	 * @param array  $sub_event     The nested invite created event.
 	 *
 	 * @return void
 	 */
-	protected function handle_retracted( array $event, array $sub_event ) {
-		// TODO
+	protected function handle_retracted( array $event ) {
+		self::delete_unused_invited_user( $event['sub'], 'retracted' );
 	}
 
 	/**
 	 * Handle an incoming invite declined event.
 	 *
 	 * @param array  $event         The full invite created event.
-	 * @param array  $sub_event     The nested invite created event.
 	 *
 	 * @return void
 	 */
-	protected function handle_declined( array $event, array $sub_event ) {
-		// TODO
+	protected function handle_declined( array $event ) {
+		self::delete_unused_invited_user( $event['sub'], 'declined' );
+	}
+
+	/**
+	 * Remove an unused user that was created through a Hellō invite.
+	 *
+	 * @param string $sub        The Hellō subject identifier of the user to be deleted.
+	 * @param string $event_type The even type that triggerred this deletion: retracted or declined. Used in logging.
+	 *
+	 * @return void
+	 */
+	private function delete_unused_invited_user( string $sub, string $event_type ) {
+		$user = $this->users->get_user_by_identity( $sub );
+
+		if ( empty( $user ) ) {
+			$this->logger->log( "Cannot handle invite $event_type, user not found: $sub", 'invites' );
+
+			return;
+		}
+
+		if ( Hello_Login_Users::is_invited_unused( $user ) ) {
+			if ( ! wp_delete_user( $user->ID ) ) {
+				$this->logger->log( "Failed deleting unused user on invite $event_type: $sub ({$user->ID})", 'invites' );
+			} else {
+				$this->logger->log( "Deleted unused user on invite $event_type: $sub", 'invites' );
+			}
+		} else {
+			$this->logger->log( "Cannot delete used user on invite $event_type: $sub ({$user->ID})", 'invites' );
+		}
 	}
 
 	/**
