@@ -375,18 +375,22 @@ class Hello_Login_Invites {
 
 		if ( empty( $user ) ) {
 			$this->logger->log( "Cannot handle invite $event_type, user not found: $sub", 'invites' );
-
-			return;
+			http_response_code( 404 );
+			exit();
 		}
 
 		if ( Hello_Login_Users::is_invited_unused( $user ) ) {
-			if ( ! wp_delete_user( $user->ID ) ) {
-				$this->logger->log( "Failed deleting unused user on invite $event_type: $sub ({$user->ID})", 'invites' );
-			} else {
+			if ( wp_delete_user( $user->ID ) ) {
 				$this->logger->log( "Deleted unused user on invite $event_type: $sub", 'invites' );
+			} else {
+				$this->logger->log( "Failed deleting unused user on invite $event_type: $sub ({$user->ID})", 'invites' );
+				http_response_code( 500 );
+				exit();
 			}
 		} else {
 			$this->logger->log( "Cannot delete used user on invite $event_type: $sub ({$user->ID})", 'invites' );
+			http_response_code( 409 );
+			exit();
 		}
 	}
 
