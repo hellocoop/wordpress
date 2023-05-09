@@ -196,7 +196,12 @@ class Hello_Login_Invites {
 			exit();
 		}
 
-		$this->validate_event( $event );
+		$res = $this->validate_event( $event );
+
+		if ( is_wp_error( $res ) ) {
+			http_response_code( 400 );
+			exit();
+		}
 
 		$this->logger->log( $event, 'invites' );
 
@@ -401,7 +406,7 @@ class Hello_Login_Invites {
 		if ( 3 != count( $jwt_parts ) ) {
 			$this->logger->log( "Invalid event, not 3 parts: $event_jwt", 'decode_event' );
 
-			return new WP_Error( 'invalid_event' );
+			return new WP_Error( 'invalid_event', 'not 3 parts' );
 		}
 
 		$payload_b64 = $jwt_parts[1];
@@ -411,7 +416,7 @@ class Hello_Login_Invites {
 		if ( false === $payload_json ) {
 			$this->logger->log( "Invalid event, base64 decode of payload failed: $payload_b64", 'decode_event' );
 
-			return new WP_Error( 'invalid_event' );
+			return new WP_Error( 'invalid_event', 'base64 decode failed' );
 		}
 
 		$payload_array = json_decode( $payload_json, true );
@@ -419,7 +424,7 @@ class Hello_Login_Invites {
 		if ( 'array' !== gettype( $payload_array ) ) {
 			$this->logger->log( "Invalid event, JSON decode of payload failed: $payload_json", 'decode_event' );
 
-			return new WP_Error( 'invalid_event' );
+			return new WP_Error( 'invalid_event', 'json decode failed' );
 		}
 
 		return $payload_array;
@@ -430,7 +435,7 @@ class Hello_Login_Invites {
 	 *
 	 * @param array $event The invite event.
 	 *
-	 * @return void
+	 * @return WP_Error|true
 	 */
 	public function validate_event( array $event ) {
 		$iss = $event['iss'];
@@ -438,17 +443,17 @@ class Hello_Login_Invites {
 
 		if ( Hello_Login_Util::hello_issuer( $this->settings->endpoint_login ) !== $iss ) {
 			$this->logger->log( "Invalid issuer: $iss", 'invites' );
-			http_response_code( 400 );
-			exit();
+			return new WP_Error( 'invalid_event', 'invalid issuer' );
 		}
 
 		if ( $this->settings->client_id !== $aud ) {
 			$this->logger->log( "Invalid audience: $aud", 'invites' );
-			http_response_code( 400 );
-			exit();
+			return new WP_Error( 'invalid_event', 'invalid audience' );
 		}
 
 		// A transient could be saved and checked, based on $event['jti'], to prevent duplicate submissions. Since all
 		// events cqn be repeated with no side effects, this is not implemented for now.
+
+		return true;
 	}
 }
