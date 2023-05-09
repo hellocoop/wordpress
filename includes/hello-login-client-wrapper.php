@@ -425,6 +425,8 @@ class Hello_Login_Client_Wrapper {
 
 		Hello_Login_Users::update_last_token( $user, $token_response['id_token'] );
 
+		$this->users->update_username_on_first_login( $user, $this->get_username_from_claim( $user_claim ) );
+
 		// Login the found / created user.
 		$this->login_user( $user, $user_claim );
 

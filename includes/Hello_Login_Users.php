@@ -274,18 +274,7 @@ class Hello_Login_Users {
 			return new WP_Error( 'cannot-authorize', __( 'Can not authorize.', 'hello-login' ), $create_user );
 		}
 
-		// Copy the username for incrementing.
-		$username = $user_data['user_login'];
-		$_username = $username;
-		// Ensure prevention of linking usernames & collisions by incrementing the username if it exists.
-		// @example Original user gets "name", second user gets "name2", etc.
-		$count = 1;
-		while ( username_exists( $username ) ) {
-			$count ++;
-			$username = $_username . $count;
-		}
-
-		$user_data['user_login'] = $username;
+		$user_data['user_login'] = $this->generate_unique_username( $user_data['user_login'] );
 
 		$user_data = apply_filters( 'hello-login-alter-user-data', $user_data );
 
@@ -405,6 +394,74 @@ class Hello_Login_Users {
 				$this->logger->log( "User email updated from $user->user_email to {$user_claim['email']}.", 'user-claims' );
 				$user->user_email = $user_claim['email'];
 			}
+		}
+	}
+
+	/**
+	 * Generate a unique username based on an original username. If the original username exists then a numeric
+	 * suffix will be added, incremented until uniqueness is reached.
+	 *
+	 * For example, original username is "name", if that exists then "name2" is checked, then "name3", etc.
+	 *
+	 * @param string $username Original username.
+	 *
+	 * @return string Unique username.
+	 */
+	protected function generate_unique_username( string $username ): string {
+		$_username = $username;
+		$count = 1;
+		while ( username_exists( $username ) ) {
+			$count ++;
+			$username = $_username . $count;
+		}
+
+		return $username;
+	}
+
+	/**
+	 * Direct database update of username.
+	 *
+	 * @param WP_User $user     The user for which the username will be updated.
+	 * @param string  $username The new username.
+	 *
+	 * @return int|false
+	 */
+	private function update_username( WP_User $user, string $username ) {
+		global $wpdb;
+
+		return $wpdb->update(
+			$wpdb->prefix . 'users',
+			array( 'user_login' => $username ),
+			array( 'id' => $user->ID ),
+			array( '%s' ),
+			array( '%d' )
+		);
+	}
+
+	/**
+	 * Invited users are created with the email address as the username. When the user accepts and logs in for the first
+	 * time then update the username based on the incoming claims, as if the account was created at that point.
+	 *
+	 * @param WP_User $user The WordPress User.
+	 * @param string  $username The username based on the incoming claim.
+	 *
+	 * @return void
+	 */
+	public function update_username_on_first_login( WP_User $user, string $username ) {
+		if ( ! self::is_invited_unused( $user ) ) {
+			return;
+		}
+
+		$user->user_login = $this->generate_unique_username( $username );
+
+		$res = $this->update_username( $user, $username );
+
+		if ( false === $res ) {
+			$this->logger->log( "Updating username of invited user on first login failed. User id: {$user->ID}. New username: $username", 'invites' );
+		}
+
+		if ( 1 !== $res ) {
+			$this->logger->log( "Updating username of invited user on first login did not affect exactly 1 row. User id: {$user->ID}. New username: $username. Affected rows: $res", 'invites' );
 		}
 	}
 }
