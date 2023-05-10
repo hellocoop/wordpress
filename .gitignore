@@ -52,3 +52,6 @@ node_modules
 vendor
 dist
 wordpress
+/test-results/
+/playwright-report/
+/playwright/.cache/
