@@ -199,6 +199,27 @@ class Hello_Login {
 
 		add_rewrite_tag( '%hello-login%', '([a-z]+)' );
 		add_action( 'parse_request', array( $this, 'route_hello_login_request' ) );
+
+		// Add "Settings" to the plugin in the plugin list.
+		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'hello_login_plugin_action_links' ) );
+		// TODO: consider adding filter for network_admin_plugin_action_links_... as well.
+	}
+
+	/**
+	 * Add a link to the plugin settings page in the plugin list.
+	 *
+	 * @param array $links Existing list of plugin links.
+	 *
+	 * @return array The expanded list of links.
+	 */
+	public function hello_login_plugin_action_links( array $links ): array {
+		// Build and escape the URL.
+		$url = admin_url( '/options-general.php?page=hello-login-settings' );
+		// Create the link.
+		$settings_link = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Settings', 'hello-login' ) );
+		// Adds the link to the beginning of the array.
+		array_unshift( $links, $settings_link );
+		return $links;
 	}
 
 	/**

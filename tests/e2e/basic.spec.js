@@ -27,6 +27,7 @@ test('plugin installed and active', async ({ page }) => {
 	const pluginRow = page.getByRole('row', { name: 'Hellō Login' });
 	await expect(pluginRow).toHaveCount(1);
 	await expect(pluginRow).toContainText(/Deactivate/);
+	await expect(pluginRow).toContainText(/Settings/);
 
 	// Navigate to Hellō Login settings page and check that it is not configured.
 	await page.goto('http://localhost:8888/wp-admin');
@@ -35,7 +36,4 @@ test('plugin installed and active', async ({ page }) => {
 
 	await expect(page).toHaveTitle(/Hellō Login/);
 	await expect(page.getByRole('button', { name: 'Quickstart' })).toHaveCount(1);
-
-	// TODO: fix Settings link
-	// await expect(pluginRow).toContainText(/Settings/);
 });

@@ -95,26 +95,6 @@ class Hello_Login_Settings_Page {
 
 		// Register our settings.
 		add_action( 'admin_init', array( $settings_page, 'admin_init' ) );
-
-		// Add "Settings" to the plugin in the plugin list.
-		add_filter( 'plugin_action_links_hello-login/hello-login.php', array( $settings_page, 'hello_login_settings_action' ) );
-	}
-
-	/**
-	 * Create the HTML to add link to plugin settings in plugin list.
-	 *
-	 * @param array $links Existing list of plugin links in plugin list.
-	 *
-	 * @return array The expanded list of links.
-	 */
-	public function hello_login_settings_action( array $links ): array {
-		// Build and escape the URL.
-		$url = admin_url( '/options-general.php?page=hello-login-settings' );
-		// Create the link.
-		$settings_link = sprintf( '<a href="%s">%s</a>', esc_url( $url ), esc_html__( 'Settings', 'hello-login' ) );
-		// Adds the link to the beginning of the array.
-		array_unshift( $links, $settings_link );
-		return $links;
 	}
 
 	/**
