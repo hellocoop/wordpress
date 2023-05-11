@@ -28,6 +28,7 @@ test('plugin installed and active', async ({ page }) => {
 	await expect(pluginRow).toHaveCount(1);
 	await expect(pluginRow).toContainText(/Deactivate/);
 	await expect(pluginRow).toContainText(/Settings/);
+//	await expect(pluginRow).toContainText(/Enable auto-updates/);
 
 	// Navigate to Hellō Login settings page and check that it is not configured.
 	await page.goto('http://localhost:8888/wp-admin');
