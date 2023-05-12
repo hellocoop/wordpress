@@ -105,7 +105,7 @@ class Hello_Login_Settings_Page {
 	 */
 	public function admin_menu() {
 		add_options_page(
-			__( 'Hellō Login', 'hello-login' ),
+			__( 'Hellō Login Settings', 'hello-login' ),
 			__( 'Hellō Login', 'hello-login' ),
 			'manage_options',
 			$this->options_page_name,
