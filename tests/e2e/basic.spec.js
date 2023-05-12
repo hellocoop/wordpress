@@ -2,7 +2,7 @@
 const { test, expect } = require('@playwright/test');
 
 test('login page not modified', async ({ page }) => {
-	await page.goto('http://localhost:8888/wp-login.php');
+	await page.goto('http://localhost:8889/wp-login.php');
 
 	const body = page.locator('body');
 
@@ -11,7 +11,7 @@ test('login page not modified', async ({ page }) => {
 });
 
 test('plugin installed and active', async ({ page }) => {
-	await page.goto('http://localhost:8888/wp-login.php');
+	await page.goto('http://localhost:8889/wp-login.php');
 
 	// Sign in as admin
 	await page.getByLabel('Username or Email Address').click();
