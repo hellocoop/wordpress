@@ -499,6 +499,45 @@ class Hello_Login_Settings_Page {
 
 		wp_enqueue_style( 'hello-login-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
+		$default_tab = 'general';
+		$tab = isset( $_GET['tab'] ) ? sanitize_text_field( wp_unslash( $_GET['tab'] ) ) : $default_tab;
+		?>
+		<div class="wrap">
+			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
+
+			<nav class="nav-tab-wrapper">
+				<a href="?page=hello-login-settings" class="nav-tab<?php print ( 'general' == $tab ) ? ' nav-tab-active' : ''; ?>">General</a>
+				<a href="?page=hello-login-settings&tab=federation" class="nav-tab<?php print ( 'federation' == $tab ) ? ' nav-tab-active' : ''; ?>">Federation</a>
+				<a href="?page=hello-login-settings&tab=advanced" class="nav-tab<?php print ( 'advanced' == $tab ) ? ' nav-tab-active' : ''; ?>">Advanced</a>
+			</nav>
+
+			<div class="tab-content">
+			<?php
+			switch ( $tab ) {
+				case 'federation':
+					$this->settings_page_federation();
+					break;
+				case 'advanced':
+					$this->settings_page_advanced();
+					break;
+				default:
+					if ( 'general' != $tab ) {
+						$this->logger->log( "Unknown settings tab: $tab", 'settings' );
+					}
+					$this->settings_page_general();
+			}
+			?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Output the options/settings page, the general tab.
+	 *
+	 * @return void
+	 */
+	public function settings_page_general() {
 		$redirect_uri = site_url( '?hello-login=callback' );
 		$quickstart_uri = site_url( '?hello-login=quickstart' );
 		$settings_page_not_now_url = admin_url( '/options-general.php?page=hello-login-settings&link_not_now=1' );
@@ -521,18 +560,15 @@ class Hello_Login_Settings_Page {
 			if ( '1' == $_GET['link_not_now'] ) {
 				$link_not_now = true;
 				$this->settings->link_not_now = 1;
-				$this->settings->save();
 			} else {
 				$link_not_now = false;
 				$this->settings->link_not_now = 0;
-				$this->settings->save();
 			}
+			$this->settings->save();
 		}
-		?>
-		<div class="wrap">
-			<h2><?php print esc_html( get_admin_page_title() ); ?></h2>
 
-			<?php if ( ! $configured ) { ?>
+		?>
+		<?php if ( ! $configured ) { ?>
 			<h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already.</h2>
 
 			<form method="get" action="https://quickstart.hello.coop/">
@@ -545,50 +581,67 @@ class Hello_Login_Settings_Page {
 				<input type="submit" id="hello_quickstart" class="hello-btn" value="ō&nbsp;&nbsp;&nbsp;Configure your site with Hellō Quickstart" />
 			</form>
 
+		<?php } ?>
+
+		<?php if ( $configured || $debug ) { ?>
+			<?php if ( empty( Hello_Login_Users::get_hello_sub() ) && ! $link_not_now && ! is_multisite() ) { ?>
+				<h2>You are logged into this account with a username and password. Link this account with Hellō to login with Hellō in the future.</h2>
+				<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link this account with Hellō" onclick="parent.location='<?php print esc_js( $start_url ); ?>'"></button>
+				<a href="<?php print esc_attr( $settings_page_not_now_url ); ?>" class="hello-link-not-now">Not Now</a>
+			<?php } else { ?>
+				<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>
+
+				<h2>Hellō Button</h2>
+				<p>The Hellō Button has been added to the /wp-login.php page. You can add a "Continue with Hellō" button to other pages with the shortcode <code>[hello_login_button]</code>. Block support coming soon!
+				</p>
+				<form method="post" action="options.php">
+					<?php
+					settings_fields( $this->settings_field_group );
+					do_settings_sections( $this->options_page_name );
+					submit_button();
+					?>
+				</form>
 			<?php } ?>
+		<?php } ?>
 
-			<?php if ( $configured || $debug ) { ?>
-				<?php if ( empty( Hello_Login_Users::get_hello_sub() ) && ! $link_not_now && ! is_multisite() ) { ?>
-					<h2>You are logged into this account with a username and password. Link this account with Hellō to login with Hellō in the future.</h2>
-					<button class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link this account with Hellō" onclick="parent.location='<?php print esc_js( $start_url ); ?>'"></button>
-					<a href="<?php print esc_attr( $settings_page_not_now_url ); ?>" class="hello-link-not-now">Not Now</a>
-				<?php } else { ?>
-					<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update the name, images, terms of service, and privacy policy displayed by Hellō when logging in.</h2>
+		<?php if ( $debug ) { ?>
+			<h4>Debug</h4>
 
-					<h2>Hellō Button</h2>
-					<p>The Hellō Button has been added to the /wp-login.php page. You can add a "Continue with Hellō" button to other pages with the shortcode <code>[hello_login_button]</code>. Block support coming soon!
-					</p>
-					<form method="post" action="options.php">
-						<?php
-						settings_fields( $this->settings_field_group );
-						do_settings_sections( $this->options_page_name );
-						submit_button();
-						?>
-					</form>
-				<?php } ?>
-			<?php } ?>
+			<p>Hellō user id: <code><?php print esc_html( Hello_Login_Users::get_hello_sub() ); ?></code></p>
 
-			<?php if ( $debug ) { ?>
-				<h4>Debug</h4>
-
-				<p>Hellō user id: <code><?php print esc_html( Hello_Login_Users::get_hello_sub() ); ?></code></p>
-
-				<p>Settings:</p>
-				<pre>
-				<?php var_dump( $this->settings->get_values() ); ?>
-				</pre>
+			<p>Settings:</p>
+			<pre>
+			<?php var_dump( $this->settings->get_values() ); ?>
+		</pre>
 			}
-			<?php } ?>
+		<?php } ?>
 
-			<?php if ( $this->settings->enable_logging ) { ?>
-				<h2><?php esc_html_e( 'Logs', 'hello-login' ); ?></h2>
-				<div id="logger-table-wrapper">
-					<?php print wp_kses_post( $this->logger->get_logs_table() ); ?>
-				</div>
+		<?php if ( $this->settings->enable_logging ) { ?>
+			<h2><?php esc_html_e( 'Logs', 'hello-login' ); ?></h2>
+			<div id="logger-table-wrapper">
+				<?php print wp_kses_post( $this->logger->get_logs_table() ); ?>
+			</div>
 
-			<?php } ?>
-		</div>
+		<?php } ?>
 		<?php
+	}
+
+	/**
+	 * Output the options/settings page, the federation tab.
+	 *
+	 * @return void
+	 */
+	public function settings_page_federation() {
+		echo 'Federation settings coming soon...';
+	}
+
+	/**
+	 * Output the options/settings page, the advanced tab.
+	 *
+	 * @return void
+	 */
+	public function settings_page_advanced() {
+		echo 'Advanced settings coming soon...';
 	}
 
 	/**
