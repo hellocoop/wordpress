@@ -31,8 +31,7 @@ test('plugin installed and active', async ({ page }) => {
 //	await expect(pluginRow).toContainText(/Enable auto-updates/);
 
 	// Navigate to Hellō Login settings page and check that it is not configured.
-	await page.goto('http://localhost:8888/wp-admin');
-	await page.getByRole('link', { name: 'Settings', exact: true }).click();
+	await page.getByLabel('Main menu').getByRole('link', { name: 'Settings', exact: true }).click();
 	await page.getByRole('link', { name: 'Hellō Login', exact: true }).click();
 
 	await expect(page).toHaveTitle(/Hellō Login/);
