@@ -493,6 +493,10 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	public function settings_page() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
 		wp_enqueue_style( 'hello-login-admin', plugin_dir_url( __DIR__ ) . 'css/styles-admin.css', array(), Hello_Login::VERSION, 'all' );
 
 		$redirect_uri = site_url( '?hello-login=callback' );
