@@ -30,7 +30,7 @@ test('plugin installed and active', async ({ page }) => {
 	await expect(pluginRow).toContainText(/Settings/);
 
 	// Navigate to Hellō Login settings page and check that it is not configured.
-	await page.getByLabel('Main menu').getByRole('link', { name: 'Settings', exact: true }).click();
+	await page.getByRole('navigation').getByRole('link', { name: 'Settings', exact: true }).click();
 	await page.getByRole('link', { name: 'Hellō Login', exact: true }).click();
 
 	await expect(page).toHaveTitle(/Hellō Login/);
