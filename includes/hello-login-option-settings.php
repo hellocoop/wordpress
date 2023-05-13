@@ -42,6 +42,10 @@
  * @property bool $enable_logging           The flag to enable/disable logging.
  * @property int  $log_limit                The maximum number of log entries to keep.
  * @property int  $link_not_now             On settings page do not prompt to link account.
+ *
+ * Federation Settings:
+ *
+ * @property array $federated_groups        Nested array defining federated groups and mapping to roles.
  */
 class Hello_Login_Option_Settings {
 

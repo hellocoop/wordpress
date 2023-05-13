@@ -425,7 +425,7 @@ class Hello_Login_Invites {
 
 		$payload_array = json_decode( $payload_json, true );
 
-		if ( 'array' !== gettype( $payload_array ) ) {
+		if ( ! is_array( $payload_array ) ) {
 			$this->logger->log( "Invalid event, JSON decode of payload failed: $payload_json", 'decode_event' );
 
 			return new WP_Error( 'invalid_event', 'json decode failed' );

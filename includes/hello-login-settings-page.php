@@ -76,7 +76,6 @@ class Hello_Login_Settings_Page {
 	 * @param Hello_Login_Option_Logger   $logger   The plugin logging class object.
 	 */
 	public function __construct( Hello_Login_Option_Settings $settings, Hello_Login_Option_Logger $logger ) {
-
 		$this->settings             = $settings;
 		$this->logger               = $logger;
 		$this->settings_field_group = $this->settings->get_option_name() . '-group';
@@ -89,7 +88,6 @@ class Hello_Login_Settings_Page {
 			$field['name'] = $this->settings->get_option_name() . '[' . $key . ']';
 		}
 
-		// Allow alterations of the fields.
 		$this->settings_fields = $fields;
 	}
 
@@ -172,6 +170,8 @@ class Hello_Login_Settings_Page {
 			$this->advanced_options_page_name
 		);
 
+		$this->add_federation_settings_sections();
+
 		// Preprocess fields and add them to the page.
 		foreach ( $this->settings_fields as $key => $field ) {
 			// Make sure each key exists in the settings array.
@@ -187,6 +187,10 @@ class Hello_Login_Settings_Page {
 
 				case 'select':
 					$callback = 'do_select';
+					break;
+
+				case 'role_select':
+					$callback = 'do_role_select';
 					break;
 
 				case 'text':
@@ -207,6 +211,30 @@ class Hello_Login_Settings_Page {
 		}
 
 		$this->add_admin_notices();
+	}
+
+	/**
+	 * Add settings section for federation, one section per federated org.
+	 *
+	 * @return void
+	 */
+	private function add_federation_settings_sections() {
+		$encoded_orgs_groups = isset( $this->settings->federated_groups ) ? $this->settings->federated_groups : '{}';
+
+		$orgs_groups = json_decode( $encoded_orgs_groups, true );
+		if ( ! is_array( $orgs_groups ) ) {
+			$this->logger->log( "Cannot JSON decode federation groups: $encoded_orgs_groups", 'add_federation_settings_sections' );
+			return;
+		}
+
+		foreach ( $orgs_groups as $org_groups ) {
+			add_settings_section(
+				self::federation_org_section_key( $org_groups['org'] ),
+				$org_groups['org'],
+				function () {},
+				$this->federation_options_page_name
+			);
+		}
 	}
 
 	/**
@@ -474,7 +502,69 @@ class Hello_Login_Settings_Page {
 			'page'    => $this->options_page_name,
 		);
 
+		return array_merge( $fields, $this->get_federation_settings_fields() );
+	}
+
+	/**
+	 * Get the plugin federation settings fields definition.
+	 *
+	 * @return array
+	 */
+	private function get_federation_settings_fields(): array {
+		$fields = array();
+
+		$encoded_orgs_groups = isset( $this->settings->federated_groups ) ? $this->settings->federated_groups : '{}';
+
+		$orgs_groups = json_decode( $encoded_orgs_groups, true );
+		if ( ! is_array( $orgs_groups ) ) {
+			$this->logger->log( "Cannot JSON decode federation groups: $encoded_orgs_groups", 'get_federation_settings_fields' );
+			return $fields;
+		}
+
+		foreach ( $orgs_groups as $org_groups ) {
+			$org = $org_groups['org'];
+			$groups = $org_groups['groups'];
+			$section_key = self::federation_org_section_key( $org );
+
+			foreach ( $groups as $group ) {
+				$group_code = $group['value'];
+				$group_name = $group['display'];
+
+				$fields[ self::federation_group_field_key( $org, $group_code ) ] = array(
+					'title'       => $group_name,
+					'type'        => 'role_select',
+					'section'     => $section_key,
+					'page'        => $this->federation_options_page_name,
+				);
+			}
+		}
+
 		return $fields;
+	}
+
+	/**
+	 * Create the settings section key for a federated org.
+	 *
+	 * @param string $org        The org code.
+	 *
+	 * @return string
+	 */
+	public static function federation_org_section_key( string $org ): string {
+		// TODO: org code might need escaping.
+		return "federation_org_{$org}_settings";
+	}
+
+	/**
+	 * Create the settings field key for a federated group.
+	 *
+	 * @param string $org        The org code.
+	 * @param string $group_code The group code.
+	 *
+	 * @return string The settings field key.
+	 */
+	public static function federation_group_field_key( string $org, string $group_code ): string {
+		// TODO: org code and group code might need escaping.
+		return "federation_org_{$org}_group_{$group_code}";
 	}
 
 	/**
@@ -652,7 +742,15 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	public function settings_page_federation() {
-		echo 'Federation settings coming soon...';
+		?>
+		<form method="post" action="options.php">
+			<?php
+			settings_fields( $this->settings_field_group );
+			do_settings_sections( $this->federation_options_page_name );
+			submit_button();
+			?>
+		</form>
+		<?php
 	}
 
 	/**
@@ -743,6 +841,23 @@ class Hello_Login_Settings_Page {
 			<?php foreach ( $field['options'] as $value => $text ) : ?>
 				<option value="<?php print esc_attr( $value ); ?>" <?php selected( $value, $current_value ); ?>><?php print esc_html( $text ); ?></option>
 			<?php endforeach; ?>
+		</select>
+		<?php
+		$this->do_field_description( $field );
+	}
+
+	/**
+	 * Output a role select control.
+	 *
+	 * @param array $field The settings field definition array.
+	 *
+	 * @return void
+	 */
+	public function do_role_select( array $field ) {
+		$current_value = isset( $this->settings->{ $field['key'] } ) ? $this->settings->{ $field['key'] } : '';
+		?>
+		<select name="<?php print esc_attr( $field['name'] ); ?>">
+			<?php wp_dropdown_roles( $current_value ); ?>
 		</select>
 		<?php
 		$this->do_field_description( $field );

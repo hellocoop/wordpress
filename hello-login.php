@@ -494,13 +494,45 @@ class Hello_Login {
 				'displayname_format' => '{name}',
 
 				// Plugin settings.
-				'link_existing_users' => defined( 'HELLO_LOGIN_LINK_EXISTING_USERS' ) ? HELLO_LOGIN_LINK_EXISTING_USERS : 1,
+				'link_existing_users'      => defined( 'HELLO_LOGIN_LINK_EXISTING_USERS' ) ? HELLO_LOGIN_LINK_EXISTING_USERS : 1,
 				'create_if_does_not_exist' => defined( 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST' ) ? HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST : 1,
-				'redirect_user_back' => defined( 'HELLO_LOGIN_REDIRECT_USER_BACK' ) ? HELLO_LOGIN_REDIRECT_USER_BACK : 1,
-				'enable_logging'  => 0,
-				'log_limit'       => 1000,
-				'link_not_now'    => 0,
-				'provider_hint'   => '',
+				'redirect_user_back'       => defined( 'HELLO_LOGIN_REDIRECT_USER_BACK' ) ? HELLO_LOGIN_REDIRECT_USER_BACK : 1,
+				'enable_logging'           => 0,
+				'log_limit'                => 1000,
+				'link_not_now'             => 0,
+				'provider_hint'            => '',
+				'federated_groups'         => <<<GROUPS
+[
+	{
+		"org": "example.com",
+		"groups":
+			[
+				{
+					"value": "123",
+					"display": "Admins"
+				},
+				{
+					"value": "5678",
+					"display": "Marketing"
+				}
+			]
+	},
+	{
+		"org": "example.net",
+		"groups":
+			[
+				{
+					"value": "123",
+					"display": "Engineering"
+				},
+				{
+					"value": "5678",
+					"display": "Sales"
+				}
+			]
+	}
+]
+GROUPS,
 			)
 		);
 
