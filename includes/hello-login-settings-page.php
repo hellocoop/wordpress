@@ -42,11 +42,25 @@ class Hello_Login_Settings_Page {
 	private array $settings_fields;
 
 	/**
-	 * Options page slug.
+	 * Options page slug, general tab.
 	 *
 	 * @var string
 	 */
 	private string $options_page_name = 'hello-login-settings';
+
+	/**
+	 * Options page slug, federation tab.
+	 *
+	 * @var string
+	 */
+	private string $federation_options_page_name = 'hello-login-federation-settings';
+
+	/**
+	 * Options page slug, advanced.
+	 *
+	 * @var string
+	 */
+	private string $advanced_options_page_name = 'hello-login-advanced-settings';
 
 	/**
 	 * Options page settings group name.
@@ -155,7 +169,7 @@ class Hello_Login_Settings_Page {
 			'log_settings',
 			__( 'Log Settings', 'hello-login' ),
 			array( $this, 'log_settings_description' ),
-			$this->options_page_name
+			$this->advanced_options_page_name
 		);
 
 		// Preprocess fields and add them to the page.
@@ -186,7 +200,7 @@ class Hello_Login_Settings_Page {
 				$key,
 				$field['title'],
 				array( $this, $callback ),
-				$this->options_page_name,
+				$field['page'],
 				$field['section'],
 				$field
 			);
@@ -348,9 +362,10 @@ class Hello_Login_Settings_Page {
 		 *
 		 * - title
 		 * - description
+		 * - example (optional example will appear beneath description and be wrapped in <code>)
 		 * - type ( checkbox | text | select )
 		 * - section - settings/option page section ( client_settings | authorization_settings )
-		 * - example (optional example will appear beneath description and be wrapped in <code>)
+		 * - page - maps the tab, one of $this->options_page_name, $this->federation_options_page_name or $this->advanced_options_page_name
 		 */
 		$fields = array(
 			'scope'             => array(
@@ -359,6 +374,7 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'disabled'    => defined( 'HELLO_LOGIN_CLIENT_SCOPE' ),
 				'section'     => 'client_settings',
+				'page'        => $this->options_page_name,
 			),
 			'client_id'         => array(
 				'title'       => __( 'Client ID', 'hello-login' ),
@@ -366,18 +382,21 @@ class Hello_Login_Settings_Page {
 				'type'        => 'text',
 				'disabled'    => defined( 'HELLO_LOGIN_CLIENT_ID' ),
 				'section'     => 'client_settings',
+				'page'        => $this->options_page_name,
 			),
 			'redirect_uri'         => array(
 				'title'       => __( 'Redirect URI', 'hello-login' ),
 				'description' => __( 'The endpoint used to receive authentication data.', 'hello-login' ),
 				'type'        => 'text',
 				'section'     => 'client_settings',
+				'page'        => $this->options_page_name,
 			),
 			'provider_hint' => array(
 				'title'       => __( 'Provider Hint', 'hello-login' ),
 				'description' => __( 'Change which providers are recommended to better align with your users\' preferences.<br><strong>Example:</strong> <code>wordpress email--</code> will promote Wordpress.com to be recommended, and demote email.<br>See <a href="https://www.hello.dev/documentation/provider-hint.html" target="_blank">https://www.hello.dev/documentation/provider-hint.html</a> for details.', 'hello-login' ),
 				'type'        => 'text',
 				'section'     => 'client_settings',
+				'page'        => $this->options_page_name,
 			),
 			/*
 			'http_request_timeout'      => array(
@@ -386,6 +405,7 @@ class Hello_Login_Settings_Page {
 				'example'     => 30,
 				'type'        => 'text',
 				'section'     => 'client_settings',
+				'page'        => $this->options_page_name,
 			),
 			'displayname_format'     => array(
 				'title'       => __( 'Display Name Formatting', 'hello-login' ),
@@ -393,12 +413,14 @@ class Hello_Login_Settings_Page {
 				'example'     => '{given_name} {family_name}',
 				'type'        => 'text',
 				'section'     => 'client_settings',
+				'page'        => $this->options_page_name,
 			),
 			'state_time_limit'     => array(
 				'title'       => __( 'State time limit', 'hello-login' ),
 				'description' => __( 'State valid time in seconds. Defaults to 180', 'hello-login' ),
 				'type'        => 'number',
 				'section'     => 'client_settings',
+				'page'        => $this->options_page_name,
 			),
 			*/
 			'enable_logging'    => array(
@@ -406,12 +428,14 @@ class Hello_Login_Settings_Page {
 				'description' => __( 'Very simple log messages for debugging purposes.', 'hello-login' ),
 				'type'        => 'checkbox',
 				'section'     => 'log_settings',
+				'page'        => $this->advanced_options_page_name,
 			),
 			'log_limit'         => array(
 				'title'       => __( 'Log Limit', 'hello-login' ),
 				'description' => __( 'Number of items to keep in the log. These logs are stored as an option in the database, so space is limited.', 'hello-login' ),
 				'type'        => 'number',
 				'section'     => 'log_settings',
+				'page'        => $this->advanced_options_page_name,
 			),
 		);
 
@@ -421,6 +445,7 @@ class Hello_Login_Settings_Page {
 			'type'        => 'checkbox',
 			'disabled'    => defined( 'HELLO_LOGIN_LINK_EXISTING_USERS' ),
 			'section'     => 'user_settings',
+			'page'        => $this->options_page_name,
 		);
 		$fields['create_if_does_not_exist'] = array(
 			'title'       => __( 'Allow anyone to register with Hellō', 'hello-login' ),
@@ -428,6 +453,7 @@ class Hello_Login_Settings_Page {
 			'type'        => 'checkbox',
 			'disabled'    => defined( 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST' ),
 			'section'     => 'user_settings',
+			'page'        => $this->options_page_name,
 		);
 
 		if ( isset( $_GET['debug'] ) ) {
@@ -437,13 +463,15 @@ class Hello_Login_Settings_Page {
 				'type'        => 'checkbox',
 				'disabled'    => defined( 'HELLO_LOGIN_REDIRECT_USER_BACK' ),
 				'section'     => 'user_settings',
+				'page'   => $this->options_page_name,
 			);
 		}
 
 		$fields['link_not_now'] = array(
-			'title' => 'Link Not Now',
-			'type' => 'checkbox',
+			'title'   => 'Link Not Now',
+			'type'    => 'checkbox',
 			'section' => 'hidden_settings',
+			'page'    => $this->options_page_name,
 		);
 
 		return $fields;
@@ -615,14 +643,6 @@ class Hello_Login_Settings_Page {
 		</pre>
 			}
 		<?php } ?>
-
-		<?php if ( $this->settings->enable_logging ) { ?>
-			<h2><?php esc_html_e( 'Logs', 'hello-login' ); ?></h2>
-			<div id="logger-table-wrapper">
-				<?php print wp_kses_post( $this->logger->get_logs_table() ); ?>
-			</div>
-
-		<?php } ?>
 		<?php
 	}
 
@@ -641,7 +661,22 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	public function settings_page_advanced() {
-		echo 'Advanced settings coming soon...';
+		?>
+		<form method="post" action="options.php">
+			<?php
+			settings_fields( $this->settings_field_group );
+			do_settings_sections( $this->advanced_options_page_name );
+			submit_button();
+			?>
+		</form>
+		<?php if ( $this->settings->enable_logging ) { ?>
+
+			<h2><?php esc_html_e( 'Logs', 'hello-login' ); ?></h2>
+			<div id="logger-table-wrapper">
+				<?php print wp_kses_post( $this->logger->get_logs_table() ); ?>
+			</div>
+		<?php } ?>
+		<?php
 	}
 
 	/**
