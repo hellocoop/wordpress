@@ -99,6 +99,13 @@ class Hello_Login {
 	const LOGS_OPTION_NAME = 'hello-login-logs';
 
 	/**
+	 * Federation groups option name.
+	 *
+	 * @var string
+	 */
+	const FEDERATION_GROUPS_OPTION_NAME = 'hello_login_federation_groups';
+
+	/**
 	 * Plugin settings.
 	 *
 	 * @var Hello_Login_Option_Settings
@@ -501,38 +508,6 @@ class Hello_Login {
 				'log_limit'                => 1000,
 				'link_not_now'             => 0,
 				'provider_hint'            => '',
-				'federated_groups'         => <<<GROUPS
-[
-	{
-		"org": "example.com",
-		"groups":
-			[
-				{
-					"value": "123",
-					"display": "Admins"
-				},
-				{
-					"value": "5678",
-					"display": "Marketing"
-				}
-			]
-	},
-	{
-		"org": "example.net",
-		"groups":
-			[
-				{
-					"value": "123",
-					"display": "Engineering"
-				},
-				{
-					"value": "5678",
-					"display": "Sales"
-				}
-			]
-	}
-]
-GROUPS,
 			)
 		);
 
@@ -544,6 +519,43 @@ GROUPS,
 
 		// User-Agent hook.
 		add_filter( 'http_headers_useragent', array( $plugin, 'user_agent_hook' ), 0, 2 );
+
+		// TODO: remove these test groups, should be set by event.
+		$test_groups = array(
+			array(
+				'org'    => 'example.com',
+				'id'     => 1,
+				'groups' => array(
+					array(
+						'value'   => '1234',
+						'id'      => 1,
+						'display' => 'Admins',
+					),
+					array(
+						'value'   => '5678',
+						'id'      => 2,
+						'display' => 'Marketing',
+					),
+				),
+			),
+			array(
+				'org'    => 'example.net',
+				'id'     => 2,
+				'groups' => array(
+					array(
+						'value'   => '1234',
+						'id'      => 1,
+						'display' => 'Engineering',
+					),
+					array(
+						'value'   => '5678',
+						'id'      => 2,
+						'display' => 'Sales',
+					),
+				),
+			),
+		);
+		add_option( self::FEDERATION_GROUPS_OPTION_NAME, $test_groups );
 	}
 }
 

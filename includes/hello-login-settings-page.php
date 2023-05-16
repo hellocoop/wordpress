@@ -218,21 +218,22 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	private function add_federation_settings_sections() {
-		$encoded_orgs_groups = isset( $this->settings->federated_groups ) ? $this->settings->federated_groups : '{}';
-
-		$orgs_groups = json_decode( $encoded_orgs_groups, true );
+		$orgs_groups = get_option( Hello_Login::FEDERATION_GROUPS_OPTION_NAME, array() );
 		if ( ! is_array( $orgs_groups ) ) {
-			$this->logger->log( "Cannot JSON decode federation groups: $encoded_orgs_groups", 'add_federation_settings_sections' );
+			$this->logger->log( "Federation groups not an array: $orgs_groups", 'add_federation_settings_sections' );
 			return;
 		}
 
 		foreach ( $orgs_groups as $org_groups ) {
-			add_settings_section(
-				self::federation_org_section_key( $org_groups['org'] ),
-				$org_groups['org'],
-				function () {},
-				$this->federation_options_page_name
-			);
+			if ( count( $org_groups['groups'] ) > 0 ) {
+				add_settings_section(
+					self::federation_org_section_key( $org_groups['id'] ),
+					$org_groups['org'],
+					function () {
+					},
+					$this->federation_options_page_name
+				);
+			}
 		}
 	}
 
@@ -512,24 +513,22 @@ class Hello_Login_Settings_Page {
 	private function get_federation_settings_fields(): array {
 		$fields = array();
 
-		$encoded_orgs_groups = isset( $this->settings->federated_groups ) ? $this->settings->federated_groups : '{}';
-
-		$orgs_groups = json_decode( $encoded_orgs_groups, true );
+		$orgs_groups = get_option( Hello_Login::FEDERATION_GROUPS_OPTION_NAME, array() );
 		if ( ! is_array( $orgs_groups ) ) {
-			$this->logger->log( "Cannot JSON decode federation groups: $encoded_orgs_groups", 'get_federation_settings_fields' );
+			$this->logger->log( "Federation groups not an array: $orgs_groups", 'get_federation_settings_fields' );
 			return $fields;
 		}
 
 		foreach ( $orgs_groups as $org_groups ) {
-			$org = $org_groups['org'];
+			$org_id = $org_groups['id'];
 			$groups = $org_groups['groups'];
-			$section_key = self::federation_org_section_key( $org );
+			$section_key = self::federation_org_section_key( $org_id );
 
 			foreach ( $groups as $group ) {
-				$group_code = $group['value'];
+				$group_id   = $group['id'];
 				$group_name = $group['display'];
 
-				$fields[ self::federation_group_field_key( $org, $group_code ) ] = array(
+				$fields[ self::federation_group_field_key( $org_id, $group_id ) ] = array(
 					'title'       => $group_name,
 					'type'        => 'role_select',
 					'section'     => $section_key,
@@ -544,26 +543,24 @@ class Hello_Login_Settings_Page {
 	/**
 	 * Create the settings section key for a federated org.
 	 *
-	 * @param string $org        The org code.
+	 * @param int $org_id The org id.
 	 *
 	 * @return string
 	 */
-	public static function federation_org_section_key( string $org ): string {
-		// TODO: org code might need escaping.
-		return "federation_org_{$org}_settings";
+	public static function federation_org_section_key( int $org_id ): string {
+		return "federation_org_{$org_id}_settings";
 	}
 
 	/**
 	 * Create the settings field key for a federated group.
 	 *
-	 * @param string $org        The org code.
-	 * @param string $group_code The group code.
+	 * @param int $org_id   The org id.
+	 * @param int $group_id The group id.
 	 *
 	 * @return string The settings field key.
 	 */
-	public static function federation_group_field_key( string $org, string $group_code ): string {
-		// TODO: org code and group code might need escaping.
-		return "federation_org_{$org}_group_{$group_code}";
+	public static function federation_group_field_key( int $org_id, int $group_id ): string {
+		return "federation_org_{$org_id}_group_{$group_id}";
 	}
 
 	/**
