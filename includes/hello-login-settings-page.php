@@ -135,8 +135,7 @@ class Hello_Login_Settings_Page {
 			$this->settings_field_group,
 			$this->settings->get_option_name(),
 			array(
-				$this,
-				'sanitize_settings',
+				'sanitize_callback' => array( $this, 'sanitize_settings' ),
 			)
 		);
 
