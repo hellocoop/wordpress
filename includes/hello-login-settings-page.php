@@ -597,7 +597,7 @@ class Hello_Login_Settings_Page {
 					}
 				}
 			} else {
-				$options[ $key ] = '';
+				$options[ $key ] = $this->settings->{ $key };
 			}
 		}
 
