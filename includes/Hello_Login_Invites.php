@@ -38,6 +38,27 @@ class Hello_Login_Invites {
 	const INVITE_RETRACTED_EVENT_URI = 'https://hello.coop/invite/retracted';
 
 	/**
+	 * Event URI for the federation groups sync.
+	 *
+	 * @var string
+	 */
+	const FEDERATION_GROUPS_SYNC_EVENT_URI = 'https://hello.coop/federation/groups/sync';
+
+	/**
+	 * Event URI for the federation user sync.
+	 *
+	 * @var string
+	 */
+	const FEDERATION_USER_SYNC_EVENT_URI = 'https://hello.coop/federation/user/sync';
+
+	/**
+	 * Event URI for the federation user disable.
+	 *
+	 * @var string
+	 */
+	const FEDERATION_USER_DISABLE_EVENT_URI = 'https://hello.coop/federation/user/disable';
+
+	/**
 	 * Plugin logger.
 	 *
 	 * @var Hello_Login_Option_Logger
@@ -176,7 +197,7 @@ class Hello_Login_Invites {
 			}
 		}
 
-		echo $options_html;
+		echo $options_html; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -215,6 +236,13 @@ class Hello_Login_Invites {
 					break;
 				case self::INVITE_DECLINED_EVENT_URI:
 					$this->handle_declined( $event );
+					break;
+				case self::FEDERATION_GROUPS_SYNC_EVENT_URI:
+					$this->handle_federation_groups_sync( $sub_event );
+					break;
+				case self::FEDERATION_USER_SYNC_EVENT_URI:
+				case self::FEDERATION_USER_DISABLE_EVENT_URI:
+					$this->logger->log( "Event type not implemented: $type", 'invites' );
 					break;
 				default:
 					$this->logger->log( "Unknown event type: $type", 'invites' );
@@ -343,7 +371,7 @@ class Hello_Login_Invites {
 	/**
 	 * Handle an incoming invite retracted event.
 	 *
-	 * @param array  $event         The full invite created event.
+	 * @param array  $event The full invite created event.
 	 *
 	 * @return void
 	 */
@@ -354,7 +382,7 @@ class Hello_Login_Invites {
 	/**
 	 * Handle an incoming invite declined event.
 	 *
-	 * @param array  $event         The full invite created event.
+	 * @param array  $event The full invite created event.
 	 *
 	 * @return void
 	 */
@@ -459,5 +487,16 @@ class Hello_Login_Invites {
 		// events cqn be repeated with no side effects, this is not implemented for now.
 
 		return true;
+	}
+
+	/**
+	 * Handle a federation groups sync event.
+	 *
+	 * @param array $sub_event The federation groups sync sub-event.
+	 *
+	 * @return void
+	 */
+	protected function handle_federation_groups_sync( array $sub_event ) {
+		// TODO: implement.
 	}
 }
