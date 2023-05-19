@@ -1,5 +1,4 @@
 <?php declare(strict_types=1);
-//use PHPUnit_Framework_TestCase;
 use PHPUnit\Framework\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
