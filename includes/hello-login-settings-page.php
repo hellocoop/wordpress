@@ -70,6 +70,13 @@ class Hello_Login_Settings_Page {
 	private string $settings_field_group;
 
 	/**
+	 * Federation groups logic.
+	 *
+	 * @var Hello_Login_Federation_Groups
+	 */
+	private Hello_Login_Federation_Groups $federation_groups;
+
+	/**
 	 * Settings page class constructor.
 	 *
 	 * @param Hello_Login_Option_Settings $settings The plugin settings object.
@@ -89,6 +96,8 @@ class Hello_Login_Settings_Page {
 		}
 
 		$this->settings_fields = $fields;
+
+		$this->federation_groups = new Hello_Login_Federation_Groups( $this->logger );
 	}
 
 	/**
@@ -218,7 +227,7 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	private function add_federation_settings_sections() {
-		$orgs_groups = ( new Hello_Login_Federation_Groups() )->get_orgs_groups();
+		$orgs_groups = $this->federation_groups->get_orgs_groups();
 
 		foreach ( $orgs_groups as $org_groups ) {
 			add_settings_section(
@@ -507,7 +516,7 @@ class Hello_Login_Settings_Page {
 	private function get_federation_settings_fields(): array {
 		$fields = array();
 
-		$orgs_groups = ( new Hello_Login_Federation_Groups() )->get_orgs_groups();
+		$orgs_groups = $this->federation_groups->get_orgs_groups();
 
 		foreach ( $orgs_groups as $org_groups ) {
 			$org_id = $org_groups['id'];

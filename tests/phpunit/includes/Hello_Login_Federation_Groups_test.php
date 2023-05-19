@@ -12,7 +12,9 @@ class Hello_Login_Federation_Groups_Test extends TestCase {
 	}
 
 	private function create_federation_groups_instance(): Hello_Login_Federation_Groups {
-		return new Hello_Login_Federation_Groups();
+		$logger = new Hello_Login_Option_Logger( Hello_Login::LOGS_OPTION_NAME, 'error', false );
+
+		return new Hello_Login_Federation_Groups( $logger );
 	}
 
 	private function create_option_orgs_groups(): array {

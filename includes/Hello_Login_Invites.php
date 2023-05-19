@@ -80,6 +80,13 @@ class Hello_Login_Invites {
 	private Hello_Login_Users $users;
 
 	/**
+	 * Federation groups logic.
+	 *
+	 * @var Hello_Login_Federation_Groups
+	 */
+	private Hello_Login_Federation_Groups $federation_groups;
+
+	/**
 	 * The class constructor.
 	 *
 	 * @param Hello_Login_Option_Logger   $logger   The plugin logger instance.
@@ -90,6 +97,7 @@ class Hello_Login_Invites {
 		$this->logger = $logger;
 		$this->settings = $settings;
 		$this->users = $users;
+		$this->federation_groups = new Hello_Login_Federation_Groups( $this->logger );
 	}
 
 	/**
@@ -497,9 +505,7 @@ class Hello_Login_Invites {
 	 * @return void
 	 */
 	protected function handle_federation_groups_sync( array $sub_event ) {
-		$fg = new Hello_Login_Federation_Groups();
-
-		$res = $fg->sync( $sub_event );
+		$res = $this->federation_groups->sync( $sub_event );
 
 		if ( is_wp_error( $res ) ) {
 			$this->logger->log( $res, 'handle_federation_groups_sync' );
