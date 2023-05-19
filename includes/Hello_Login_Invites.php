@@ -497,6 +497,12 @@ class Hello_Login_Invites {
 	 * @return void
 	 */
 	protected function handle_federation_groups_sync( array $sub_event ) {
-		// TODO: implement.
+		$fg = new Hello_Login_Federation_Groups();
+
+		$res = $fg->sync( $sub_event );
+
+		if ( is_wp_error( $res ) ) {
+			$this->logger->log( $res, 'handle_federation_groups_sync' );
+		}
 	}
 }

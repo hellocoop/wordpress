@@ -218,22 +218,16 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	private function add_federation_settings_sections() {
-		$orgs_groups = get_option( Hello_Login::FEDERATION_GROUPS_OPTION_NAME, array() );
-		if ( ! is_array( $orgs_groups ) ) {
-			$this->logger->log( "Federation groups not an array: $orgs_groups", 'add_federation_settings_sections' );
-			return;
-		}
+		$orgs_groups = ( new Hello_Login_Federation_Groups() )->get_orgs_groups();
 
 		foreach ( $orgs_groups as $org_groups ) {
-			if ( count( $org_groups['groups'] ) > 0 ) {
-				add_settings_section(
-					self::federation_org_section_key( $org_groups['id'] ),
-					$org_groups['org'],
-					function () {
-					},
-					$this->federation_options_page_name
-				);
-			}
+			add_settings_section(
+				self::federation_org_section_key( $org_groups['id'] ),
+				$org_groups['org'],
+				function () {
+				},
+				$this->federation_options_page_name
+			);
 		}
 	}
 
@@ -513,11 +507,7 @@ class Hello_Login_Settings_Page {
 	private function get_federation_settings_fields(): array {
 		$fields = array();
 
-		$orgs_groups = get_option( Hello_Login::FEDERATION_GROUPS_OPTION_NAME, array() );
-		if ( ! is_array( $orgs_groups ) ) {
-			$this->logger->log( "Federation groups not an array: $orgs_groups", 'get_federation_settings_fields' );
-			return $fields;
-		}
+		$orgs_groups = ( new Hello_Login_Federation_Groups() )->get_orgs_groups();
 
 		foreach ( $orgs_groups as $org_groups ) {
 			$org_id = $org_groups['id'];

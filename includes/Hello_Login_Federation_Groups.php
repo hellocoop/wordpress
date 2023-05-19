@@ -40,6 +40,10 @@ class Hello_Login_Federation_Groups {
 	 */
 	private function load() {
 		$this->orgs_groups = get_option( Hello_Login::FEDERATION_GROUPS_OPTION_NAME, array() );
+		if ( ! is_array( $this->orgs_groups ) ) {
+			// TODO: $this->logger->log( "Federation groups not an array: $orgs_groups", 'get_federation_settings_fields' );
+			$this->orgs_groups = array();
+		}
 	}
 
 	/**
