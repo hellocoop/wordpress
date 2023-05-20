@@ -10,7 +10,12 @@
  */
 
 /**
- * Hello Invites logic and handler.
+ * Endpoint and handlers for Push-Based Security Event Token (SET) delivery. This endpoint handles Hellō specific
+ * events.
+ *
+ * @see https://openid.net/wg/sharedsignals/                       Shared Signals – A Secure Webhooks Framework
+ * @see https://openid.net/specs/openid-sse-framework-1_0-ID1.html OpenID Shared Signals and Events Framework Specification 1.0 - draft 01
+ * @see https://www.rfc-editor.org/rfc/rfc8935.html                RFC 8935 - Push-Based Security Event Token (SET) Delivery Using HTTP
  *
  * @package Hello_Login
  */
