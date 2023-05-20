@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 use Brain\Monkey;
 
-class Hello_Login_Invites_Test extends TestCase {
+class Hello_Login_Events_Test extends TestCase {
 	use MockeryPHPUnitIntegration;
 
 	protected function tearDown(): void {
@@ -11,7 +11,7 @@ class Hello_Login_Invites_Test extends TestCase {
 		parent::tearDown();
 	}
 
-	private function create_invites_object(): Hello_Login_Invites {
+	private function create_invites_object(): Hello_Login_Events {
 		$default_settings = array(
 			'endpoint_login' => 'https://wallet.hello.coop/authorize',
 			'client_id'      => '4c1ec93b-2714-4d72-9582-b09c515c5bd8',
@@ -21,7 +21,7 @@ class Hello_Login_Invites_Test extends TestCase {
 		$logger = new Hello_Login_Option_Logger( Hello_Login::LOGS_OPTION_NAME, 'error', false );
 		$users = new Hello_Login_Users( $logger, $settings );
 
-		return new Hello_Login_Invites( $logger, $settings, $users );
+		return new Hello_Login_Events( $logger, $settings, $users );
 	}
 
 	public function test_decode_event_success() {

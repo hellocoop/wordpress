@@ -14,7 +14,7 @@
  *
  * @package Hello_Login
  */
-class Hello_Login_Invites {
+class Hello_Login_Events {
 
 	/**
 	 * Event URI for the invite creation.
@@ -107,9 +107,9 @@ class Hello_Login_Invites {
 	 * @param Hello_Login_Option_Settings $settings The plugin settings instance.
 	 * @param Hello_Login_Users           $users    The users service.
 	 *
-	 * @return Hello_Login_Invites
+	 * @return Hello_Login_Events
 	 */
-	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Users $users ): Hello_Login_Invites {
+	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Users $users ): Hello_Login_Events {
 		$invites  = new self( $logger, $settings, $users );
 
 		if ( self::can_invite() && 'user-new.php' == $GLOBALS['pagenow'] ) {

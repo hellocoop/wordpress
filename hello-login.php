@@ -129,9 +129,9 @@ class Hello_Login {
 	/**
 	 * Hello invites.
 	 *
-	 * @var Hello_Login_Invites
+	 * @var Hello_Login_Events
 	 */
-	public Hello_Login_Invites $invites;
+	public Hello_Login_Events $invites;
 
 	/**
 	 * Setup the plugin
@@ -197,7 +197,7 @@ class Hello_Login {
 			Hello_Login_Settings_Page::register( $this->settings, $this->logger );
 		}
 
-		$this->invites = Hello_Login_Invites::register( $this->logger, $this->settings, $users );
+		$this->invites = Hello_Login_Events::register( $this->logger, $this->settings, $users );
 
 		if ( ! empty( $this->settings->client_id ) ) {
 			add_action( 'show_user_profile', array( $this, 'hello_login_user_profile_self' ) );
