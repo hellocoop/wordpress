@@ -87,6 +87,8 @@ class Hello_Login_Settings_Page {
 		$this->logger               = $logger;
 		$this->settings_field_group = $this->settings->get_option_name() . '-group';
 
+		$this->federation_groups = new Hello_Login_Federation_Groups( $this->logger );
+
 		$fields = $this->get_settings_fields();
 
 		// Some simple pre-processing.
@@ -96,8 +98,6 @@ class Hello_Login_Settings_Page {
 		}
 
 		$this->settings_fields = $fields;
-
-		$this->federation_groups = new Hello_Login_Federation_Groups( $this->logger );
 	}
 
 	/**
