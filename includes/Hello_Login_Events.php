@@ -237,12 +237,12 @@ class Hello_Login_Events {
 			exit();
 		}
 
-		$this->logger->log( $event, 'invites' );
+		$this->logger->log( $event, 'events' );
 
 		foreach ( $event['events'] as $type => $sub_event ) {
 			switch ( $type ) {
 				case self::INVITE_CREATED_EVENT_URI:
-					$this->handle_created( $event, $sub_event, $body );
+					$this->handle_invite_created( $event, $sub_event, $body );
 					break;
 				case self::INVITE_RETRACTED_EVENT_URI:
 					$this->handle_retracted( $event );
@@ -255,10 +255,10 @@ class Hello_Login_Events {
 					break;
 				case self::FEDERATION_USER_SYNC_EVENT_URI:
 				case self::FEDERATION_USER_DISABLE_EVENT_URI:
-					$this->logger->log( "Event type not implemented: $type", 'invites' );
+					$this->logger->log( "Event type not implemented: $type", 'events' );
 					break;
 				default:
-					$this->logger->log( "Unknown event type: $type", 'invites' );
+					$this->logger->log( "Unknown event type: $type", 'events' );
 			}
 		}
 	}
@@ -274,20 +274,20 @@ class Hello_Login_Events {
 			$request_method = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) );
 		}
 		if ( 'POST' !== $request_method ) {
-			$this->logger->log( "POST method expected, got: $request_method", 'invites' );
+			$this->logger->log( "POST method expected, got: $request_method", 'events' );
 			http_response_code( 405 );
 			exit();
 		}
 
 		if ( ! isset( $_SERVER['CONTENT_LENGTH'] ) ) {
-			$this->logger->log( 'Content length missing', 'invites' );
+			$this->logger->log( 'Content length missing', 'events' );
 			http_response_code( 411 );
 			exit();
 		}
 
 		$content_length = intval( sanitize_text_field( wp_unslash( $_SERVER['CONTENT_LENGTH'] ) ) );
 		if ( $content_length > 1024 * 1024 ) {
-			$this->logger->log( "Content length too large: $content_length", 'invites' );
+			$this->logger->log( "Content length too large: $content_length", 'events' );
 			http_response_code( 413 );
 			exit();
 		}
@@ -296,8 +296,18 @@ class Hello_Login_Events {
 		if ( isset( $_SERVER['CONTENT_TYPE'] ) ) {
 			$content_type = explode( ';', sanitize_text_field( wp_unslash( $_SERVER['CONTENT_TYPE'] ) ), 2 )[0];
 		}
-		if ( 'application/json' !== $content_type ) {
-			$this->logger->log( "Invalid content type: $content_type", 'invites' );
+		if ( 'application/secevent+jwt' !== $content_type ) {
+			$this->logger->log( "Invalid content type: $content_type", 'events' );
+			http_response_code( 400 );
+			exit();
+		}
+
+		$accept = '';
+		if ( isset( $_SERVER['ACCEPT'] ) ) {
+			$accept = explode( ';', sanitize_text_field( wp_unslash( $_SERVER['ACCEPT'] ) ), 2 )[0];
+		}
+		if ( 'application/json' !== $accept ) {
+			$this->logger->log( "Invalid accept header: $accept", 'events' );
 			http_response_code( 400 );
 			exit();
 		}
@@ -312,7 +322,7 @@ class Hello_Login_Events {
 	 *
 	 * @return void
 	 */
-	protected function handle_created( array $event, array $sub_event, string $encoded_event ) {
+	protected function handle_invite_created( array $event, array $sub_event, string $encoded_event ) {
 		$sub = $event['sub'];
 		$email = $event['email'];
 		$role = $sub_event['role'];
@@ -384,7 +394,7 @@ class Hello_Login_Events {
 	/**
 	 * Handle an incoming invite retracted event.
 	 *
-	 * @param array  $event The full invite created event.
+	 * @param array $event The full invite created event.
 	 *
 	 * @return void
 	 */
@@ -395,7 +405,7 @@ class Hello_Login_Events {
 	/**
 	 * Handle an incoming invite declined event.
 	 *
-	 * @param array  $event The full invite created event.
+	 * @param array $event The full invite created event.
 	 *
 	 * @return void
 	 */
@@ -424,12 +434,12 @@ class Hello_Login_Events {
 			if ( wp_delete_user( $user->ID ) ) {
 				$this->logger->log( "Deleted unused user on invite $event_type: $sub", 'invites' );
 			} else {
-				$this->logger->log( "Failed deleting unused user on invite $event_type: $sub ({$user->ID})", 'invites' );
+				$this->logger->log( "Failed deleting unused user on invite $event_type: $sub ($user->ID)", 'invites' );
 				http_response_code( 500 );
 				exit();
 			}
 		} else {
-			$this->logger->log( "Cannot delete used user on invite $event_type: $sub ({$user->ID})", 'invites' );
+			$this->logger->log( "Cannot delete used user on invite $event_type: $sub ($user->ID)", 'invites' );
 			http_response_code( 409 );
 			exit();
 		}
@@ -438,14 +448,16 @@ class Hello_Login_Events {
 	/**
 	 * Decode the JWT corresponding to and event.
 	 *
+	 * TODO: use the introspection endpoint when available.
+	 *
+	 * @see $this->settings->endpoint_introspection
+	 * @see https://www.hello.dev/documentation/Integrating-hello.html#_5-1-introspection
+	 *
 	 * @param string $event_jwt
 	 *
 	 * @return array|WP_Error
 	 */
 	public function decode_event( string $event_jwt ) {
-		// TODO: use the introspection endpoint when available
-		//       $this->settings->endpoint_introspection
-		//       https://www.hello.dev/documentation/Integrating-hello.html#_5-1-introspection
 		$jwt_parts = explode( '.', $event_jwt );
 
 		if ( 3 != count( $jwt_parts ) ) {
@@ -476,9 +488,9 @@ class Hello_Login_Events {
 	}
 
 	/**
-	 * General validation for invite events.
+	 * General validation for events.
 	 *
-	 * @param array $event The invite event.
+	 * @param array $event The event.
 	 *
 	 * @return WP_Error|true
 	 */
@@ -487,12 +499,12 @@ class Hello_Login_Events {
 		$aud = $event['aud'];
 
 		if ( Hello_Login_Util::hello_issuer( $this->settings->endpoint_login ) !== $iss ) {
-			$this->logger->log( "Invalid issuer: $iss", 'invites' );
+			$this->logger->log( "Invalid issuer: $iss", 'events' );
 			return new WP_Error( 'invalid_event', 'invalid issuer' );
 		}
 
 		if ( $this->settings->client_id !== $aud ) {
-			$this->logger->log( "Invalid audience: $aud", 'invites' );
+			$this->logger->log( "Invalid audience: $aud", 'events' );
 			return new WP_Error( 'invalid_event', 'invalid audience' );
 		}
 
