@@ -75,7 +75,7 @@
 			"includes/hello-login-option-settings.php",
 			"includes/hello-login-settings-page.php",
 			"includes/hello-login-util.php",
-			"includes/Hello_Login_Invites.php"
+			"includes/Hello_Login_Events.php"
 		]
 	},
 	"scripts": {
