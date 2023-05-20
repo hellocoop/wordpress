@@ -1,7 +1,7 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
-test('should create groups with groups sync', async ({ request }) => {
+test('should create groups with groups sync', async ({ page, request }) => {
 	const result = await request.post('/?hello-login=event', {
 		headers: {
 			'Accept': 'application/json',
@@ -11,4 +11,27 @@ test('should create groups with groups sync', async ({ request }) => {
 	});
 
 	expect(result.ok()).toBeTruthy();
+
+	await page.goto('/wp-login.php');
+
+	// Sign in as admin
+	await page.getByRole('button', { name: 'Continue with username or email' }).click();
+	await page.getByLabel('Username or Email Address').click();
+	await page.getByLabel('Username or Email Address').fill('admin');
+	await page.getByLabel('Password', { exact: true }).click();
+	await page.getByLabel('Password', { exact: true }).fill('password');
+	await page.getByRole('button', { name: 'Log In' }).click();
+
+
+	// Navigate to Hellō Login settings page and check that it is not configured.
+	await page.getByRole('navigation').getByRole('link', { name: 'Settings', exact: true }).click();
+	await page.getByRole('link', { name: 'Hellō Login', exact: true }).click();
+
+	await expect(page).toHaveTitle(/Hellō Login/);
+
+	await page.getByRole('link', { name: 'Federation', exact: true }).click();
+	await expect(page.getByRole('heading', { name: 'example.com', level: 2 })).toHaveCount(1);
+
+	await expect(page.getByText('Admins', { exact: true })).toHaveCount(1);
+	await expect(page.getByText('Marketing', { exact: true })).toHaveCount(1);
 });
