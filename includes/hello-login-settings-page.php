@@ -529,6 +529,7 @@ class Hello_Login_Settings_Page {
 
 				$fields[ self::federation_group_field_key( $org_id, $group_id ) ] = array(
 					'title'       => $group_name,
+					'description' => '',
 					'type'        => 'role_select',
 					'section'     => $section_key,
 					'page'        => $this->federation_options_page_name,

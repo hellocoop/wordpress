@@ -303,8 +303,8 @@ class Hello_Login_Events {
 		}
 
 		$accept = '';
-		if ( isset( $_SERVER['ACCEPT'] ) ) {
-			$accept = explode( ';', sanitize_text_field( wp_unslash( $_SERVER['ACCEPT'] ) ), 2 )[0];
+		if ( isset( $_SERVER['HTTP_ACCEPT'] ) ) {
+			$accept = explode( ';', sanitize_text_field( wp_unslash( $_SERVER['HTTP_ACCEPT'] ) ), 2 )[0];
 		}
 		if ( 'application/json' !== $accept ) {
 			$this->logger->log( "Invalid accept header: $accept", 'events' );

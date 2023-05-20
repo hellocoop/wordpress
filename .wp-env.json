@@ -21,7 +21,10 @@
 		"tests": {
 			"plugins": [
 				"."
-			]
+			],
+			"config": {
+				"HELLO_LOGIN_CLIENT_ID": "4c1ec93b-2714-4d72-9582-b09c515c5bd8"
+			}
 		}
 	},
 	"config": {
