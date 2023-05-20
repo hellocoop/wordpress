@@ -16,7 +16,6 @@ class Hello_Login_Test extends TestCase {
 		Monkey\Functions\Stubs(
 			[
 				'get_option' => array(),
-				'add_option',
 				'add_action' => true,
 				'add_filter' => true,
 				'register_activation_hook',

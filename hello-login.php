@@ -519,43 +519,6 @@ class Hello_Login {
 
 		// User-Agent hook.
 		add_filter( 'http_headers_useragent', array( $plugin, 'user_agent_hook' ), 0, 2 );
-
-		// TODO: remove these test groups, should be set by event.
-		$test_groups = array(
-			array(
-				'org'    => 'example.com',
-				'id'     => 1,
-				'groups' => array(
-					array(
-						'value'   => '1234',
-						'id'      => 1,
-						'display' => 'Admins',
-					),
-					array(
-						'value'   => '5678',
-						'id'      => 2,
-						'display' => 'Marketing',
-					),
-				),
-			),
-			array(
-				'org'    => 'example.net',
-				'id'     => 2,
-				'groups' => array(
-					array(
-						'value'   => '1234',
-						'id'      => 1,
-						'display' => 'Engineering',
-					),
-					array(
-						'value'   => '5678',
-						'id'      => 2,
-						'display' => 'Sales',
-					),
-				),
-			),
-		);
-		add_option( self::FEDERATION_GROUPS_OPTION_NAME, $test_groups );
 	}
 }
 
