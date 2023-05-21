@@ -1,0 +1,31 @@
+<?php
+/**
+ * Hellō Login constants.
+ *
+ * @package Hello_Login_MuPlugins
+ *
+ * @wordpress-plugin
+ * Plugin Name: Hellō Login Constants
+ * Description: Define Hellō Login specific constants that override default settings.
+ */
+
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
+/**
+ * Sets Hellō Login specific constants.
+ *
+ * @see Hello_Login_Option_Settings::environment_settings for a complete list
+ *
+ * @return void
+ */
+function hello_login_define_constants() {
+	defined( 'HELLO_LOGIN_ENDPOINT_LOGIN_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_LOGIN_URL', 'https://wallet.hello.coop/authorize' );
+	defined( 'HELLO_LOGIN_ENDPOINT_TOKEN_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_TOKEN_URL', 'https://wallet.hello.coop/oauth/token' );
+	defined( 'HELLO_LOGIN_ENDPOINT_INVITE_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_INVITE_URL', 'https://wallet.hello.coop/invite' );
+	defined( 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL', 'https://wallet.hello.coop/oauth/introspect' );
+}
+
+add_action( 'muplugins_loaded', 'hello_login_define_constants', 10, 0 );
