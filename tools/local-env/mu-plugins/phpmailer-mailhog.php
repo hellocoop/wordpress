@@ -1,9 +1,12 @@
 <?php
 /**
+ * MailHog PhpMailer Setup
+ *
+ * @package Hello_Login_MuPlugins
+ *
+ * @wordpress-plugin
  * Plugin Name: MailHog PhpMailer Setup
  * Description: Establishes a connection between the PhpMailer library and the MailHog local-dev Docker container.
- *
- * @package OpenID_Connect_Generic_MuPlugins
  */
 
 // If this file is called directly, abort.
