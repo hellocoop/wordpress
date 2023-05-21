@@ -17,6 +17,7 @@ phpcs.xml
 grumphp.yml
 phpstan.neon
 phpunit.xml
+tools/local-env/mu-plugins/hello-login-constants*.php
 
 # OS or Editor folders
 .DS_Store

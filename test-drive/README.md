@@ -8,6 +8,7 @@ Use `docker compose` (or the older `docker-compose`) to run the containers requi
 Once the containers are running use the following URLs:
 * http://localhost:8080/ - WordPress instance
 * http://localhost:8025/ - MailHog web interface
+* http://localhost:8081/ - phpMyAdmin web interface
 
 Once the WordPress instance has basic configuration and an admin account you can install the latest released Hellō Login
 plugin from the WordPress plugin repo.
