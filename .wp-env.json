@@ -1,9 +1,6 @@
 {
 	"core": "./wordpress",
 	"phpVersion": "7.4",
-	"plugins": [
-		"."
-	],
 	"mappings": {
 		"wp-content/mu-plugins": "./tools/local-env/mu-plugins"
 	},
