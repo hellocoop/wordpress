@@ -22,19 +22,22 @@ if ( ! defined( 'WPINC' ) ) {
  * @return void
  */
 function mailhog_phpmailer_setup( PHPMailer $phpmailer ) {
-
-	defined( 'SMTP_HOST' ) || define( 'SMTP_HOST', 'mailhog' );
 	// PHPMailer doesn't follow WordPress naming conventions so this can be ignored.
 	// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-	$phpmailer->Host = SMTP_HOST;
+	$phpmailer->Host = 'mailhog';
 
-	defined( 'SMTP_PORT' ) || define( 'SMTP_PORT', 1025 );
 	// PHPMailer doesn't follow WordPress naming conventions so this can be ignored.
 	// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-	$phpmailer->Port = SMTP_PORT;
+	$phpmailer->Port = 1025;
 
-	$phpmailer->IsSMTP();
+	$phpmailer->SMTPAuth = false;
+	$phpmailer->SMTPAutoTLS = false;
+	$phpmailer->SMTPSecure = '';
+	$phpmailer->FromName = 'Admin';
+	$phpmailer->From = 'admin@localhost';
+//	$phpmailer->Sender = 'admin@localhost';
 
+	$phpmailer->isSMTP();
 }
 
-add_action( 'phpmailer_init', 'mailhog_phpmailer_setup', 10, 2 );
+add_action( 'phpmailer_init', 'mailhog_phpmailer_setup' );
