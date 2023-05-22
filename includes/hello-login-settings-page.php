@@ -685,7 +685,7 @@ class Hello_Login_Settings_Page {
 		<?php if ( ! $configured ) { ?>
 			<h2>To use Hellō, you must configure your site. Hellō Quickstart will get you up and running in seconds. You will create a Hellō Wallet if you don't have one already.</h2>
 
-			<form method="get" action="https://quickstart.hello.coop/">
+			<form method="get" action="<?php print esc_attr( $this->settings->endpoint_quickstart ); ?>">
 				<input type="hidden" name="integration" id="integration" value="wordpress" />
 				<input type="hidden" name="response_uri" id="response_uri" value="<?php print esc_attr( $quickstart_uri ); ?>" />
 				<input type="hidden" name="name" id="name" value="<?php print esc_attr( get_bloginfo( 'name' ) ); ?>" />

@@ -493,6 +493,7 @@ class Hello_Login {
 				'scope'                => defined( 'HELLO_LOGIN_CLIENT_SCOPE' ) ? HELLO_LOGIN_CLIENT_SCOPE : '',
 				'endpoint_login'       => defined( 'HELLO_LOGIN_ENDPOINT_LOGIN_URL' ) ? HELLO_LOGIN_ENDPOINT_LOGIN_URL : 'https://wallet.hello.coop/authorize',
 				'endpoint_token'       => defined( 'HELLO_LOGIN_ENDPOINT_TOKEN_URL' ) ? HELLO_LOGIN_ENDPOINT_TOKEN_URL : 'https://wallet.hello.coop/oauth/token',
+				'endpoint_quickstart'  => defined( 'HELLO_LOGIN_ENDPOINT_QUICKSTART_URL' ) ? HELLO_LOGIN_ENDPOINT_QUICKSTART_URL : 'https://quickstart.hello.coop/',
 				'endpoint_invite'      => defined( 'HELLO_LOGIN_ENDPOINT_INVITE_URL' ) ? HELLO_LOGIN_ENDPOINT_INVITE_URL : 'https://wallet.hello.coop/invite',
 				'endpoint_introspect'  => defined( 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL' ) ? HELLO_LOGIN_ENDPOINT_INTROSPECT_URL : 'https://wallet.hello.coop/oauth/introspect',
 

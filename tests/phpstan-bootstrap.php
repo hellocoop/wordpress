@@ -20,6 +20,7 @@ defined( 'COOKIEPATH' ) || define( 'COOKIEPATH', '/');
 defined( 'HELLO_LOGIN_CLIENT_ID' ) || define( 'HELLO_LOGIN_CLIENT_ID', bin2hex( random_bytes( 32 ) ) );
 defined( 'HELLO_LOGIN_ENDPOINT_LOGIN_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_LOGIN_URL', 'https://wallet.hello.coop/authorize' );
 defined( 'HELLO_LOGIN_ENDPOINT_TOKEN_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_TOKEN_URL', 'https://wallet.hello.coop/oauth/token' );
+defined( 'HELLO_LOGIN_ENDPOINT_QUICKSTART_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_QUICKSTART_URL', 'https://quickstart.hello.coop/' );
 defined( 'HELLO_LOGIN_ENDPOINT_INVITE_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_INVITE_URL', 'https://wallet.hello.coop/invite' );
 defined( 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL' ) || define( 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL', 'https://wallet.hello.coop/oauth/introspect' );
 defined( 'HELLO_LOGIN_CLIENT_SCOPE' ) || define( 'HELLO_LOGIN_CLIENT_SCOPE', '' );

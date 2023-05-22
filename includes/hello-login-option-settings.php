@@ -23,6 +23,7 @@
  * @property string $scope                The list of additional scopes this client should access.
  * @property string $endpoint_login       The Hellō authorization endpoint URL.
  * @property string $endpoint_token       The Hellō token endpoint URL.
+ * @property string $endpoint_quickstart  The Hellō Quickstart URL.
  * @property string $endpoint_invite      The Hellō invite endpoint URL.
  * @property string $endpoint_introspect  The Hellō introspect endpoint URL.
  * @property string $provider_hint        The provider hint.
@@ -75,6 +76,7 @@ class Hello_Login_Option_Settings {
 		'client_id'                 => 'HELLO_LOGIN_CLIENT_ID',
 		'endpoint_login'            => 'HELLO_LOGIN_ENDPOINT_LOGIN_URL',
 		'endpoint_token'            => 'HELLO_LOGIN_ENDPOINT_TOKEN_URL',
+		'endpoint_quickstart'       => 'HELLO_LOGIN_ENDPOINT_QUICKSTART_URL',
 		'endpoint_invite'           => 'HELLO_LOGIN_ENDPOINT_INVITE_URL',
 		'endpoint_introspect'       => 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL',
 		'scope'                     => 'HELLO_LOGIN_CLIENT_SCOPE',
