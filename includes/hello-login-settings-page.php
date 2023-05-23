@@ -739,6 +739,8 @@ class Hello_Login_Settings_Page {
 	 */
 	public function settings_page_federation() {
 		?>
+		<h2>Use the <a href="https://console.hello.coop/?client_id=<?php print rawurlencode( $this->settings->client_id ); ?>" target="_blank">Hellō Console</a> to update your federation settings.</h2>
+
 		<form method="post" action="options.php">
 			<?php
 			settings_fields( $this->settings_field_group );
