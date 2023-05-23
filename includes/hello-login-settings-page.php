@@ -232,7 +232,7 @@ class Hello_Login_Settings_Page {
 		foreach ( $orgs_groups as $org_groups ) {
 			add_settings_section(
 				self::federation_org_section_key( $org_groups['id'] ),
-				$org_groups['org'],
+				$org_groups['org'] . esc_html( ' group to role mapping' ),
 				function () {
 				},
 				$this->federation_options_page_name
@@ -855,6 +855,7 @@ class Hello_Login_Settings_Page {
 		$current_value = isset( $this->settings->{ $field['key'] } ) ? $this->settings->{ $field['key'] } : '';
 		?>
 		<select name="<?php print esc_attr( $field['name'] ); ?>">
+			<option value=""><?php print esc_html( 'none' ); ?></option>
 			<?php wp_dropdown_roles( $current_value ); ?>
 		</select>
 		<?php
