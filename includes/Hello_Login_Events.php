@@ -165,7 +165,7 @@ class Hello_Login_Events {
 							<input type="hidden" name="initiate_login_uri" value="<?php print esc_attr( $initiated_login_uri ); ?>" />
 							<input type="hidden" name="client_id" value="<?php print esc_attr( $this->settings->client_id ); ?>" />
 							<input type="hidden" name="prompt" value="Subscriber to <?php print esc_attr( get_bloginfo( 'name' ) ); ?>" />
-							<input type="hidden" name="event_uri" value="<?php print esc_attr( $event_uri ); ?>" />
+							<input type="hidden" name="events_uri" value="<?php print esc_attr( $event_uri ); ?>" />
 							<?php if ( $local ) { ?>
 							<input type="hidden" name="local" value="true" />
 							<?php } ?>
