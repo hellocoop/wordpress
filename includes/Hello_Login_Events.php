@@ -393,6 +393,8 @@ class Hello_Login_Events {
 		if ( $new_user ) {
 			Hello_Login_Users::set_invited_unused( $user );
 		}
+
+		http_response_code( 202 );
 	}
 
 	/**
@@ -404,6 +406,8 @@ class Hello_Login_Events {
 	 */
 	protected function handle_retracted( array $event ) {
 		self::delete_unused_invited_user( $event['sub'], 'retracted' );
+
+		http_response_code( 202 );
 	}
 
 	/**
@@ -415,6 +419,8 @@ class Hello_Login_Events {
 	 */
 	protected function handle_declined( array $event ) {
 		self::delete_unused_invited_user( $event['sub'], 'declined' );
+
+		http_response_code( 202 );
 	}
 
 	/**
@@ -462,6 +468,7 @@ class Hello_Login_Events {
 	 * @return array|WP_Error
 	 */
 	public function decode_event( string $event_jwt ) {
+		// TODO: use JWT parser, validate header and also payload iss and aud before using the introspection endpoint.
 		$jwt_parts = explode( '.', $event_jwt );
 
 		if ( 3 != count( $jwt_parts ) ) {
@@ -470,6 +477,7 @@ class Hello_Login_Events {
 			return new WP_Error( 'invalid_event', 'not 3 parts' );
 		}
 
+		// TODO: decode and validate header as well: check alg == 'RS256' and typ == 'application/secevent+jwt'.
 		$payload_b64 = $jwt_parts[1];
 		$payload_b64 = str_replace( '_', '/', str_replace( '-', '+', $payload_b64 ) );
 
@@ -513,7 +521,7 @@ class Hello_Login_Events {
 		}
 
 		// A transient could be saved and checked, based on $event['jti'], to prevent duplicate submissions. Since all
-		// events cqn be repeated with no side effects, this is not implemented for now.
+		// events can be repeated with no side effects, this is not implemented for now.
 
 		return true;
 	}
@@ -530,6 +538,10 @@ class Hello_Login_Events {
 
 		if ( is_wp_error( $res ) ) {
 			$this->logger->log( $res, 'handle_federation_groups_sync' );
+			http_response_code( 400 );
+			exit();
 		}
+
+		http_response_code( 202 );
 	}
 }
