@@ -146,6 +146,7 @@ class Hello_Login_Events {
 		$return_uri = admin_url( 'user-new.php' );
 		$initiated_login_uri = site_url( '?hello-login=start' );
 		$event_uri = site_url( '?hello-login=event' );
+		$local = str_contains( $event_uri, 'localhost' ) // TODO: use an env var set in docker-compose to determine local.
 		?>
 		<div class="wrap">
 			<h1 id="invite-new-user">Invite New User</h1>
@@ -161,10 +162,13 @@ class Hello_Login_Events {
 							</select>
 							<input type="hidden" name="inviter" value="<?php print esc_attr( $inviter_id ); ?>" />
 							<input type="hidden" name="return_uri" value="<?php print esc_attr( $return_uri ); ?>" />
-							<input type="hidden" name="initiated_login_uri" value="<?php print esc_attr( $initiated_login_uri ); ?>" />
+							<input type="hidden" name="initiate_login_uri" value="<?php print esc_attr( $initiated_login_uri ); ?>" />
 							<input type="hidden" name="client_id" value="<?php print esc_attr( $this->settings->client_id ); ?>" />
 							<input type="hidden" name="prompt" value="Subscriber to <?php print esc_attr( get_bloginfo( 'name' ) ); ?>" />
 							<input type="hidden" name="event_uri" value="<?php print esc_attr( $event_uri ); ?>" />
+							<?php if ( $local ) { ?>
+							<input type="hidden" name="local" value="true" />
+							<?php } ?>
 						</td>
 					</tr>
 					<tr class="form-field">
