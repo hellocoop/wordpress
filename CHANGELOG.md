@@ -4,6 +4,10 @@
 
 * Improvement: WordPress 6.2 support
 
+### 1.5.0
+
+* Improvement: Tabbed Settings page
+
 ## 1.4.0
 
 * Improvement: added support for provider hint
