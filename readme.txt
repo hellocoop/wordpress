@@ -89,6 +89,10 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 == Changelog ==
 
+= 1.5.0 =
+
+* Improvement: Tabbed Settings page
+
 = 1.4.1 =
 
 * Improvement: WordPress 6.2 support
