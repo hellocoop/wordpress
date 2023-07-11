@@ -621,16 +621,12 @@ class Hello_Login_Settings_Page {
 
 			<nav class="nav-tab-wrapper">
 				<a href="?page=hello-login-settings" class="nav-tab<?php print ( 'general' == $tab ) ? ' nav-tab-active' : ''; ?>">General</a>
-				<a href="?page=hello-login-settings&tab=federation" class="nav-tab<?php print ( 'federation' == $tab ) ? ' nav-tab-active' : ''; ?>">Federation</a>
 				<a href="?page=hello-login-settings&tab=advanced" class="nav-tab<?php print ( 'advanced' == $tab ) ? ' nav-tab-active' : ''; ?>">Advanced</a>
 			</nav>
 
 			<div class="tab-content">
 			<?php
 			switch ( $tab ) {
-				case 'federation':
-					$this->settings_page_federation();
-					break;
 				case 'advanced':
 					$this->settings_page_advanced();
 					break;
