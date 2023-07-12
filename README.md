@@ -79,8 +79,12 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 ## Screenshots ##
 
-1. The `/wp-login.php` page with Hellō Login.
-2. The Hellō Wallet login choices offered.
+### 1. The `/wp-login.php` page with Hellō Login. ###
+![The `/wp-login.php` page with Hellō Login.](assets/screenshot-1.png)
+
+### 2. The Hellō Wallet login choices offered. ###
+![The Hellō Wallet login choices offered.](assets/screenshot-2.png)
+
 
 ## Changelog ##
 

@@ -101,6 +101,9 @@ module.exports = function (grunt) {
 					'README.md': 'readme.txt'
 				}
 			},
+			options: {
+				screenshot_url: 'assets/{screenshot}.png',
+			}
 		},
 
 		makepot: {
