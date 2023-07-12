@@ -63,6 +63,7 @@ module.exports = function (grunt) {
 					'!.git/**', //version control
 					'!.github/**', //GitHub platform files
 					'!tests/**', '!scripts/**', '!phpunit.xml', '!phpunit.xml.dist', //unit testing
+					'!playwright.config.js', // end-to-end testing.
 					'!test-drive/**',
 					'!vendor/**', '!composer.lock', '!composer.phar', '!composer.json', //composer
 					'!wordpress/**',
