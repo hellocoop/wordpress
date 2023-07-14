@@ -25,6 +25,8 @@ Hellō is a cloud identity wallet cooperatively operated with a mission to empow
 
 Documentation, configuration, and settings can be found in Settings >  Hellō Login
 
+[Watch a video](https://www.youtube.com/watch?v=kCWY3viT368) showing installation and key features, and how Hellō Login relates to popular alternatives.
+
 ## Installation ##
 
 ### Automatic Installation ###
@@ -79,11 +81,20 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 ## Screenshots ##
 
-### 1. The `/wp-login.php` page with Hellō Login. ###
-![The `/wp-login.php` page with Hellō Login.](assets/screenshot-1.png)
+### 1. `/wp-login.php` page with Hellō Login ###
+![`/wp-login.php` page with Hellō Login](assets/screenshot-1.png)
 
-### 2. The Hellō Wallet login choices offered. ###
-![The Hellō Wallet login choices offered.](assets/screenshot-2.png)
+### 2. Hellō Wallet login page ###
+![Hellō Wallet login page](assets/screenshot-2.png)
+
+### 3. 16+ ways to login ###
+![16+ ways to login](assets/screenshot-3.png)
+
+### 4. Verified email address ###
+![Verified email address](assets/screenshot-4.png)
+
+### 5. Protect comments ###
+![Protect comments](assets/screenshot-5.png)
 
 
 ## Changelog ##
