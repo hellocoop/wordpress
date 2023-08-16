@@ -1,8 +1,8 @@
 # Hellō Login Changelog
 
-## 1.4.1
+## 1.5.2
 
-* Improvement: WordPress 6.2 support
+* Improvement: WordPress 6.3 support
 
 ## 1.5.1
 
@@ -12,6 +12,10 @@
 ## 1.5.0
 
 * Improvement: Tabbed Settings page
+
+## 1.4.1
+
+* Improvement: WordPress 6.2 support
 
 ## 1.4.0
 
