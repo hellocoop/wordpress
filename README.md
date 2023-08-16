@@ -3,7 +3,7 @@
 **Donate link:** https://www.hello.dev/  
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
-**Tested up to:** 6.2  
+**Tested up to:** 6.3  
 **Stable tag:** 1.5.1  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
