@@ -75,6 +75,7 @@ module.exports = function (grunt) {
 					'!docker-compose.override.yml', // Local Docker Development configuration.
 					'!codecov.yml', // Code coverage configuration.
 					'!tools/**', // Local Development/Build tools configuration.
+					'!playwright-report/**', // Playwright end-to-end test reports
 				],
 				dest: 'dist/',
 				options: {
