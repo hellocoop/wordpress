@@ -53,6 +53,8 @@ class Hello_Login_MemberPress {
 	 * @return Hello_Login_MemberPress
 	 */
 	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Login_Form $login_form ): Hello_Login_MemberPress {
+		// TODO: check if Hello Login is configured. Search for `! empty( $this->settings->client_id );`.
+
 		$member_press  = new self( $logger, $login_form );
 
 		add_action( 'mepr-login-form-before-submit', array( $member_press, 'login_form_button' ) );
