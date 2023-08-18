@@ -47,19 +47,22 @@ class Hello_Login_MemberPress {
 	/**
 	 * Hook the client into WordPress.
 	 *
-	 * @param Hello_Login_Option_Logger $logger     The plugin logger instance.
-	 * @param Hello_Login_Login_Form    $login_form The login form and its button generation logic.
+	 * @param Hello_Login_Option_Logger   $logger     The plugin logger instance.
+	 * @param Hello_Login_Option_Settings $settings   The plugin settings instance.
+	 * @param Hello_Login_Login_Form      $login_form The login form and its button generation logic.
 	 *
 	 * @return Hello_Login_MemberPress
 	 */
-	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Login_Form $login_form ): Hello_Login_MemberPress {
-		// TODO: check if Hello Login is configured. Search for `! empty( $this->settings->client_id );`.
+	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Login_Form $login_form ): Hello_Login_MemberPress {
+		$configured = ! empty( $settings->client_id );
 
 		$member_press  = new self( $logger, $login_form );
 
-		add_action( 'mepr-login-form-before-submit', array( $member_press, 'login_form_button' ) );
-		add_action( 'mepr-checkout-before-submit', array( $member_press, 'checkout_button' ) );
-		// TODO: Investigate if mepr_account_home is needed as well.
+		if ( $configured ) {
+			add_action( 'mepr-login-form-before-submit', array( $member_press, 'login_form_button' ) );
+			add_action( 'mepr-checkout-before-submit', array( $member_press, 'checkout_button' ) );
+			// TODO: Investigate if mepr_account_home is needed as well.
+		}
 
 		return $member_press;
 	}

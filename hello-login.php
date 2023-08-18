@@ -206,7 +206,7 @@ class Hello_Login {
 
 		$this->invites = Hello_Login_Events::register( $this->logger, $this->settings, $users );
 
-		$this->member_press = Hello_Login_MemberPress::register( $this->logger, $login_form );
+		$this->member_press = Hello_Login_MemberPress::register( $this->logger, $this->settings, $login_form );
 
 		if ( ! empty( $this->settings->client_id ) ) {
 			add_action( 'show_user_profile', array( $this, 'hello_login_user_profile_self' ) );
