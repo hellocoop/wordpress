@@ -68,6 +68,7 @@ module.exports = function (grunt) {
 					'!vendor/**', '!composer.lock', '!composer.phar', '!composer.json', //composer
 					'!wordpress/**',
 					'!.*', '!**/*~', //hidden files
+					'!CHANGELOG.md',
 					'!CONTRIBUTING.md',
 					'!README.md',
 					'!HOWTO.md',
