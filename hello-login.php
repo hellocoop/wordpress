@@ -134,6 +134,13 @@ class Hello_Login {
 	public Hello_Login_Events $invites;
 
 	/**
+	 * MemberPress integration.
+	 *
+	 * @var Hello_Login_MemberPress
+	 */
+	public Hello_Login_MemberPress $member_press;
+
+	/**
 	 * Setup the plugin
 	 *
 	 * @param Hello_Login_Option_Settings $settings The settings object.
@@ -183,7 +190,7 @@ class Hello_Login {
 			return;
 		}
 
-		Hello_Login_Login_Form::register( $this->settings, $this->client_wrapper );
+		$login_form = Hello_Login_Login_Form::register( $this->settings, $this->client_wrapper );
 
 		// Add a shortcode to get the auth URL.
 		add_shortcode( 'hello_login_auth_url', array( $this->client_wrapper, 'get_authentication_url' ) );
@@ -198,6 +205,8 @@ class Hello_Login {
 		}
 
 		$this->invites = Hello_Login_Events::register( $this->logger, $this->settings, $users );
+
+		$this->member_press = Hello_Login_MemberPress::register( $this->logger, $login_form );
 
 		if ( ! empty( $this->settings->client_id ) ) {
 			add_action( 'show_user_profile', array( $this, 'hello_login_user_profile_self' ) );

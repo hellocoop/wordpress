@@ -75,7 +75,10 @@
 			"includes/hello-login-option-settings.php",
 			"includes/hello-login-settings-page.php",
 			"includes/hello-login-util.php",
-			"includes/Hello_Login_Events.php"
+			"includes/Hello_Login_Events.php",
+			"includes/Hello_Login_Federation_Groups.php",
+			"includes/Hello_Login_MemberPress.php",
+			"includes/Hello_Login_Users.php"
 		]
 	},
 	"scripts": {

@@ -50,9 +50,9 @@ class Hello_Login_Login_Form {
 	 * @param Hello_Login_Option_Settings $settings       A plugin settings object instance.
 	 * @param Hello_Login_Client_Wrapper  $client_wrapper A plugin client wrapper object instance.
 	 *
-	 * @return void
+	 * @return Hello_Login_Login_Form
 	 */
-	public static function register( Hello_Login_Option_Settings $settings, Hello_Login_Client_Wrapper $client_wrapper ) {
+	public static function register( Hello_Login_Option_Settings $settings, Hello_Login_Client_Wrapper $client_wrapper ): Hello_Login_Login_Form {
 		$login_form = new self( $settings, $client_wrapper );
 
 		$on_logged_out = isset( $_GET['loggedout'] ) && 'true' == $_GET['loggedout'];
@@ -73,6 +73,8 @@ class Hello_Login_Login_Form {
 		add_shortcode( 'hello_login_button', array( $login_form, 'make_login_button' ) );
 
 		$login_form->handle_redirect_login_type_auto();
+
+		return $login_form;
 	}
 
 	/**
