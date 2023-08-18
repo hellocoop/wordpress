@@ -260,7 +260,7 @@ class Hello_Login_Login_Form {
 		ob_start();
 		?>
 		<div class="hello-container" style="display: block; text-align: <?php print esc_html( $atts['align'] ); ?>;">
-			<button class="hello-btn" onclick="parent.location='<?php print esc_js( $start_url ); ?>'" data-label="<?php print esc_html( 'ō&nbsp;&nbsp;&nbsp;' . $atts['label'] ); ?>"></button>
+			<button type="button" class="hello-btn" onclick="parent.location='<?php print esc_js( $start_url ); ?>'" data-label="<?php print esc_html( 'ō&nbsp;&nbsp;&nbsp;' . $atts['label'] ); ?>"></button>
 			<?php if ( $atts['show_hint'] ) { ?><button class="hello-about" style="text-align: <?php print esc_html( $atts['align'] ); ?>;"></button><?php } ?>
 		</div>
 		<?php
