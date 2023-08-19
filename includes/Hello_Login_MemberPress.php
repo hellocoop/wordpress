@@ -59,8 +59,8 @@ class Hello_Login_MemberPress {
 		$member_press  = new self( $logger, $login_form );
 
 		if ( $configured ) {
-			add_action( 'mepr-login-form-before-submit', array( $member_press, 'login_form_button' ) );
-			add_action( 'mepr-checkout-before-submit', array( $member_press, 'checkout_button' ) );
+			add_action( 'mepr-login-form-before-submit', array( $member_press, 'login_form_button_action' ) );
+			add_action( 'mepr-checkout-before-submit', array( $member_press, 'checkout_button_action' ) );
 			add_action( 'mepr_account_home', array( $member_press, 'account_home_action' ) );
 		}
 
@@ -70,7 +70,7 @@ class Hello_Login_MemberPress {
 	/**
 	 * Implements the mepr-login-form-before-submit MemberPress action.
 	 */
-	public function login_form_button() {
+	public function login_form_button_action() {
 		$this->logger->log( 'mepr-login-form-before-submit hook was called', 'hello-memberpress' );
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -80,7 +80,7 @@ class Hello_Login_MemberPress {
 	/**
 	 * Implements the mepr-checkout-before-submit MemberPress action.
 	 */
-	public function checkout_button() {
+	public function checkout_button_action() {
 		$this->logger->log( 'mepr-checkout-before-submit hook was called', 'hello-memberpress' );
 
 		if ( is_user_logged_in() ) {
