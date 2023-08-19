@@ -61,7 +61,7 @@ class Hello_Login_MemberPress {
 		if ( $configured ) {
 			add_action( 'mepr-login-form-before-submit', array( $member_press, 'login_form_button' ) );
 			add_action( 'mepr-checkout-before-submit', array( $member_press, 'checkout_button' ) );
-			// TODO: Investigate if mepr_account_home is needed as well.
+			add_action( 'mepr_account_home', array( $member_press, 'account_home_action' ) );
 		}
 
 		return $member_press;
@@ -89,5 +89,31 @@ class Hello_Login_MemberPress {
 
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $this->login_form->make_login_button( $atts );
+	}
+
+	/**
+	 * Implement the mepr_account_home MemberPress action.
+	 */
+	public function account_home_action() {
+		$this->logger->log( 'mepr_account_home hook was called', 'hello-memberpress' );
+		$hello_user_id = Hello_Login_Users::get_hello_sub();
+		$link_url = create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_permalink() ) );
+		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink' ), 'unlink' . get_current_user_id() );
+		// TODO: unlink should redirect back to MemberPress account page (current page).
+		?>
+		<h2>Hellō</h2>
+		<table>
+			<tr>
+				<th>This Account</th>
+				<td>
+					<?php if ( empty( $hello_user_id ) ) { ?>
+						<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link with Hellō" onclick="parent.location='<?php print esc_js( $link_url ); ?>'"></button>
+					<?php } else { ?>
+						<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink from Hellō</button>
+					<?php } ?>
+				</td>
+			</tr>
+		</table>
+		<?php
 	}
 }
