@@ -59,9 +59,17 @@ class Hello_Login_MemberPress {
 		$member_press  = new self( $logger, $login_form );
 
 		if ( $configured ) {
-			add_action( 'mepr-login-form-before-submit', array( $member_press, 'login_form_button_action' ) );
-			add_action( 'mepr-checkout-before-submit', array( $member_press, 'checkout_button_action' ) );
-			add_action( 'mepr_account_home', array( $member_press, 'account_home_action' ) );
+			if ( $settings->memberpress_enable_login ) {
+				add_action( 'mepr-login-form-before-submit', array( $member_press, 'login_form_button_action' ) );
+			}
+
+			if ( $settings->memberpress_enable_registration ) {
+				add_action( 'mepr-checkout-before-submit', array( $member_press, 'checkout_button_action' ) );
+			}
+
+			if ( $settings->memberpress_enable_account ) {
+				add_action( 'mepr_account_home', array( $member_press, 'account_home_action' ) );
+			}
 		}
 
 		return $member_press;
