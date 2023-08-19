@@ -43,6 +43,12 @@
  * @property bool $enable_logging           The flag to enable/disable logging.
  * @property int  $log_limit                The maximum number of log entries to keep.
  * @property int  $link_not_now             On settings page do not prompt to link account.
+ *
+ * Integrations settings:
+ *
+ * @property bool $memberpress_enable_login        The flag to enable/disable MemberPress login page integration.
+ * @property bool $memberpress_enable_registration The flag to enable/disable MemberPress registration pages integration.
+ * @property bool $memberpress_enable_account      The flag to enable/disable MemberPress account page integration.
  */
 class Hello_Login_Option_Settings {
 

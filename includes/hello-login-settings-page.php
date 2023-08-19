@@ -63,6 +63,13 @@ class Hello_Login_Settings_Page {
 	private string $advanced_options_page_name = 'hello-login-advanced-settings';
 
 	/**
+	 * Options page slug, advanced.
+	 *
+	 * @var string
+	 */
+	private string $integrations_options_page_name = 'hello-login-integrations-settings';
+
+	/**
 	 * Options page settings group name.
 	 *
 	 * @var string
@@ -176,6 +183,13 @@ class Hello_Login_Settings_Page {
 			__( 'Log Settings', 'hello-login' ),
 			array( $this, 'log_settings_description' ),
 			$this->advanced_options_page_name
+		);
+
+		add_settings_section(
+			'memberpress_settings',
+			__( 'MemberPress', 'hello-login' ),
+			array( $this, 'memberpress_settings_description' ),
+			$this->integrations_options_page_name
 		);
 
 		$this->add_federation_settings_sections();
@@ -396,7 +410,7 @@ class Hello_Login_Settings_Page {
 		 * - example (optional example will appear beneath description and be wrapped in <code>)
 		 * - type ( checkbox | text | select )
 		 * - section - settings/option page section ( client_settings | authorization_settings )
-		 * - page - maps the tab, one of $this->options_page_name, $this->federation_options_page_name or $this->advanced_options_page_name
+		 * - page - maps the tab, one of $this->options_page_name, $this->federation_options_page_name, $this->advanced_options_page_name or $this->integrations_options_page_name
 		 */
 		$fields = array(
 			'scope'             => array(
@@ -467,6 +481,27 @@ class Hello_Login_Settings_Page {
 				'type'        => 'number',
 				'section'     => 'log_settings',
 				'page'        => $this->advanced_options_page_name,
+			),
+			'memberpress_enable_login'    => array(
+				'title'       => __( 'Login Page', 'hello-login' ),
+				'description' => __( 'Enable the "Continue with Hellō" button on the MemberPress login page.', 'hello-login' ),
+				'type'        => 'checkbox',
+				'section'     => 'memberpress_settings',
+				'page'        => $this->integrations_options_page_name,
+			),
+			'memberpress_enable_registration'    => array(
+				'title'       => __( 'Registration Pages', 'hello-login' ),
+				'description' => __( 'Enable the "Continue with Hellō" button on MemberPress registration pages.', 'hello-login' ),
+				'type'        => 'checkbox',
+				'section'     => 'memberpress_settings',
+				'page'        => $this->integrations_options_page_name,
+			),
+			'memberpress_enable_account'    => array(
+				'title'       => __( 'Account Page', 'hello-login' ),
+				'description' => __( 'Enable the "Link with Hellō" button on the MemberPress account page.', 'hello-login' ),
+				'type'        => 'checkbox',
+				'section'     => 'memberpress_settings',
+				'page'        => $this->integrations_options_page_name,
 			),
 		);
 
@@ -624,6 +659,7 @@ class Hello_Login_Settings_Page {
 				<?php if ( defined( 'HELLO_LOGIN_FEDERATION_ENABLED' ) && HELLO_LOGIN_FEDERATION_ENABLED ) { ?>
 				<a href="?page=hello-login-settings&tab=federation" class="nav-tab<?php print ( 'federation' == $tab ) ? ' nav-tab-active' : ''; ?>">Federation</a>
 				<?php } ?>
+				<a href="?page=hello-login-settings&tab=integrations" class="nav-tab<?php print ( 'integrations' == $tab ) ? ' nav-tab-active' : ''; ?>">Integrations</a>
 				<a href="?page=hello-login-settings&tab=advanced" class="nav-tab<?php print ( 'advanced' == $tab ) ? ' nav-tab-active' : ''; ?>">Advanced</a>
 			</nav>
 
@@ -632,6 +668,9 @@ class Hello_Login_Settings_Page {
 			switch ( $tab ) {
 				case 'advanced':
 					$this->settings_page_advanced();
+					break;
+				case 'integrations':
+					$this->settings_page_integrations();
 					break;
 				case 'federation':
 					if ( defined( 'HELLO_LOGIN_FEDERATION_ENABLED' ) && HELLO_LOGIN_FEDERATION_ENABLED ) {
@@ -781,6 +820,23 @@ class Hello_Login_Settings_Page {
 	}
 
 	/**
+	 * Output the options/settings page, the advanced tab.
+	 *
+	 * @return void
+	 */
+	public function settings_page_integrations() {
+		?>
+		<form method="post" action="options.php">
+			<?php
+			settings_fields( $this->settings_field_group );
+			do_settings_sections( $this->integrations_options_page_name );
+			submit_button();
+			?>
+		</form>
+		<?php
+	}
+
+	/**
 	 * Output a standard text field.
 	 *
 	 * @param array $field The settings field definition array.
@@ -920,5 +976,14 @@ class Hello_Login_Settings_Page {
 	 */
 	public function log_settings_description() {
 		esc_html_e( 'Log information about login attempts through Hellō Login.', 'hello-login' );
+	}
+
+	/**
+	 * Output the 'MemberPress Settings' plugin setting section description.
+	 *
+	 * @return void
+	 */
+	public function memberpress_settings_description() {
+		esc_html_e( 'MemberPress integration settings.', 'hello-login' );
 	}
 }
