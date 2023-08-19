@@ -108,10 +108,10 @@ class Hello_Login_MemberPress {
 	 */
 	public function account_home_action() {
 		$this->logger->log( 'mepr_account_home hook was called', 'hello-memberpress' );
-		$hello_user_id = Hello_Login_Users::get_hello_sub();
-		$link_url = create_auth_request_start_url( Hello_Login_Util::extract_path_and_query( get_permalink() ) );
-		$unlink_url = wp_nonce_url( site_url( '?hello-login=unlink' ), 'unlink' . get_current_user_id() );
-		// TODO: unlink should redirect back to MemberPress account page (current page).
+		$hello_user_id    = Hello_Login_Users::get_hello_sub();
+		$redirect_to_path = Hello_Login_Util::extract_path_and_query( get_permalink() );
+		$link_url         = create_auth_request_start_url( $redirect_to_path );
+		$unlink_url       = wp_nonce_url( site_url( '?hello-login=unlink&redirect_to_path=' . rawurlencode( $redirect_to_path ) ), 'unlink' . get_current_user_id() . $redirect_to_path );
 		?>
 		<h2>Hellō</h2>
 		<table>

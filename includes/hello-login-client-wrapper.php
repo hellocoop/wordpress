@@ -465,12 +465,17 @@ class Hello_Login_Client_Wrapper {
 	 * @return void
 	 */
 	public function unlink_hello() {
-		$message_id = 'unlink_success';
-		$wp_user_id = get_current_user_id();
-		$target_user_id = $wp_user_id;
+		$message_id       = 'unlink_success';
+		$wp_user_id       = get_current_user_id();
+		$target_user_id   = $wp_user_id;
+		$redirect_to_path = '';
 
 		if ( isset( $_GET['user_id'] ) ) {
 			$target_user_id = sanitize_text_field( wp_unslash( $_GET['user_id'] ) );
+		}
+
+		if ( isset( $_GET['redirect_to_path'] ) ) {
+			$redirect_to_path = sanitize_text_field( wp_unslash( $_GET['redirect_to_path'] ) );
 		}
 
 		if ( $wp_user_id == $target_user_id || current_user_can( 'edit_user' ) ) {
@@ -479,7 +484,7 @@ class Hello_Login_Client_Wrapper {
 				$this->logger->log( 'No current user', 'unlink_hello' );
 				$message_id = 'unlink_no_session';
 			} else {
-				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' . $target_user_id ) ) {
+				if ( isset( $_GET['_wpnonce'] ) && wp_verify_nonce( $_GET['_wpnonce'], 'unlink' . $target_user_id . $redirect_to_path ) ) {
 					$hello_user_id = Hello_Login_Users::get_hello_sub( $target_user_id );
 
 					if ( empty( $hello_user_id ) ) {
@@ -499,9 +504,14 @@ class Hello_Login_Client_Wrapper {
 			$message_id = 'unlink_no_session';
 		}
 
-		$profile_url = get_edit_user_link( $target_user_id );
-		$profile_url .= ( parse_url( $profile_url, PHP_URL_QUERY ) ? '&' : '?' ) . 'hello-login-msg=' . $message_id;
-		wp_redirect( $profile_url );
+		if ( empty( $redirect_to_path ) ) {
+			$profile_url = get_edit_user_link( $target_user_id );
+			$profile_url .= ( parse_url( $profile_url, PHP_URL_QUERY ) ? '&' : '?' ) . 'hello-login-msg=' . $message_id;
+			wp_redirect( $profile_url );
+		} else {
+			wp_redirect( $redirect_to_path );
+		}
+
 		exit;
 	}
 
