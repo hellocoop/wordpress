@@ -83,7 +83,11 @@ class Hello_Login_MemberPress {
 	public function checkout_button() {
 		$this->logger->log( 'mepr-checkout-before-submit hook was called', 'hello-memberpress' );
 
+		$atts = array(
+			'redirect_to' => get_permalink(),
+		);
+
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $this->login_form->make_login_button();
+		echo $this->login_form->make_login_button( $atts );
 	}
 }
