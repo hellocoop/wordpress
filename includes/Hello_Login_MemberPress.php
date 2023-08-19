@@ -83,6 +83,10 @@ class Hello_Login_MemberPress {
 	public function checkout_button() {
 		$this->logger->log( 'mepr-checkout-before-submit hook was called', 'hello-memberpress' );
 
+		if ( is_user_logged_in() ) {
+			return;
+		}
+
 		$atts = array(
 			'redirect_to' => get_permalink(),
 		);
