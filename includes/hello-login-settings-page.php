@@ -440,6 +440,7 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Provider Hint', 'hello-login' ),
 				'description' => __( 'Change which providers are recommended to better align with your users\' preferences.<br><strong>Example:</strong> <code>wordpress email--</code> will promote Wordpress.com to be recommended, and demote email.<br>See <a href="https://www.hello.dev/documentation/provider-hint.html" target="_blank">https://www.hello.dev/documentation/provider-hint.html</a> for details.', 'hello-login' ),
 				'type'        => 'text',
+				'disabled'    => defined( 'HELLO_LOGIN_PROVIDER_HINT' ),
 				'section'     => 'client_settings',
 				'page'        => $this->options_page_name,
 			),
@@ -472,6 +473,7 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Enable Logging', 'hello-login' ),
 				'description' => __( 'Very simple log messages for debugging purposes.', 'hello-login' ),
 				'type'        => 'checkbox',
+				'disabled'    => defined( 'HELLO_LOGIN_ENABLE_LOGGING' ),
 				'section'     => 'log_settings',
 				'page'        => $this->advanced_options_page_name,
 			),
@@ -479,6 +481,7 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Log Limit', 'hello-login' ),
 				'description' => __( 'Number of items to keep in the log. These logs are stored as an option in the database, so space is limited.', 'hello-login' ),
 				'type'        => 'number',
+				'disabled'    => defined( 'HELLO_LOGIN_LOG_LIMIT' ),
 				'section'     => 'log_settings',
 				'page'        => $this->advanced_options_page_name,
 			),
@@ -900,6 +903,7 @@ class Hello_Login_Settings_Page {
 	 */
 	public function do_select( array $field ) {
 		$current_value = isset( $this->settings->{ $field['key'] } ) ? $this->settings->{ $field['key'] } : '';
+		// TODO: add support for disabled select.
 		?>
 		<select name="<?php print esc_attr( $field['name'] ); ?>">
 			<?php foreach ( $field['options'] as $value => $text ) : ?>

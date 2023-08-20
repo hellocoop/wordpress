@@ -514,10 +514,10 @@ class Hello_Login {
 				'link_existing_users'      => defined( 'HELLO_LOGIN_LINK_EXISTING_USERS' ) ? HELLO_LOGIN_LINK_EXISTING_USERS : 1,
 				'create_if_does_not_exist' => defined( 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST' ) ? HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST : 1,
 				'redirect_user_back'       => defined( 'HELLO_LOGIN_REDIRECT_USER_BACK' ) ? HELLO_LOGIN_REDIRECT_USER_BACK : 1,
-				'enable_logging'           => 0,
-				'log_limit'                => 1000,
+				'enable_logging'           => defined( 'HELLO_LOGIN_ENABLE_LOGGING' ) ? HELLO_LOGIN_ENABLE_LOGGING : 0,
+				'log_limit'                => defined( 'HELLO_LOGIN_LOG_LIMIT' ) ? HELLO_LOGIN_LOG_LIMIT : 100,
 				'link_not_now'             => 0,
-				'provider_hint'            => '',
+				'provider_hint'            => defined( 'HELLO_LOGIN_PROVIDER_HINT' ) ? HELLO_LOGIN_PROVIDER_HINT : '',
 
 				// Integrations settings.
 				'memberpress_enable_login' => defined( 'HELLO_LOGIN_MEMBERPRESS_ENABLE_LOGIN' ) ? HELLO_LOGIN_MEMBERPRESS_ENABLE_LOGIN : 0,
