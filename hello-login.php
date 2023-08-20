@@ -518,6 +518,11 @@ class Hello_Login {
 				'log_limit'                => 1000,
 				'link_not_now'             => 0,
 				'provider_hint'            => '',
+
+				// Integrations settings.
+				'memberpress_enable_login' => defined( 'HELLO_LOGIN_MEMBERPRESS_ENABLE_LOGIN' ) ? HELLO_LOGIN_MEMBERPRESS_ENABLE_LOGIN : 0,
+				'memberpress_enable_registration' => defined( 'HELLO_LOGIN_MEMBERPRESS_ENABLE_REGISTRATION' ) ? HELLO_LOGIN_MEMBERPRESS_ENABLE_REGISTRATION : 0,
+				'memberpress_enable_account' => defined( 'HELLO_LOGIN_MEMBERPRESS_ENABLE_ACCOUNT' ) ? HELLO_LOGIN_MEMBERPRESS_ENABLE_ACCOUNT : 0,
 			)
 		);
 

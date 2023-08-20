@@ -486,6 +486,7 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Login Page', 'hello-login' ),
 				'description' => __( 'Enable the "Continue with Hellō" button on the MemberPress login page.', 'hello-login' ),
 				'type'        => 'checkbox',
+				'disabled'    => defined( 'HELLO_LOGIN_MEMBERPRESS_ENABLE_LOGIN' ),
 				'section'     => 'memberpress_settings',
 				'page'        => $this->integrations_options_page_name,
 			),
@@ -493,6 +494,7 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Registration Pages', 'hello-login' ),
 				'description' => __( 'Enable the "Continue with Hellō" button on MemberPress registration pages.', 'hello-login' ),
 				'type'        => 'checkbox',
+				'disabled'    => defined( 'HELLO_LOGIN_MEMBERPRESS_ENABLE_REGISTRATION' ),
 				'section'     => 'memberpress_settings',
 				'page'        => $this->integrations_options_page_name,
 			),
@@ -500,6 +502,7 @@ class Hello_Login_Settings_Page {
 				'title'       => __( 'Account Page', 'hello-login' ),
 				'description' => __( 'Enable the "Link with Hellō" button on the MemberPress account page.', 'hello-login' ),
 				'type'        => 'checkbox',
+				'disabled'    => defined( 'HELLO_LOGIN_MEMBERPRESS_ENABLE_ACCOUNT' ),
 				'section'     => 'memberpress_settings',
 				'page'        => $this->integrations_options_page_name,
 			),
@@ -875,9 +878,11 @@ class Hello_Login_Settings_Page {
 	 * @return void
 	 */
 	public function do_checkbox( array $field ) {
+		$disabled = ! empty( $field['disabled'] ) && boolval( $field['disabled'] ) === true;
 		?>
 		<input type="hidden" name="<?php print esc_attr( $field['name'] ); ?>" value="0">
 		<input type="checkbox"
+			   <?php echo ( $disabled ? ' disabled' : '' ); ?>
 			   id="<?php print esc_attr( $field['key'] ); ?>"
 			   name="<?php print esc_attr( $field['name'] ); ?>"
 			   value="1"

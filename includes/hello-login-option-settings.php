@@ -79,16 +79,19 @@ class Hello_Login_Option_Settings {
 	 * @var array<string,string>
 	 */
 	private array $environment_settings = array(
-		'client_id'                 => 'HELLO_LOGIN_CLIENT_ID',
-		'endpoint_login'            => 'HELLO_LOGIN_ENDPOINT_LOGIN_URL',
-		'endpoint_token'            => 'HELLO_LOGIN_ENDPOINT_TOKEN_URL',
-		'endpoint_quickstart'       => 'HELLO_LOGIN_ENDPOINT_QUICKSTART_URL',
-		'endpoint_invite'           => 'HELLO_LOGIN_ENDPOINT_INVITE_URL',
-		'endpoint_introspect'       => 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL',
-		'scope'                     => 'HELLO_LOGIN_CLIENT_SCOPE',
-		'create_if_does_not_exist'  => 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST',
-		'link_existing_users'       => 'HELLO_LOGIN_LINK_EXISTING_USERS',
-		'redirect_user_back'        => 'HELLO_LOGIN_REDIRECT_USER_BACK',
+		'client_id'                       => 'HELLO_LOGIN_CLIENT_ID',
+		'endpoint_login'                  => 'HELLO_LOGIN_ENDPOINT_LOGIN_URL',
+		'endpoint_token'                  => 'HELLO_LOGIN_ENDPOINT_TOKEN_URL',
+		'endpoint_quickstart'             => 'HELLO_LOGIN_ENDPOINT_QUICKSTART_URL',
+		'endpoint_invite'                 => 'HELLO_LOGIN_ENDPOINT_INVITE_URL',
+		'endpoint_introspect'             => 'HELLO_LOGIN_ENDPOINT_INTROSPECT_URL',
+		'scope'                           => 'HELLO_LOGIN_CLIENT_SCOPE',
+		'create_if_does_not_exist'        => 'HELLO_LOGIN_CREATE_IF_DOES_NOT_EXIST',
+		'link_existing_users'             => 'HELLO_LOGIN_LINK_EXISTING_USERS',
+		'redirect_user_back'              => 'HELLO_LOGIN_REDIRECT_USER_BACK',
+		'memberpress_enable_login'        => 'HELLO_LOGIN_MEMBERPRESS_ENABLE_LOGIN',
+		'memberpress_enable_registration' => 'HELLO_LOGIN_MEMBERPRESS_ENABLE_REGISTRATION',
+		'memberpress_enable_account'      => 'HELLO_LOGIN_MEMBERPRESS_ENABLE_ACCOUNT',
 	);
 
 	/**
