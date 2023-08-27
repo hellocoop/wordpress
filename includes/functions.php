@@ -19,7 +19,7 @@ function hello_login_enqueue_scripts_and_styles() {
 	wp_enqueue_style( 'hello-login-hello-button', plugin_dir_url( __DIR__ ) . 'css/styles.css', array(), Hello_Login::VERSION, 'all' );
 }
 
-add_action( 'wp_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles' );
+add_action( 'wp_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles', 999 );
 add_action( 'login_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles' );
 add_action( 'admin_enqueue_scripts', 'hello_login_enqueue_scripts_and_styles' );
 
