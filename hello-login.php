@@ -285,7 +285,7 @@ class Hello_Login {
 					<?php if ( empty( $hello_user_id ) ) { ?>
 						<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Link with Hellō" onclick="parent.location='<?php print esc_js( $link_url ); ?>'"></button>
 					<?php } else { ?>
-						<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink from Hellō</button>
+						<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Unlink from Hellō" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'"></button>
 					<?php } ?>
 				</td>
 			</tr>
@@ -322,7 +322,7 @@ class Hello_Login {
 					<?php if ( empty( $hello_user_id ) ) { ?>
 						<p>Not linked with Hellō</p>
 					<?php } else { ?>
-						<button type="button" class="button" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'">ō&nbsp;&nbsp;&nbsp;Unlink from Hellō</button>
+						<button type="button" class="hello-btn" data-label="ō&nbsp;&nbsp;&nbsp;Unlink from Hellō" onclick="parent.location='<?php print esc_js( $unlink_url ); ?>'"></button>
 					<?php } ?>
 				</td>
 			</tr>
