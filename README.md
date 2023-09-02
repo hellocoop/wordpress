@@ -21,7 +21,7 @@ Hellō is a cloud identity wallet cooperatively operated with a mission to empow
 
 * Hellō Login installs with Hellō Quickstart to get you up and running in 7 clicks.
 * Users manage how they login at [wallet.hello.coop](https://wallet.hello.coop). No need for you to manage how they login or help them recover their account.
-* Hellō Login is free for users and early adopting sites. See [hello.coop](https://www.hello.coop/) for details.
+* Hellō Login uses the Hellō service, which provides login and verified email for free. See [hello.dev/pricing](https://www.hello.dev/pricing/)) for details.
 
 Documentation, configuration, and settings can be found in Settings >  Hellō Login
 
@@ -61,11 +61,7 @@ No. Hellō provides sites user data only with informed consent. User data is onl
 
 ### How does Hellō make money? ###
 
-The Hellō business model is to charge sites a few cents for each new verified claim the user provides to a site, such as a phone number and in the future claims such as a professional certification.
-
-### Why is Hellō free to sites now? ###
-
-While we are building out the network, we are not charging sites for verified claims and rewarding early adopters of Hellō with credits for bringing users to Hellō.
+Hellō has a freemium business model where basic claims such as login, verified email, and profile data is free. In the future we will have premium claims such as verified name, age, citizenship, residency, affiliations, and entitlements.
 
 ### How can I change the image for my site? ###
 
