@@ -3,8 +3,8 @@ Contributors: marius1hello, DickHardt, remotelychris, rohanharikr
 Donate link: https://www.hello.dev/
 Tags: security, login, oauth2, openidconnect, apps, authentication, sso
 Requires at least: 4.9
-Tested up to: 6.3
-Stable tag: 1.5.2
+Tested up to: 6.4
+Stable tag: 1.5.3
 Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -88,6 +88,10 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 5. Protect comments
 
 == Changelog ==
+
+= 1.5.3 =
+
+* Improvement: WordPress 6.4 support
 
 = 1.5.2 =
 
