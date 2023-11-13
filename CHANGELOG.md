@@ -1,5 +1,9 @@
 # Hellō Login Changelog
 
+## 1.5.3
+
+* Improvement: WordPress 6.4 support
+
 ## 1.5.2
 
 * Improvement: WordPress 6.3 support
