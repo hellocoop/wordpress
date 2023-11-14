@@ -1,6 +1,6 @@
 {
   "name": "hello-login",
-  "version": "1.4.1",
+  "version": "1.5.4",
   "description": "Hellō WordPress plugin.",
   "main": "Gruntfile.js",
   "repository": {

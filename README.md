@@ -3,8 +3,8 @@
 **Donate link:** https://www.hello.dev/  
 **Tags:** security, login, oauth2, openidconnect, apps, authentication, sso  
 **Requires at least:** 4.9  
-**Tested up to:** 6.2  
-**Stable tag:** 1.4.1  
+**Tested up to:** 6.4  
+**Stable tag:** 1.5.4  
 **Requires PHP:** 7.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
@@ -21,7 +21,7 @@ Hellō is a cloud identity wallet cooperatively operated with a mission to empow
 
 * Hellō Login installs with Hellō Quickstart to get you up and running in 7 clicks.
 * Users manage how they login at [wallet.hello.coop](https://wallet.hello.coop). No need for you to manage how they login or help them recover their account.
-* Hellō Login uses the Hellō service, which provides login and verified email for free. See [hello.dev/pricing](https://www.hello.dev/pricing/)) for details.
+* Hellō Login uses the Hellō service, which provides login and verified email for free. See [hello.dev/pricing](https://www.hello.dev/pricing/) for details.
 
 Documentation, configuration, and settings can be found in Settings >  Hellō Login
 
@@ -95,6 +95,14 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 ## Changelog ##
 
+### 1.5.4 ###
+
+* Improvement: clarifications regarding business model
+
+### 1.5.3 ###
+
+* Improvement: WordPress 6.4 support
+
 ### 1.5.2 ###
 
 * Improvement: WordPress 6.3 support
@@ -106,7 +114,7 @@ Please submit to [https://github.com/hellocoop/wordpress/issues](https://github.
 
 ### 1.5.0 ###
 
-* Improvement: Tabbed Settings page
+* Improvement: tabbed Settings page
 
 ### 1.4.1 ###
 
