@@ -117,6 +117,10 @@ class Hello_Login_Events {
 	public static function register( Hello_Login_Option_Logger $logger, Hello_Login_Option_Settings $settings, Hello_Login_Users $users ): Hello_Login_Events {
 		$invites  = new self( $logger, $settings, $users );
 
+		if ( defined( 'HELLO_LOGIN_INVITES_ENABLED' ) && HELLO_LOGIN_INVITES_ENABLED && self::can_invite() && 'user-new.php' == $GLOBALS['pagenow'] ) {
+			add_action( 'in_admin_header', array( $invites, 'hello_login_in_admin_header_invite' ) );
+		}
+
 		return $invites;
 	}
 

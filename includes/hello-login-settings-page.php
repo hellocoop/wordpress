@@ -621,6 +621,9 @@ class Hello_Login_Settings_Page {
 
 			<nav class="nav-tab-wrapper">
 				<a href="?page=hello-login-settings" class="nav-tab<?php print ( 'general' == $tab ) ? ' nav-tab-active' : ''; ?>">General</a>
+				<?php if ( defined( 'HELLO_LOGIN_FEDERATION_ENABLED' ) && HELLO_LOGIN_FEDERATION_ENABLED ) { ?>
+					<a href="?page=hello-login-settings&tab=federation" class="nav-tab<?php print ( 'federation' == $tab ) ? ' nav-tab-active' : ''; ?>">Federation</a>
+				<?php } ?>
 				<a href="?page=hello-login-settings&tab=advanced" class="nav-tab<?php print ( 'advanced' == $tab ) ? ' nav-tab-active' : ''; ?>">Advanced</a>
 			</nav>
 
@@ -630,6 +633,12 @@ class Hello_Login_Settings_Page {
 				case 'advanced':
 					$this->settings_page_advanced();
 					break;
+				case 'federation':
+					if ( defined( 'HELLO_LOGIN_FEDERATION_ENABLED' ) && HELLO_LOGIN_FEDERATION_ENABLED ) {
+						$this->settings_page_federation();
+						break;
+					}
+					// Fallthrough.
 				default:
 					if ( 'general' != $tab ) {
 						$this->logger->log( "Unknown settings tab: $tab", 'settings' );
