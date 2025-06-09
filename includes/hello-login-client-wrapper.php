@@ -123,7 +123,7 @@ class Hello_Login_Client_Wrapper {
 		if ( isset( $_GET['client_id'] ) ) {
 			$client_id = sanitize_text_field( wp_unslash( $_GET['client_id'] ) );
 
-			if ( preg_match( '/^[a-z0-9_-]{1,64}$/', $client_id ) ) {
+			if ( preg_match( '/^[a-zA-Z0-9_-]{1,64}$/', $client_id ) ) {
 				if ( empty( $this->settings->client_id ) ) {
 					$this->settings->client_id = $client_id;
 					$this->settings->link_not_now = 0;
