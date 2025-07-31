@@ -56,3 +56,6 @@ wordpress
 /test-results/
 /playwright-report/
 /playwright/.cache/
+
+# Personal development notes (keep private)
+.dev-notes/
