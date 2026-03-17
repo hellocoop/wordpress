@@ -12,6 +12,7 @@ on:
 env:
   WP_MULTISITE: 0
   ACTION_VERSION: 2
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   check_i18n:
@@ -22,7 +23,7 @@ jobs:
     steps:
     - name: Checkout Code
       # https://github.com/marketplace/actions/checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Setup Node Environment
       # https://github.com/marketplace/actions/setup-node-js-environment
