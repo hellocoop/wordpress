@@ -1,6 +1,8 @@
 {
 	"core": "./wordpress",
 	"phpVersion": "7.4",
+	"port": 8888,
+	"testsPort": 8889,
 	"mappings": {
 		"wp-content/mu-plugins": "./tools/local-env/mu-plugins"
 	},
