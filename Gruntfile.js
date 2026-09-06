@@ -38,13 +38,6 @@ module.exports = function (grunt) {
 			},
 		},
 
-		gitinfo: {
-			commands: {
-				'local.tag.current.name': ['name-rev', '--tags', '--name-only', 'HEAD'],
-				'local.tag.current.nameLong': ['describe', '--tags', '--long']
-			}
-		},
-
 		clean: {
 			main: ['dist'] //Clean up build folder
 		},
@@ -217,8 +210,8 @@ module.exports = function (grunt) {
 	grunt.registerTask('i18n', ['addtextdomain', 'makepot', 'po2mo']);
 	grunt.registerTask('readme', ['wp_readme_to_markdown']);
 	grunt.registerTask('test', ['checktextdomain', 'phpcs']);
-	grunt.registerTask('build', ['gitinfo', 'test', 'i18n', 'readme']);
-	grunt.registerTask('release', ['checkrepo', 'gitinfo', 'checktextdomain', 'clean', 'copy']);
+	grunt.registerTask('build', ['test', 'i18n', 'readme']);
+	grunt.registerTask('release', ['checkrepo', 'checktextdomain', 'clean', 'copy']);
 
 };
 
