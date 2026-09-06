@@ -41,7 +41,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 # [Choice] Node.js version: none, lts/*, 16, 14, 12, 10
 # nvm environment variables
 # ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 12
+ENV NODE_VERSION 24
 
 # Install Node Version Manager(NVM).
 RUN su vscode -c "curl --silent -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash"

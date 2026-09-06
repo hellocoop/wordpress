@@ -25,7 +25,7 @@ jobs:
       uses: actions/setup-node@v6
       # https://github.com/marketplace/actions/setup-node-js-environment
       with:
-        node-version: 14.x
+        node-version: 24.x
 
     - name: Get NPM Cache Directory
       id: npm-cache
